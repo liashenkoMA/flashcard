@@ -1,0 +1,10 @@
+{
+  "name": "flashcard-dev",
+  "dockerComposeFile": "../docker-compose.dev.yml",
+  "service": "flashcard-jp-frontend",
+  "workspaceFolder": "/app",
+
+  "forwardPorts": [3000, 3001, 5000, 27017],
+
+  "shutdownAction": "stopCompose"
+}

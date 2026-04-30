@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  flashcard-jp-backend:
+    build:
+      context: ./flashcard-jp-backend
+      dockerfile: Dockerfile.dev
+    container_name: flashcard-jp-backend-dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./flashcard-jp-backend/.env
+    volumes:
+      - ./flashcard-jp-backend:/app
+      - /app/node_modules
+    command: npm run start:dev
+    depends_on:
+      - flashcard-mongo
+
+  flashcard-mongo:
+    image: mongo:7
+    container_name: flashcard-mongo-dev
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  flashcard-jp-frontend:
+    build:
+      context: ./flashcard-jp-frontend
+      dockerfile: Dockerfile.dev
+    container_name: flashcard-jp-frontend-dev
+    ports:
+      - "3001:3000"
+    env_file:
+      - ./flashcard-jp-frontend/.env
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ./flashcard-jp-frontend:/app
+      - /app/node_modules
+    command: npm run dev
+    depends_on:
+      - flashcard-jp-backend
+
+volumes:
+  mongo_data:
