@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Register Form component Snapshot 1`] = `
+<div>
+  <form
+    class="form"
+    novalidate=""
+  >
+    <label
+      class="form__field"
+    >
+      <span
+        class="input__placeholder"
+      >
+        Ваше имя:
+      </span>
+      <input
+        class="input"
+        maxlength="30"
+        minlength="2"
+        name="name"
+        placeholder="Иван"
+        required=""
+        type="text"
+        value=""
+      />
+      <span
+        class="input__error"
+      />
+    </label>
+    <label
+      class="form__field"
+    >
+      <span
+        class="input__placeholder"
+      >
+        Email:
+      </span>
+      <input
+        class="input"
+        name="email"
+        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-z]{2,3}$"
+        placeholder="ivan@mail.ru"
+        required=""
+        type="email"
+        value=""
+      />
+      <span
+        class="input__error"
+      />
+    </label>
+    <label
+      class="form__field"
+    >
+      <span
+        class="input__placeholder"
+      >
+        Пароль:
+      </span>
+      <input
+        class="input"
+        maxlength="20"
+        minlength="2"
+        name="password"
+        placeholder="Введите пароль"
+        required=""
+        type="password"
+        value=""
+      />
+      <span
+        class="input__error"
+      />
+    </label>
+    <label
+      class="form__field"
+    >
+      <span
+        class="input__placeholder"
+      >
+        Подтвердите пароль:
+      </span>
+      <input
+        class="input"
+        maxlength="20"
+        minlength="2"
+        name="duplicate"
+        placeholder="Повторите пароль"
+        required=""
+        type="password"
+        value=""
+      />
+      <span
+        class="input__error"
+      />
+    </label>
+    <span
+      class="registerform__errors"
+    />
+    <button
+      class="button "
+      type="submit"
+    >
+      Зарегистрироваться
+    </button>
+    <span
+      class="registerform__errors"
+    />
+  </form>
+</div>
+`;

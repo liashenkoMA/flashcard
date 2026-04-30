@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Input component Snapshot 1`] = `
+<div>
+  <label
+    class="form__field"
+  >
+    <span
+      class="input__placeholder"
+    >
+      test
+    </span>
+    <input
+      class="input"
+      value="test"
+    />
+    <span
+      class="input__error"
+    >
+      Error
+    </span>
+  </label>
+</div>
+`;

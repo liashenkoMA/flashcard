@@ -1,0 +1,50 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.flashcard {
+  &__card {
+    width: 260px;
+    height: 300px;
+    background-color: v.$color-bg-card;
+    border: 1px solid v.$color-border;
+    border-radius: 30px;
+    @include m.hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+    transition: transform 0.3s;
+    transform-style: preserve-3d;
+  }
+
+  &__frontside {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__backside {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotateY(180deg);
+  }
+
+  &__flipped {
+    display: none;
+  }
+
+  &__text {
+    font-size: v.$font-size-large;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-large;
+    color: v.$color-text-main;
+  }
+}
+
+.card__animation_flipped {
+  transform: rotateY(180deg);
+}

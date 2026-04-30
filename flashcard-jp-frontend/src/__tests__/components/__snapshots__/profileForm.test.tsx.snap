@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Profile Form component Snapshot 1`] = `
+<div>
+  <div
+    class="profileform__text"
+  >
+    Загрузка данных...
+  </div>
+</div>
+`;

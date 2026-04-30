@@ -1,0 +1,86 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.navigation {
+  display: flex;
+  justify-content: flex-end;
+
+  &_type_open {
+    min-width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+  }
+
+  &__button {
+    @include m.hover {
+      cursor: pointer;
+      opacity: 0.9;
+    }
+  }
+
+  &__button_type_open {
+    width: 38px;
+    height: 38px;
+    background-image: url(../../_images/burger.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+  }
+
+  &__button_type_close {
+    width: 38px;
+    height: 38px;
+    background-image: url(../../_images/closedburger.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    position: fixed;
+    top: 26px;
+    right: 26px;
+    z-index: 10;
+  }
+
+  &__content {
+    padding: 150px 10px 0px 10px;
+    width: 320px;
+    background-color: v.$color-bg-card;
+    min-width: 320px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__content_type_close {
+    display: none;
+  }
+
+  @include m.respond-to(desktop) {
+    min-width: auto;
+    background-color: transparent;
+    position: static;
+
+    &__button {
+      display: none;
+    }
+
+    &__content {
+      flex-direction: row;
+      gap: 10px;
+      padding: 0;
+      background-color: transparent;
+    }
+
+    &__content_type_close {
+      display: flex;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@use "../../../variables" as v;
+@use "../../../mixins" as m;
+
+.button {
+  width: 100%;
+  height: 40px;
+  padding: 0px 5px;
+  background: v.$gradient-primary;
+  border: none;
+  border-radius: 10px;
+  font-size: v.$font-size-x-small;
+  font-weight: v.$font-weight-regular;
+  line-height: v.$line-height-small;
+  color: v.$color-text-main;
+  @include m.hover {
+    cursor: pointer;
+    opacity: 0.9;
+    box-shadow: v.$shadow-default;
+  }
+
+  &__disabled {
+    opacity: 0.9;
+  }
+}

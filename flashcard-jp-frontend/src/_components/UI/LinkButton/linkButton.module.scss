@@ -1,0 +1,30 @@
+@use "../../../variables" as v;
+@use "../../../mixins" as m;
+
+.link_button {
+
+  // ===== START бегущая подводка =====
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 90%, hotpink 90%, hotpink 100%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position-x: right;
+  transition: background-size 1000ms;
+  // ===== END бегущая подводка =====
+
+  color: v.$grey;
+  font-size: v.$font-size-x-small;
+  font-weight: v.$font-weight-regular;
+  line-height: v.$line-height-small;
+
+  @include m.hover {
+/*     cursor: pointer;
+    opacity: 0.9;
+    text-decoration: underline;
+    text-decoration-color: v.$color-text-main; */
+
+
+    // ===== START бегущая подводка =====
+    background-size: 100% 100%;
+    background-position-x: left;
+  }
+}

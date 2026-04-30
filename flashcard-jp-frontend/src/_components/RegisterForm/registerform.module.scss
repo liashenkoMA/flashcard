@@ -1,0 +1,20 @@
+@use "@/_variables" as v;
+
+.registerform__success {
+  width: 100%;
+  display: block;
+  padding: 7px 0px 15px 0px;
+  font-size: v.$font-size-x-small;
+  font-weight: v.$font-weight-regular;
+  line-height: v.$line-height-small;
+  color: v.$color-text-main;
+  text-align: center;
+}
+
+.registerform__errors {
+  padding: 7px 0px 15px 0px;
+  font-size: v.$font-size-x-small;
+  font-weight: v.$font-weight-regular;
+  line-height: v.$line-height-small;
+  color: v.$color-text-error;
+}

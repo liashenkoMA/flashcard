@@ -1,0 +1,19 @@
+@use "../../variables" as v;
+
+.deleteprofile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__errors {
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    color: v.$color-text-error;
+  }
+}

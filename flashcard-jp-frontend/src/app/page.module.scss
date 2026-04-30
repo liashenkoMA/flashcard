@@ -1,0 +1,18 @@
+@use "../variables" as v;
+
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background-color: v.$color-bg-page;
+}
+
+.content {
+  padding: 30px 10px;
+}
+
+.text {
+  color: v.$color-text-main;
+  font-size: v.$font-size-x-small;
+  font-weight: v.$font-weight-regular;
+  line-height: v.$line-height-small;
+}

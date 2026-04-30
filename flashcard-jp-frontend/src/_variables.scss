@@ -1,0 +1,44 @@
+// base colors
+$white: #ffffff;
+$grey: #94a9c9;
+$red: #ff0000;
+$black: #000000;
+$grey-dark: #0a1330;
+$black-dark: #081028;
+$blue-dark: #222f43;
+$purple: #8951ff;
+$purple-dark: #ba8de412;
+$purple-light: #cb3cff;
+
+// Shadows
+$shadow-default: 0 0 15px rgb(94, 92, 230, 0.4);
+
+// Gradient
+$gradient-primary: linear-gradient(90deg, #cb3cff 20%, #7f25fb 68%);
+
+// Text colors
+$color-text-main: $white;
+$color-text-link: $purple-light;
+$color-text-error: $red;
+
+// Background colors
+$color-bg-page: $black-dark;
+$color-bg-header: $grey-dark;
+$color-bg-footer: $grey-dark;
+$color-bg-card: $grey-dark;
+$color-bg-element: $grey-dark;
+
+//Border colors
+$color-border: $blue-dark;
+
+/* Text size */
+$font-size-xx-small: 14px;
+$font-size-x-small: 16px;
+$font-size-medium: 24px;
+$font-size-large: 32px;
+
+$font-weight-regular: 400;
+
+$line-height-small: 20px;
+$line-height-medium: 32px;
+$line-height-large: 42px;

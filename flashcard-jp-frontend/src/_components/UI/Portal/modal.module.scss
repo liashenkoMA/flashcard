@@ -1,0 +1,53 @@
+@use "../../../variables" as v;
+@use "../../../mixins" as m;
+
+.modal {
+  min-width: 100%;
+  padding: 0px 10px;
+  background-color: rgba(v.$black, 0.6);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__content {
+    padding: 15px 10px 20px 10px;
+    width: 300px;
+    background-color: v.$color-bg-element;
+    border-radius: 20px;
+    border: 1px solid v.$color-border;
+    position: relative;
+  }
+
+  &__title {
+    padding-bottom: 10px;
+    color: v.$white;
+    font-size: v.$font-size-medium;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-medium;
+    text-align: center;
+  }
+
+  &__button {
+    width: 20px;
+    height: 20px;
+    background-image: url(../../../_images/closedburger.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    @include m.hover {
+      cursor: pointer;
+      opacity: 0.9;
+    }
+  }
+}

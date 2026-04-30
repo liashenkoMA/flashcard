@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Form component Snapshot 1`] = `
+<div>
+  <form
+    class="form"
+    novalidate=""
+  >
+    <p>
+      Form
+    </p>
+  </form>
+</div>
+`;

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Button component Snapshot 1`] = `
+<div>
+  <button
+    class="button "
+    type="submit"
+  >
+    Зарегистрироваться
+  </button>
+</div>
+`;

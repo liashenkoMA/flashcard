@@ -1,0 +1,32 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.footer {
+  width: 100%;
+  height: 80px;
+  background-color: v.$color-bg-header;
+
+  &__content {
+    width: 100%;
+    height: 100%;
+    padding: 20px 10px;
+    border-top: 1px solid v.$color-border;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__copyright {
+    color: v.$color-text-main;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+  }
+
+  &__copyright_link {
+    color: v.$purple;
+    @include m.hover {
+      cursor: pointer;
+    }
+  }
+}

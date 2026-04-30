@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`LinkButton component Snapshot 1`] = `
+<div>
+  <a
+    class="link_button"
+    href="/test"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    Перейти
+  </a>
+</div>
+`;

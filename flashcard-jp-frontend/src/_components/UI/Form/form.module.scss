@@ -1,0 +1,15 @@
+@use "@/_variables" as v;
+
+.form {
+  max-width: 355px;
+  display: flex;
+  flex-direction: column;
+
+  &__errors {
+    padding-top: 7px;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    color: v.$color-text-error;
+  }
+}
