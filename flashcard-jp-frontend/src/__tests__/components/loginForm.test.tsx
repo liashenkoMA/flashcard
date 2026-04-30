@@ -3,6 +3,11 @@ import { LOGIN_FORM_INPUTS } from "@/_constants/loginForm.constant";
 import { login } from "@/_utils/authApi";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import modalReducer from "@/_store/modalSlice";
+import authReducer from "@/_store/authSlice";
+import { RootState } from "@/_store/store";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
@@ -14,23 +19,24 @@ jest.mock("@/_utils/authApi", () => ({
 
 const pushMock = jest.fn();
 
-const setAuthStateMock = jest.fn();
-const setUserNameMock = jest.fn();
+function renderWithStore(preloadedState?: Partial<RootState>) {
+  const store = configureStore({
+    reducer: {
+      modal: modalReducer,
+      auth: authReducer,
+    },
+    preloadedState: preloadedState as RootState,
+  });
 
-jest.mock("@/_contexts/authContext/useAuthContext", () => ({
-  useAuthContext: () => ({
-    setAuthState: setAuthStateMock,
-    setUserName: setUserNameMock,
-  }),
-}));
-
-const setModalStateMock = jest.fn();
-
-jest.mock("@/_contexts/authModalContext/useAuthModalContext", () => ({
-  useAuthModalContext: () => ({
-    setModalState: setModalStateMock,
-  }),
-}));
+  return {
+    store,
+    ...render(
+      <Provider store={store}>
+        <LoginForm />
+      </Provider>,
+    ),
+  };
+}
 
 describe("Login Form component", () => {
   beforeEach(() => {
@@ -42,7 +48,7 @@ describe("Login Form component", () => {
   });
 
   it("Рендер всех полей", () => {
-    render(<LoginForm />);
+    renderWithStore();
 
     LOGIN_FORM_INPUTS.forEach((input) => {
       const field = screen.getByPlaceholderText(input.placeholder as string);
@@ -50,8 +56,8 @@ describe("Login Form component", () => {
     });
   });
 
-  it("Вводим данные, handleChange", () => {
-    render(<LoginForm />);
+  it("Ввод данных работает", () => {
+    renderWithStore();
 
     const input = screen.getByPlaceholderText("Введите пароль");
 
@@ -62,8 +68,8 @@ describe("Login Form component", () => {
     expect(input).toHaveValue("123");
   });
 
-  it("Не заполнены данные, кнопка submit заблокирована", () => {
-    render(<LoginForm />);
+  it("Кнопка submit заблокирована при пустых данных", () => {
+    renderWithStore();
 
     const button = screen.getByRole("button", { name: /Войти/i });
 
@@ -72,30 +78,31 @@ describe("Login Form component", () => {
     expect(button).toBeDisabled();
   });
 
-  it("Ошибка выводится, passwordMismatch = true", () => {
-    render(<LoginForm />);
+  it("Ошибка при несовпадении паролей", () => {
+    renderWithStore();
 
-    const passwordInput = screen.getByPlaceholderText(/Введите пароль/i);
-    const duplicateInput = screen.getByPlaceholderText(/Повторите пароль/i);
-
-    fireEvent.change(passwordInput, { target: { value: "123" } });
-    fireEvent.change(duplicateInput, { target: { value: "456" } });
+    fireEvent.change(screen.getByPlaceholderText(/Введите пароль/i), {
+      target: { value: "123" },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/Повторите пароль/i), {
+      target: { value: "456" },
+    });
 
     expect(screen.getByText("Пароли не совпадают.")).toBeInTheDocument();
   });
 
-  it("Ошибка не выводится, passwordMismatch = false", () => {
-    const { container } = render(<LoginForm />);
+  it("Нет ошибки если пароли совпадают", () => {
+    const { container } = renderWithStore();
 
     expect(
       container.getElementsByClassName("loginform__errors")[0],
     ).toHaveTextContent("");
   });
 
-  it("Вызывает login и перенаправляет после успешного входа", async () => {
+  it("Успешный логин → обновление store + редирект", async () => {
     (login as jest.Mock).mockResolvedValueOnce({ name: "Иван" });
 
-    render(<LoginForm />);
+    const { store } = renderWithStore();
 
     fireEvent.change(screen.getByPlaceholderText("ivan@mail.ru"), {
       target: { value: "ivan@mail.ru" },
@@ -110,17 +117,23 @@ describe("Login Form component", () => {
     fireEvent.click(screen.getByText("Войти"));
 
     await waitFor(() => {
-      expect(login).toHaveBeenCalledTimes(1);
-      expect(pushMock).toHaveBeenCalledWith("/dashboard");
+      expect(login).toHaveBeenCalled();
     });
+
+    const state = store.getState();
+
+    expect(state.auth.userName).toBe("Иван");
+    expect(state.modal.mode).toBeNull();
+
+    expect(pushMock).toHaveBeenCalledWith("/dashboard");
   });
 
-  it("Отображаем ошибку сервера, если login завершился с ошибкой", async () => {
+  it("Ошибка сервера отображается", async () => {
     const errorMessage = "Ошибка сервера";
 
     (login as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
-    render(<LoginForm />);
+    renderWithStore();
 
     fireEvent.change(screen.getByPlaceholderText("ivan@mail.ru"), {
       target: { value: "ivan@mail.ru" },
@@ -141,7 +154,7 @@ describe("Login Form component", () => {
   });
 
   it("Snapshot", () => {
-    const { container } = render(<LoginForm />);
+    const { container } = renderWithStore();
     expect(container).toMatchSnapshot();
   });
 });

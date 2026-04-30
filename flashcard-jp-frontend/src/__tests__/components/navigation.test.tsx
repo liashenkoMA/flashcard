@@ -1,44 +1,63 @@
 import Navigation from "@/_components/Navigation/Navigation";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-const setModalStateMock = jest.fn();
-const setAuthStateMock = jest.fn();
-
-jest.mock("@/_contexts/authModalContext/useAuthModalContext", () => ({
-  useAuthModalContext: () => ({
-    setModalState: setModalStateMock,
-  }),
-}));
-
-jest.mock("@/_contexts/authContext/useAuthContext", () => ({
-  useAuthContext: () => ({
-    setAuthState: setAuthStateMock,
-  }),
-}));
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import modalReducer from "@/_store/modalSlice";
+import authReducer from "@/_store/authSlice";
+import { RootState } from "@/_store/store";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock("@/_utils/userApi", () => ({
+  getUser: jest.fn().mockRejectedValue(new Error("no user")),
+}));
+
+function renderWithStore(preloadedState?: Partial<RootState>) {
+  const store = configureStore({
+    reducer: {
+      modal: modalReducer,
+      auth: authReducer,
+    },
+    preloadedState: preloadedState as RootState,
+  });
+
+  return {
+    store,
+    ...render(
+      <Provider store={store}>
+        <Navigation />
+      </Provider>,
+    ),
+  };
+}
+
 describe("Navigation component", () => {
   beforeEach(() => {
-    setModalStateMock.mockClear();
+    jest.clearAllMocks();
 
     jest.spyOn(console, "log").mockImplementation(() => {});
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
-  })
+  });
 
   it("Рендер меню", () => {
-    render(<Navigation />);
+    renderWithStore({
+      auth: { userName: "" },
+    });
+
     expect(screen.getByText("Войти")).toBeInTheDocument();
     expect(screen.getByText("Зарегистрироваться")).toBeInTheDocument();
   });
 
   it("Открытие и закрытие меню по клику", () => {
-    render(<Navigation />);
+    renderWithStore({
+      auth: { userName: "" },
+    });
 
     const menuButton = screen.getByTestId("menu-toggle");
 
@@ -49,31 +68,38 @@ describe("Navigation component", () => {
     expect(menuButton).toHaveClass("navigation__button_type_close");
   });
 
-  it("Войти передает в стейт mode: login", () => {
-    render(<Navigation />);
+  it("Войти → меняет modal.mode = login", () => {
+    const { store } = renderWithStore({
+      auth: { userName: "" },
+    });
 
     fireEvent.click(screen.getByText("Войти"));
 
-    expect(setModalStateMock).toHaveBeenCalledTimes(1);
-    expect(setModalStateMock).toHaveBeenCalledWith({ mode: "login" });
+    const state = store.getState();
+
+    expect(state.modal.mode).toBe("login");
   });
 
-  it("Зарегистрироваться передает в стейт mode: register", () => {
-    render(<Navigation />);
+  it("Зарегистрироваться → modal.mode = register", () => {
+    const { store } = renderWithStore({
+      auth: { userName: "" },
+    });
 
     fireEvent.click(screen.getByText("Зарегистрироваться"));
 
-    expect(setModalStateMock).toHaveBeenCalledTimes(1);
-    expect(setModalStateMock).toHaveBeenCalledWith({ mode: "register" });
+    const state = store.getState();
+
+    expect(state.modal.mode).toBe("register");
   });
 
-  it("После нажатия на любую кнопку меню закрывается", () => {
-    render(<Navigation />);
+  it("После клика меню закрывается", () => {
+    renderWithStore({
+      auth: { userName: "" },
+    });
 
     const menuButton = screen.getByTestId("menu-toggle");
 
     fireEvent.click(menuButton);
-
     expect(menuButton).toHaveClass("navigation__button_type_close");
 
     fireEvent.click(screen.getByText("Войти"));
@@ -81,8 +107,20 @@ describe("Navigation component", () => {
     expect(menuButton).toHaveClass("navigation__button_type_open");
   });
 
+  it("Если пользователь есть — показывается личный кабинет", () => {
+    renderWithStore({
+      auth: { userName: "Иван" },
+    });
+
+    expect(screen.getByText("Личный кабинет")).toBeInTheDocument();
+    expect(screen.getByText("Выйти")).toBeInTheDocument();
+  });
+
   it("Snapshot", () => {
-    const { container } = render(<Navigation />);
+    const { container } = renderWithStore({
+      auth: { userName: "" },
+    });
+
     expect(container).toMatchSnapshot();
   });
 });
