@@ -1,5 +1,5 @@
-import AuthModal from "@/_components/AuthModal/AuthModal";
 import styles from "./page.module.scss";
+import AuthModal from "@/_components/AuthModal/AuthModal";
 
 export default function Page() {
   return (

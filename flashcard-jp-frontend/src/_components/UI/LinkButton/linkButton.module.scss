@@ -2,29 +2,29 @@
 @use "../../../mixins" as m;
 
 .link_button {
-
-  // ===== START бегущая подводка =====
-  background-image: linear-gradient(to bottom, transparent 0%, transparent 90%, hotpink 90%, hotpink 100%);
-  background-repeat: no-repeat;
-  background-size: 0% 100%;
-  background-position-x: right;
-  transition: background-size 1000ms;
-  // ===== END бегущая подводка =====
-
+  position: relative;
+  display: inline-block;
+  width: fit-content;
   color: v.$grey;
   font-size: v.$font-size-x-small;
   font-weight: v.$font-weight-regular;
   line-height: v.$line-height-small;
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background-color: hotpink;
+    transition: width 1000ms ease;
+  }
 
   @include m.hover {
-/*     cursor: pointer;
-    opacity: 0.9;
-    text-decoration: underline;
-    text-decoration-color: v.$color-text-main; */
-
-
-    // ===== START бегущая подводка =====
-    background-size: 100% 100%;
-    background-position-x: left;
+    &::after {
+      width: 100%;
+    }
   }
 }

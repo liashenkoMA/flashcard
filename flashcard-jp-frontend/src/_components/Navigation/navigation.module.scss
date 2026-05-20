@@ -6,12 +6,9 @@
   justify-content: flex-end;
 
   &_type_open {
-    min-width: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
     z-index: 2;
   }
 
@@ -20,28 +17,22 @@
       cursor: pointer;
       opacity: 0.9;
     }
+
+    width: 38px;
+    height: 38px;
+    border: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
 
   &__button_type_open {
-    width: 38px;
-    height: 38px;
     background-image: url(../../_images/burger.svg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-color: transparent;
-    border: none;
   }
 
   &__button_type_close {
-    width: 38px;
-    height: 38px;
     background-image: url(../../_images/closedburger.svg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-color: transparent;
-    border: none;
     position: fixed;
     top: 26px;
     right: 26px;
@@ -49,11 +40,11 @@
   }
 
   &__content {
-    padding: 150px 10px 0px 10px;
     width: 320px;
-    background-color: v.$color-bg-card;
     min-width: 320px;
     height: 100vh;
+    padding: 150px 10px 0;
+    background-color: v.$color-bg-card;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -64,10 +55,6 @@
   }
 
   @include m.respond-to(desktop) {
-    min-width: auto;
-    background-color: transparent;
-    position: static;
-
     &__button {
       display: none;
     }
@@ -77,10 +64,17 @@
       gap: 10px;
       padding: 0;
       background-color: transparent;
+      min-width: auto;
+      height: auto;
     }
 
     &__content_type_close {
       display: flex;
+    }
+
+    &_type_open {
+      position: static;
+      background: transparent;
     }
   }
 }

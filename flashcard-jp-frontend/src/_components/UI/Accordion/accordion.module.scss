@@ -1,0 +1,33 @@
+@use "../../../variables" as v;
+
+.accordion {
+  border: 1px solid v.$color-border;
+  border-radius: 5px;
+
+  &__heading {
+    width: 100%;
+    height: 40px;
+    background: v.$gradient-primary;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: v.$color-text-main;
+    font-size: v.$font-size-medium;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-medium;
+  }
+
+  &__content {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__content_type_open {
+  }
+
+  &__content_type_close {
+    display: none;
+  }
+}
