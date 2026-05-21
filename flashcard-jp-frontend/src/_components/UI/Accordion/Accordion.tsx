@@ -19,9 +19,12 @@ export default function Accordion({
         onClick={() => setIsOpen(!isOpen)}
       >
         {header}
+        <div
+          className={`${`${isOpen ? styles.accordion__icon_type_close : styles.accordion__icon_type_open}`}`}
+        ></div>
       </button>
       <div
-        className={`${styles.accordion__content} ${isOpen ? styles.accordion__content_type_open : styles.accordion__content_type_close}`}
+        className={`${styles.accordion__content} ${isOpen ? "" : styles.accordion__content_type_close}`}
       >
         {children}
       </div>
