@@ -1,7 +1,9 @@
+"use client"
+
 import { IKana, IUpdateKanaResponse } from "@/_interface/Interface";
 
 const address = {
-  baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+  CLIENT_API_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
 };
 
 async function checkResponse<T>(res: Response): Promise<T> {
@@ -14,17 +16,23 @@ async function checkResponse<T>(res: Response): Promise<T> {
   return result;
 }
 
-export async function getHiragana(): Promise<IKana[]> {
+export async function updateHirakana(
+  kana: IKana,
+): Promise<IUpdateKanaResponse> {
   try {
-    const res = await fetch(`${address.baseUrl}/hiragana`, {
-      method: "GET",
+    const res = await fetch(`${address.CLIENT_API_URL}/hiragana/update`, {
+      method: "PATCH",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        Cookie: cookieStore.toString(),
       },
+      body: JSON.stringify({
+        symbol: kana.symbol,
+      }),
     });
 
-    return checkResponse<IKana[]>(res);
+    return checkResponse<IUpdateKanaResponse>(res);
   } catch (err) {
     if (err instanceof Error) {
       throw err;
@@ -34,11 +42,11 @@ export async function getHiragana(): Promise<IKana[]> {
   }
 }
 
-export async function updateHiragana(
+export async function updateKatakana(
   kana: IKana,
 ): Promise<IUpdateKanaResponse> {
   try {
-    const res = await fetch(`${address.baseUrl}/hiragana/update`, {
+    const res = await fetch(`${address.CLIENT_API_URL}/katakana/update`, {
       method: "PATCH",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

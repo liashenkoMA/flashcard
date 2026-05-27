@@ -38,9 +38,12 @@ export class HiraganaService implements OnModuleInit {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_CONSTANT,
-      });
+      const payload = await this.jwtService.verifyAsync<{ sub: string }>(
+        token,
+        {
+          secret: process.env.JWT_CONSTANT,
+        },
+      );
       return payload;
     } catch {
       throw new UnauthorizedException('Невалидный токен');
@@ -51,7 +54,7 @@ export class HiraganaService implements OnModuleInit {
     const payload = await this.validateAndGetPayload(request);
     // Проверка пользователя
     const user = await this.userModel
-      .findOne({ email: payload.username })
+      .findById(payload.sub)
       .select('learningProgress')
       .lean();
 
@@ -81,9 +84,7 @@ export class HiraganaService implements OnModuleInit {
     const payload = await this.validateAndGetPayload(request);
 
     // Проверка пользователя
-    const user = await this.userModel
-      .findOne({ email: payload.username })
-      .exec();
+    const user = await this.userModel.findById(payload.sub).exec();
 
     if (!user) {
       throw new NotFoundException('Такого пользователя не существует');
@@ -101,7 +102,7 @@ export class HiraganaService implements OnModuleInit {
     // Создаем progress, если его нет
     await this.userModel.updateOne(
       {
-        email: payload.username,
+        _id: payload.sub,
         'learningProgress.language': { $ne: 'jp' },
       },
       {
@@ -120,7 +121,7 @@ export class HiraganaService implements OnModuleInit {
     // Добавяем выученную хирагану пользователю
     await this.userModel.updateOne(
       {
-        email: payload.username,
+        _id: payload.sub,
         'learningProgress.language': 'jp',
       },
       {

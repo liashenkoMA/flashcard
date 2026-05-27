@@ -1,5 +1,5 @@
 import { ILoginFormData } from "@/_interface/Interface";
-import { deleteUser, login, logout } from "@/_utils/authApi";
+import { deleteUser, login, logout } from "@/_utils/server/authApi";
 import * as headers from "next/headers";
 
 global.fetch = jest.fn();

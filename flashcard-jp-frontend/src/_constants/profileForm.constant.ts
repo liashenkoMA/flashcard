@@ -19,7 +19,7 @@ export const PROFILE_FORM_INPUTS: IInputField<IProfileFormInput>[] = [
   {
     name: "newPassword",
     inputName: "Изменить пароль:",
-    placeholder: "Введите пароль",
+    placeholder: "Введите новый пароль",
     type: "password",
     minLength: 2,
     maxLength: 20,
@@ -27,7 +27,7 @@ export const PROFILE_FORM_INPUTS: IInputField<IProfileFormInput>[] = [
   {
     name: "duplicate",
     inputName: "Повторите пароль:",
-    placeholder: "Повторите пароль",
+    placeholder: "Повторите новый пароль",
     type: "password",
     minLength: 2,
     maxLength: 20,

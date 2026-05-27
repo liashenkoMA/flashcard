@@ -1,53 +1,54 @@
 "use client";
 
 import styles from "./KanaPageComponent.module.scss";
-import { getHiragana, updateHiragana } from "@/_utils/kanaApi";
 import { useEffect, useState } from "react";
 import { FlashCard } from "../FlashCard/FlashCard";
 import { IKana } from "@/_interface/Interface";
 import Button from "../UI/Button/Button";
 import { motion } from "framer-motion";
+import { updateHirakana } from "@/_utils/client/kanaApi";
 
-export default function KanaPageComponent() {
+function shuffle(arr: IKana[]) {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+export default function KanaPageComponent({
+  kana,
+  params,
+}: {
+  kana: IKana[];
+  params: string;
+}) {
   const [cards, setCards] = useState<IKana[]>([]);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
 
-  function shuffle(arr: IKana[]) {
-    const result = [...arr];
-    for (let i = result.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [result[i], result[j]] = [result[j], result[i]];
-    }
-    return result;
-  }
-
   useEffect(() => {
-    async function fetchKana() {
-      await getHiragana()
-        .then((res) => {
-          setCards(shuffle(res));
-        })
-        .catch((err) => console.log(err));
-    }
-
-    fetchKana();
-  }, []);
+    setCards(shuffle(kana));
+  }, [kana]);
 
   function nextCard() {
     setDirection(1);
-    setIndexCard(indexCard === cards.length - 1 ? 0 : indexCard + 1);
+    setIndexCard((prev) => (prev === cards.length - 1 ? 0 : prev + 1));
   }
 
   function previousCard() {
     setDirection(-1);
-    setIndexCard(indexCard === 0 ? cards.length - 1 : indexCard - 1);
+    setIndexCard((prev) => (prev === cards.length - 1 ? 0 : prev + 1));
   }
 
   function handleUpdateHiragana() {
-    updateHiragana(cards[indexCard])
+    const currentCard = cards[indexCard];
+    const updateKana = params === "hiragana" ? updateHirakana : updateHirakana;
+
+    updateKana(currentCard)
       .then(() => {
-        setCards((cards) => cards.filter((card) => card !== cards[indexCard]));
+        setCards((prev) => prev.filter((_, index) => index !== indexCard));
       })
       .catch((err) => {
         console.log(err);

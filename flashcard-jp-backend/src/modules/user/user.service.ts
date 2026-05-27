@@ -32,9 +32,12 @@ export class UserService {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_CONSTANT,
-      });
+      const payload = await this.jwtService.verifyAsync<{ sub: string }>(
+        token,
+        {
+          secret: process.env.JWT_CONSTANT,
+        },
+      );
       return payload;
     } catch {
       throw new UnauthorizedException('Невалидный токен');
@@ -69,9 +72,7 @@ export class UserService {
   async getUser(request: Request): Promise<{ name: string; email: string }> {
     const payload = await this.validateAndGetPayload(request);
 
-    const user = await this.userModel
-      .findOne({ email: payload.username })
-      .exec();
+    const user = await this.userModel.findById(payload.sub).exec();
 
     if (!user) {
       throw new NotFoundException('Такого пользователя не существует');
@@ -89,9 +90,7 @@ export class UserService {
   ): Promise<UserResponseDto> {
     const payload = await this.validateAndGetPayload(request);
 
-    const user = await this.userModel
-      .findOne({ email: payload.username })
-      .exec();
+    const user = await this.userModel.findById(payload.sub).exec();
 
     if (!user) {
       throw new NotFoundException('Такого пользователя не существует');
@@ -149,7 +148,7 @@ export class UserService {
   async deleteUser(request: Request) {
     const payload = await this.validateAndGetPayload(request);
 
-    await this.userModel.findOneAndDelete({ email: payload.username }).exec();
+    await this.userModel.findByIdAndDelete(payload.sub).exec();
 
     return;
   }

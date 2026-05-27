@@ -8,8 +8,15 @@ interface ILinkButton {
 
 export default function LinkButton({ href, text }: ILinkButton) {
   return (
-    <Link href={href} className={styles.link_button} target="_blank" rel="noopener noreferrer">
-      {text}
-    </Link>
+    <>
+      <Link
+        href={href}
+        className={styles.link__button}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {text}
+      </Link>
+    </>
   );
 }
