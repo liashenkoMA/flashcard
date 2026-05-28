@@ -3,7 +3,7 @@ import { IKana } from "@/_interface/Interface";
 import KanaPageComponent from "@/_components/KanaPageComponent/KanaPageComponent";
 import { getHirakana } from "@/_utils/server/kanaApi";
 
-interface IPageParams {
+export interface IPageParams {
   params: { slug: string };
   searchParams: { type?: string };
 }
