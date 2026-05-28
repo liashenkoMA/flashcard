@@ -1,30 +1,30 @@
 import {
   Injectable,
   NotFoundException,
+  OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Hiragana } from './hiragana.schema';
+import { Katakana } from './katakana.schema';
 import { Model } from 'mongoose';
-import { Request } from 'express';
+import { KATAKANA_SEED } from './katakana.seed';
+import { User } from '@/src/modules/user/user.schema';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../../user/user.schema';
-import { HIRAGANA_SEED } from './hiragana.seed';
-import { OnModuleInit } from '@nestjs/common';
-import { UpdateHiraganaDto } from './hiragana.schema.dto';
+import { Request } from 'express';
+import { UpdateKatakanaDto } from './katakana.schema.dto';
 
 @Injectable()
-export class HiraganaService implements OnModuleInit {
+export class KatakanaService implements OnModuleInit {
   async onModuleInit() {
-    const count = await this.hiraganaModel.countDocuments();
+    const count = await this.katakanaModel.countDocuments();
 
     if (count === 0) {
-      await this.hiraganaModel.insertMany(HIRAGANA_SEED);
+      await this.katakanaModel.insertMany(KATAKANA_SEED);
     }
   }
 
   constructor(
-    @InjectModel(Hiragana.name) private hiraganaModel: Model<Hiragana>,
+    @InjectModel(Katakana.name) private katakanaModel: Model<Katakana>,
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
   ) {}
@@ -49,9 +49,9 @@ export class HiraganaService implements OnModuleInit {
     }
   }
 
-  async getHiragana(request: Request) {
+  async getKatakana(request: Request) {
     const payload = await this.validateAndGetPayload(request);
-    // Проверка пользователя
+
     const user = await this.userModel
       .findById(payload.sub)
       .select('learningProgress')
@@ -66,20 +66,20 @@ export class HiraganaService implements OnModuleInit {
 
     // Создаем коллекцию Set с выученной каной
     const learnedSet = new Set(
-      (progress?.hiragana || []).map((id) => id.toString()),
+      (progress?.katakana || []).map((id) => id.toString()),
     );
 
-    // Получаем весь список хироганы
-    const hiragana = await this.hiraganaModel.find().lean();
+    // Получаем весь список катаканы
+    const katakana = await this.katakanaModel.find().lean();
 
     // Возвращаем пользователю данные
-    return hiragana.map((item) => ({
+    return katakana.map((item) => ({
       ...item,
       learned: learnedSet.has(item._id.toString()),
     }));
   }
 
-  async updateHiragana(hiragana: UpdateHiraganaDto, request: Request) {
+  async updateKatakana(katakana: UpdateKatakanaDto, request: Request) {
     const payload = await this.validateAndGetPayload(request);
 
     // Проверка пользователя
@@ -89,13 +89,13 @@ export class HiraganaService implements OnModuleInit {
       throw new NotFoundException('Такого пользователя не существует');
     }
 
-    // Поиск нужной хираганы
-    const kana = await this.hiraganaModel
-      .findOne({ symbol: hiragana.symbol })
+    // Поиск нужной катаканы
+    const kana = await this.katakanaModel
+      .findOne({ symbol: katakana.symbol })
       .exec();
 
     if (!kana) {
-      throw new NotFoundException('Хирагана не найдена');
+      throw new NotFoundException('Катакана не найдена');
     }
 
     // Создаем progress, если его нет
@@ -117,7 +117,7 @@ export class HiraganaService implements OnModuleInit {
       },
     );
 
-    // Добавяем выученную хирагану пользователю
+    // Добавяем выученную катакану пользователю
     await this.userModel.updateOne(
       {
         _id: payload.sub,
@@ -125,14 +125,14 @@ export class HiraganaService implements OnModuleInit {
       },
       {
         $addToSet: {
-          'learningProgress.$.hiragana': kana._id,
+          'learningProgress.$.katakana': kana._id,
         },
       },
     );
 
     return {
-      message: `${hiragana.symbol} - выучено`,
-      hiraganaId: kana._id,
+      message: `${katakana.symbol} - выучено`,
+      katakanaId: kana._id,
     };
   }
 }

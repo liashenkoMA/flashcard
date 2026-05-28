@@ -10,6 +10,10 @@ const USER_UPDATE = 'update';
 const HIRAGANA = 'hiragana';
 const HIRAGANA_UPDATE = 'update';
 
+//=== KATAKANA ===
+const KATAKANA = 'katakana';
+const KATAKANA_UPDATE = 'update';
+
 export const ROUTES = {
   AUTH,
   SIGN_IN,
@@ -17,4 +21,6 @@ export const ROUTES = {
   USER_UPDATE,
   HIRAGANA,
   HIRAGANA_UPDATE,
+  KATAKANA,
+  KATAKANA_UPDATE,
 } as const;

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "jest --updateSnapshot"
+    "test": "jest"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",

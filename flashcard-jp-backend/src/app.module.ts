@@ -7,16 +7,23 @@ import {
   Hiragana,
   HiraganaSchema,
 } from './modules/languages/japanese/hiragana/hiragana.schema';
+import { KatakanaModule } from './modules/languages/japanese/katakana/katakana.module';
+import {
+  Katakana,
+  KatakanaSchema,
+} from './modules/languages/japanese/katakana/katakana.schema';
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGO_URI),
     MongooseModule.forFeature([
       { name: Hiragana.name, schema: HiraganaSchema },
+      { name: Katakana.name, schema: KatakanaSchema },
     ]),
     UserModule,
     AuthModule,
     HiraganaModule,
+    KatakanaModule,
   ],
 })
 export class AppModule {}

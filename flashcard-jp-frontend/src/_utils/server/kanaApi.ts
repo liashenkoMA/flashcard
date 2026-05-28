@@ -41,12 +41,15 @@ export async function getHirakana(): Promise<IKana[]> {
 }
 
 export async function getKatakana(): Promise<IKana[]> {
+  const cookieStore = await cookies();
+
   try {
     const res = await fetch(`${address.SERVER_API_URL}/katakana`, {
       method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        Cookie: cookieStore.toString(),
       },
     });
 
