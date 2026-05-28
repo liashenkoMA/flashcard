@@ -7,7 +7,7 @@ import { User } from '../../../user/user.schema';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 describe('HiraganaService', () => {
-  let mockJwtService;
+  let mockJwtService: any;
   let mockHiraganaModel: any;
   let service: HiraganaService;
   let mockUserModel: any;
@@ -20,7 +20,7 @@ describe('HiraganaService', () => {
     };
 
     mockUserModel = {
-      findOne: jest.fn(),
+      findById: jest.fn(),
       updateOne: jest.fn(),
     };
 
@@ -50,7 +50,7 @@ describe('HiraganaService', () => {
     service = module.get<HiraganaService>(HiraganaService);
   });
 
-  describe(`validateAndGetPayload`, () => {
+  describe('validateAndGetPayload', () => {
     it('Ошибка пользователь не авторизован', async () => {
       const request = { cookies: {} };
 
@@ -89,10 +89,10 @@ describe('HiraganaService', () => {
       const request = { cookies: { session_flashcard: 'valid_token' } } as any;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
-      mockUserModel.findOne.mockReturnValue({
+      mockUserModel.findById.mockReturnValue({
         select: jest.fn().mockReturnValue({
           lean: jest.fn().mockResolvedValue(null),
         }),
@@ -103,11 +103,11 @@ describe('HiraganaService', () => {
       );
     });
 
-    it('Успешное получешие хираганы', async () => {
+    it('Успешное получение хираганы', async () => {
       const request = {} as any;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
       const mockUser = {
@@ -119,11 +119,11 @@ describe('HiraganaService', () => {
         ],
       };
 
-      mockUserModel.findOne.mockReturnValue({
+      mockUserModel.findById.mockReturnValue({
         select: jest.fn().mockReturnValue({
           lean: jest.fn().mockResolvedValue(mockUser),
         }),
-      }); // Мокаем запрос к БД и убеждаемся, что пользователь существует
+      });
 
       const mockHiragana = [
         { _id: '1', symbol: 'あ' },
@@ -132,7 +132,7 @@ describe('HiraganaService', () => {
 
       mockHiraganaModel.find.mockReturnValue({
         lean: jest.fn().mockResolvedValue(mockHiragana),
-      }); // Получаем весь список хираганы
+      });
 
       const result = await service.getHiragana(request);
 
@@ -148,10 +148,10 @@ describe('HiraganaService', () => {
       const request = { cookies: { session_flashcard: 'valid_token' } } as any;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
-      mockUserModel.findOne.mockReturnValue({
+      mockUserModel.findById.mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       });
 
@@ -164,10 +164,10 @@ describe('HiraganaService', () => {
       const request = {} as any;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
-      mockUserModel.findOne.mockReturnValue({
+      mockUserModel.findById.mockReturnValue({
         exec: jest.fn().mockResolvedValue({ email: 'test@mail.ru' }),
       });
 
@@ -184,13 +184,11 @@ describe('HiraganaService', () => {
       const request = {} as any;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
-      const mockUser = { email: 'test@mail.ru' };
-
-      mockUserModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockUser),
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({ email: 'test@mail.ru' }),
       });
 
       const kana = { _id: '1', symbol: 'あ' };

@@ -13,21 +13,20 @@ import * as bcrypt from 'bcrypt';
 
 describe('UserService', () => {
   let service: UserService;
-  let mockJwtService;
+  let mockJwtService: any;
   let mockUserModel: any;
 
   beforeEach(async () => {
     jest.resetAllMocks();
 
-    mockUserModel = jest.fn().mockImplementation(() => ({
-      save: jest.fn(),
-    }));
+    mockUserModel = jest.fn();
+
+    mockUserModel = jest.fn();
 
     mockUserModel.findOne = jest.fn();
-
+    mockUserModel.findById = jest.fn();
     mockUserModel.findOneAndUpdate = jest.fn();
-
-    mockUserModel.findOneAndDelete = jest.fn();
+    mockUserModel.findByIdAndDelete = jest.fn();
 
     mockJwtService = {
       verifyAsync: jest.fn(),
@@ -50,7 +49,7 @@ describe('UserService', () => {
     service = module.get<UserService>(UserService);
   });
 
-  describe(`validateAndGetPayload`, () => {
+  describe('validateAndGetPayload', () => {
     it('Ошибка пользователь не авторизован', async () => {
       const request = { cookies: {} };
 
@@ -70,9 +69,7 @@ describe('UserService', () => {
     });
 
     it('Пользователь найден', async () => {
-      const payload = { sub: 'user_id' };
-
-      mockJwtService.verifyAsync.mockResolvedValue(payload);
+      mockJwtService.verifyAsync.mockResolvedValue({ sub: 'user_id' });
 
       const request = {
         cookies: { session_flashcard: 'valid_token' },
@@ -80,86 +77,86 @@ describe('UserService', () => {
 
       const result = await (service as any).validateAndGetPayload(request);
 
-      expect(result).toEqual(payload);
+      expect(result).toEqual({ sub: 'user_id' });
     });
   });
 
-  describe(`createUser`, () => {
+  describe('createUser', () => {
     it('Ошибка пользователь уже существует', async () => {
-      const dto = {
-        name: 'Иван',
-        email: 'test@mail.com',
-        password: '123',
-      };
-
       mockUserModel.findOne.mockReturnValue({
         exec: jest.fn().mockResolvedValue({ _id: 'user_id' }),
       });
 
-      await expect(service.createUser(dto)).rejects.toThrow(ConflictException);
+      await expect(
+        service.createUser({
+          name: 'Иван',
+          email: 'test@mail.com',
+          password: '123',
+        }),
+      ).rejects.toThrow(ConflictException);
     });
 
     it('Пользователь успешно создан', async () => {
-      const dto = {
-        name: 'Иван',
-        email: 'test@mail.com',
-        password: '123',
-      };
-
       mockUserModel.findOne.mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       });
 
-      jest.spyOn(bcrypt, 'genSalt').mockResolvedValue('salt');
-      jest.spyOn(bcrypt, 'hash').mockResolvedValue('hash');
+      jest.spyOn(bcrypt, 'genSalt').mockResolvedValue('salt' as any);
+      jest.spyOn(bcrypt, 'hash').mockResolvedValue('hash' as any);
 
       const saveMock = jest.fn().mockResolvedValue({
         _id: 'user_id',
-        ...dto,
       });
 
       mockUserModel.mockImplementation(() => ({
         save: saveMock,
       }));
 
-      const result = await service.createUser(dto);
+      const result = await service.createUser({
+        name: 'Иван',
+        email: 'test@mail.com',
+        password: '123',
+      });
 
       expect(result).toEqual({
         data: 'Спасибо за регистрацию, пользователь успешно создан!',
       });
+
       expect(bcrypt.hash).toHaveBeenCalledWith('123', 'salt');
       expect(saveMock).toHaveBeenCalled();
     });
   });
 
   describe('getUser', () => {
-    it('Ошибка пользователя не существует', async () => {
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
-
+    it('Ошибка пользователь не существует', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
-      mockUserModel.findOne.mockReturnValue({
+      mockUserModel.findById.mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       });
 
-      await expect(service.getUser(request)).rejects.toThrow(NotFoundException);
+      await expect(service.getUser({ cookies: {} } as any)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('Пользователь найден', async () => {
-      const mockUser = { name: 'Иван', email: 'test@mail.ru' };
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
-
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
-      mockUserModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockUser),
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          name: 'Иван',
+          email: 'test@mail.ru',
+        }),
       });
 
-      await expect(service.getUser(request)).resolves.toEqual({
+      const result = await service.getUser({ cookies: {} } as any);
+
+      expect(result).toEqual({
         name: 'Иван',
         email: 'test@mail.ru',
       });
@@ -167,57 +164,59 @@ describe('UserService', () => {
   });
 
   describe('updateUser', () => {
-    it(`Ошибка пользователь не найден`, async () => {
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
-
+    it('Ошибка пользователь не найден', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
-      mockUserModel.findOne.mockReturnValue({
+      mockUserModel.findById.mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       });
 
-      await expect(service.updateUser({} as any, request)).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.updateUser({} as any, { cookies: {} } as any),
+      ).rejects.toThrow(NotFoundException);
     });
 
-    it('Ошибка неверный пароль, обновление невозможно', async () => {
-      const mockUser = { name: 'Иван', email: 'test@mail.ru' };
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
-
+    it('Ошибка неверный пароль', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
-      mockUserModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockUser),
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          password: 'hashed',
+        }),
       });
 
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false);
+      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as any);
 
       await expect(
-        service.updateUser({ urrentPassword: '5345345' } as any, request),
+        service.updateUser(
+          {
+            currentPassword: 'wrong',
+          } as any,
+          { cookies: {} } as any,
+        ),
       ).rejects.toThrow(BadRequestException);
     });
 
-    it('Ошибка пароль уже используется, попробуйте другой', async () => {
-      const mockUser = { name: 'Иван', email: 'test@mail.ru' };
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
+    it('Ошибка новый пароль совпадает со старым', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
 
-      jest
-        .spyOn(service as any, 'validateAndGetPayload')
-        .mockResolvedValue(mockUser);
-
-      mockUserModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockUser),
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          password: 'hashed',
+          email: 'test@mail.ru',
+        }),
       });
 
       jest
         .spyOn(bcrypt, 'compare')
-        .mockResolvedValueOnce(true) // Проверка текущего пароля isPasswordValid
-        .mockResolvedValueOnce(true); // Проверка совпадения паролей isSame
+        .mockResolvedValueOnce(true as any)
+        .mockResolvedValueOnce(true as any);
 
       await expect(
         service.updateUser(
@@ -225,103 +224,108 @@ describe('UserService', () => {
             currentPassword: '123',
             newPassword: '123',
           } as any,
-          request,
+          { cookies: {} } as any,
         ),
       ).rejects.toThrow(BadRequestException);
     });
 
-    it('Успешное обновление данных пользователя без смены пароля', async () => {
-      const mockUser = { name: 'Иван', email: 'test@mail.ru' };
-      const mockUpsateUser = { name: 'Максим', email: 'newtest@mail.ru' };
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
-
-      jest
-        .spyOn(service as any, 'validateAndGetPayload')
-        .mockResolvedValue(mockUser);
-
-      mockUserModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockUser),
+    it('Успешное обновление без смены пароля', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
       });
 
-      jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(true);
-
-      mockUserModel.findOneAndUpdate.mockReturnValue({
-        select: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockUpsateUser),
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          password: 'hashed',
+          email: 'old@mail.ru',
         }),
       });
 
-      await expect(
-        service.updateUser(
-          {
+      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as any);
+
+      mockUserModel.findOneAndUpdate.mockReturnValue({
+        select: jest.fn().mockReturnValue({
+          exec: jest.fn().mockResolvedValue({
             name: 'Максим',
-            email: 'newtest@mail.ru',
-            currentPassword: '123',
-          } as any,
-          request,
-        ),
-      ).resolves.toEqual(mockUpsateUser);
+            email: 'new@mail.ru',
+          }),
+        }),
+      });
+
+      const result = await service.updateUser(
+        {
+          name: 'Максим',
+          email: 'new@mail.ru',
+          currentPassword: '123',
+        } as any,
+        { cookies: {} } as any,
+      );
+
+      expect(result).toEqual({
+        name: 'Максим',
+        email: 'new@mail.ru',
+      });
     });
 
-    it('Успешное обновление данных пользователя со сменой пароля', async () => {
-      const mockUser = { name: 'Иван', email: 'test@mail.ru' };
-      const mockUpsateUser = { name: 'Максим', email: 'newtest@mail.ru' };
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
+    it('Успешное обновление со сменой пароля', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
 
-      jest
-        .spyOn(service as any, 'validateAndGetPayload')
-        .mockResolvedValue(mockUser);
-
-      mockUserModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockUser),
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          password: 'hashed',
+          email: 'old@mail.ru',
+        }),
       });
 
       jest
         .spyOn(bcrypt, 'compare')
-        .mockResolvedValueOnce(true)
-        .mockResolvedValueOnce(false);
+        .mockResolvedValueOnce(true as any)
+        .mockResolvedValueOnce(false as any);
 
-      jest.spyOn(bcrypt, 'genSalt').mockResolvedValue('salt');
-
-      jest.spyOn(bcrypt, 'hash').mockResolvedValue('new_hash');
+      jest.spyOn(bcrypt, 'genSalt').mockResolvedValue('salt' as any);
+      jest.spyOn(bcrypt, 'hash').mockResolvedValue('new_hash' as any);
 
       mockUserModel.findOneAndUpdate.mockReturnValue({
         select: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockUpsateUser),
+          exec: jest.fn().mockResolvedValue({
+            name: 'Максим',
+            email: 'new@mail.ru',
+          }),
         }),
       });
 
-      await expect(
-        service.updateUser(
-          {
-            name: 'Максим',
-            email: 'newtest@mail.ru',
-            currentPassword: '123',
-            newPassword: '456',
-          } as any,
-          request,
-        ),
-      ).resolves.toEqual(mockUpsateUser);
+      const result = await service.updateUser(
+        {
+          name: 'Максим',
+          email: 'new@mail.ru',
+          currentPassword: '123',
+          newPassword: '456',
+        } as any,
+        { cookies: {} } as any,
+      );
+
+      expect(result).toEqual({
+        name: 'Максим',
+        email: 'new@mail.ru',
+      });
     });
   });
 
   describe('deleteUser', () => {
     it('Успешное удаление пользователя', async () => {
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
-
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        username: 'test@mail.ru',
+        sub: 'user_id',
       });
 
-      mockUserModel.findOneAndDelete.mockReturnValue({
+      mockUserModel.findByIdAndDelete.mockReturnValue({
         exec: jest.fn().mockResolvedValue(undefined),
       });
 
-      const result = await service.deleteUser(request);
+      const result = await service.deleteUser({ cookies: {} } as any);
 
-      expect(mockUserModel.findOneAndDelete).toHaveBeenCalledWith({
-        email: 'test@mail.ru',
-      });
+      expect(mockUserModel.findByIdAndDelete).toHaveBeenCalledWith('user_id');
       expect(result).toBeUndefined();
     });
   });

@@ -63,7 +63,7 @@ describe('AuthService', () => {
 
   it('Успешная авторизация', async () => {
     mockUserModel.findOne.mockReturnValue({
-      exec: jest.fn().mockReturnValue(mockUser),
+      exec: jest.fn().mockResolvedValue(mockUser),
     });
 
     jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
@@ -77,7 +77,7 @@ describe('AuthService', () => {
       name: 'Иван',
     });
     expect(mockJwtService.signAsync).toHaveBeenCalledWith(
-      { sub: mockUser._id, username: mockUser.email },
+      { sub: mockUser._id.toString() },
       { expiresIn: '7d' },
     );
   });
