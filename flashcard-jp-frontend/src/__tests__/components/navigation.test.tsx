@@ -11,7 +11,7 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("@/_utils/userApi", () => ({
+jest.mock("@/_utils/client/userApi", () => ({
   getUser: jest.fn().mockRejectedValue(new Error("no user")),
 }));
 

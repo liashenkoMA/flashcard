@@ -8,7 +8,7 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("@/_utils/userApi", () => ({
+jest.mock("@/_utils/client/userApi", () => ({
   getUser: jest.fn().mockResolvedValue({
     name: "Иван",
     email: "test@mail.ru",
@@ -76,9 +76,9 @@ describe("Profile Form component", () => {
   it("Ошибка выводится, passwordMismatch = true", async () => {
     render(<ProfileForm />);
 
-    const passwordInput = await screen.findByPlaceholderText("Введите пароль");
+    const passwordInput = await screen.findByPlaceholderText("Введите новый пароль");
     const duplicateInput = await screen.findByPlaceholderText(
-      "Повторите пароль"
+      "Повторите новый пароль"
     );
 
     fireEvent.change(passwordInput, { target: { value: "123" } });
@@ -90,9 +90,9 @@ describe("Profile Form component", () => {
   it("Ошибка не выводится, passwordMismatch = false", async () => {
     render(<ProfileForm />);
 
-    const passwordInput = await screen.findByPlaceholderText("Введите пароль");
+    const passwordInput = await screen.findByPlaceholderText("Введите новый пароль");
     const duplicateInput = await screen.findByPlaceholderText(
-      "Повторите пароль"
+      "Повторите новый пароль"
     );
 
     fireEvent.change(passwordInput, { target: { value: "123" } });

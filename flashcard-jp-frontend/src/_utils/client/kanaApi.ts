@@ -25,7 +25,6 @@ export async function updateHirakana(
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Cookie: cookieStore.toString(),
       },
       body: JSON.stringify({
         symbol: kana.symbol,

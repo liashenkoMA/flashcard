@@ -3,7 +3,7 @@ import { REGISTER_FORM_INPUTS } from "@/_constants/registerForm.constant";
 import { createUser } from "@/_utils/client/userApi";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-jest.mock("@/_utils/userApi", () => ({
+jest.mock("@/_utils/client/userApi", () => ({
   createUser: jest.fn(),
 }));
 

@@ -55,7 +55,7 @@ export default function KanaPageComponent({
       });
   }
 
-  if (!cards.length) return <div>Loading...</div>;
+  if (!cards.length) return <div>Загрузка...</div>;
 
   return (
     <div className={styles.kanaPageComponent}>

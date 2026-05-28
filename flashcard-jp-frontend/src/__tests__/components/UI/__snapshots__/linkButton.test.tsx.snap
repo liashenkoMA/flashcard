@@ -3,7 +3,7 @@
 exports[`LinkButton component Snapshot 1`] = `
 <div>
   <a
-    class="link_button"
+    class="link__button"
     href="/test"
     rel="noopener noreferrer"
     target="_blank"
