@@ -83,7 +83,12 @@ export interface IKana {
   learned?: boolean;
 }
 
-export interface IUpdateKanaResponse {
+export interface IUpdateHirakanaResponse {
   message: string;
   hiraganaId: string;
+}
+
+export interface IUpdateKatakanaResponse {
+  message: string;
+  katakanaId: string;
 }

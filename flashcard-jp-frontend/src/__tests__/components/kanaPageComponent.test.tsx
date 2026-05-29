@@ -1,10 +1,11 @@
 import KanaPageComponent from "@/_components/KanaPageComponent/KanaPageComponent";
-import { updateHirakana } from "@/_utils/client/kanaApi";
+import { updateHirakana, updateKatakana } from "@/_utils/client/kanaApi";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { ReactNode } from "react";
 
 jest.mock("@/_utils/client/kanaApi", () => ({
   updateHirakana: jest.fn(),
+  updateKatakana: jest.fn(),
 }));
 
 jest.mock("framer-motion", () => ({
@@ -66,6 +67,20 @@ describe("KanaPageComponent", () => {
 
     await waitFor(() => {
       expect(updateHirakana).toHaveBeenCalled();
+    });
+  });
+
+  it("Кнопка Выучил вызывает updateKatakana", async () => {
+    (updateKatakana as jest.Mock).mockResolvedValue({});
+
+    render(<KanaPageComponent kana={mockCards} params="katakana" />);
+
+    await screen.findByText(/あ|い|う/);
+
+    fireEvent.click(screen.getByText("Выучил"));
+
+    await waitFor(() => {
+      expect(updateKatakana).toHaveBeenCalled();
     });
   });
 });

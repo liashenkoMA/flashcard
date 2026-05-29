@@ -1,6 +1,6 @@
-import { IKana, IUpdateKanaResponse } from "@/_interface/Interface";
-import { updateHirakana } from "@/_utils/client/kanaApi";
-import { getHirakana } from "@/_utils/server/kanaApi";
+import { IKana, IUpdateHirakanaResponse, IUpdateKatakanaResponse } from "@/_interface/Interface";
+import { updateHirakana, updateKatakana } from "@/_utils/client/kanaApi";
+import { getHirakana, getKatakana } from "@/_utils/server/kanaApi";
 
 global.fetch = jest.fn();
 
@@ -80,7 +80,7 @@ describe("Kana Api", () => {
     it("Успешное изучение каны", async () => {
       const mockHiragana = { symbol: "が", romaji: "ga" };
 
-      const mockResponse: IUpdateKanaResponse = {
+      const mockResponse: IUpdateHirakanaResponse = {
         message: "Выучена",
         hiraganaId: "123",
       };
@@ -118,6 +118,116 @@ describe("Kana Api", () => {
       } as Response);
 
       await expect(updateHirakana(mockHiragana)).rejects.toThrow(
+        "Internal Server Error",
+      );
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("getkatakana", () => {
+    it("Ошибка сети при получении каны", async () => {
+      mockFetch.mockRejectedValueOnce(new Error("Network Error"));
+
+      await expect(getKatakana()).rejects.toThrow("Network Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Успешное получение каны", async () => {
+      const mockResponse: IKana[] = [
+        { symbol: "ア", romaji: "a", group: "a", learned: false },
+        { symbol: "イ", romaji: "i", group: "a", learned: false },
+      ];
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response);
+
+      const data = await getKatakana();
+
+      expect(data).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining("/katakana"),
+        expect.objectContaining({
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: "mock-cookie",
+          },
+        }),
+      );
+    });
+
+    it("Сервер вернул !res.ok", async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        json: async () => ({
+          message: "Internal Server Error",
+        }),
+      } as Response);
+
+      await expect(getKatakana()).rejects.toThrow("Internal Server Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("updatekatakana", () => {
+    it("Ошибка сети при получении каны", async () => {
+      const mockKatakana = { symbol: "ア", romaji: "a" };
+
+      mockFetch.mockRejectedValueOnce(new Error("Network Error"));
+
+      await expect(updateKatakana(mockKatakana)).rejects.toThrow(
+        "Network Error",
+      );
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Успешное получение каны", async () => {
+      const mockKatakana = { symbol: "ア", romaji: "a" };
+
+      const mockResponse: IUpdateKatakanaResponse = {
+        message: "Выучена",
+        katakanaId: "123",
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response);
+
+      const data = await updateKatakana(mockKatakana);
+
+      await expect(data).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining("/katakana/update"),
+        expect.objectContaining({
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            symbol: mockKatakana.symbol,
+          }),
+        }),
+      );
+    });
+
+    it("Сервер вернул !res.ok", async () => {
+      const mockKatakana = { symbol: "ア", romaji: "a" };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        json: async () => ({ message: "Internal Server Error" }),
+      } as Response);
+
+      await expect(updateKatakana(mockKatakana)).rejects.toThrow(
         "Internal Server Error",
       );
       expect(mockFetch).toHaveBeenCalledTimes(1);

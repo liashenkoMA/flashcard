@@ -1,8 +1,9 @@
 import Page, { IPageParams } from "@/app/(auth)/kana/[slug]/page";
-import { getHirakana } from "@/_utils/server/kanaApi";
+import { getHirakana, getKatakana } from "@/_utils/server/kanaApi";
 
 jest.mock("@/_utils/server/kanaApi", () => ({
   getHirakana: jest.fn(),
+  getKatakana: jest.fn(),
 }));
 
 const mockKana = [
@@ -31,6 +32,21 @@ describe("Kana Page", () => {
     expect(result.props.children.props.kana).toEqual(mockKana);
   });
 
+  it("Вызывает getKatakana и возвращает данные без фильтра", async () => {
+    (getKatakana as jest.Mock).mockResolvedValue(mockKana);
+
+    const params = { slug: "katakana" };
+    const searchParams = {};
+
+    const result = await Page({
+      params,
+      searchParams,
+    } as IPageParams);
+
+    expect(getKatakana).toHaveBeenCalledTimes(1);
+    expect(result.props.children.props.kana).toEqual(mockKana);
+  });
+
   it("Фильтрует только изученные kana при type=repeat", async () => {
     (getHirakana as jest.Mock).mockResolvedValue(mockKana);
 
@@ -40,7 +56,7 @@ describe("Kana Page", () => {
     const result = await Page({
       params,
       searchParams,
-    }  as IPageParams);
+    } as IPageParams);
 
     expect(getHirakana).toHaveBeenCalledTimes(1);
     expect(result.props.children.props.kana).toEqual([
@@ -58,7 +74,7 @@ describe("Kana Page", () => {
     const result = await Page({
       params,
       searchParams,
-    }  as IPageParams);
+    } as IPageParams);
 
     expect(result.props.children.props.kana).toEqual(mockKana);
   });

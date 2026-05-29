@@ -1,6 +1,6 @@
 "use client"
 
-import { IKana, IUpdateKanaResponse } from "@/_interface/Interface";
+import { IKana, IUpdateHirakanaResponse, IUpdateKatakanaResponse,  } from "@/_interface/Interface";
 
 const address = {
   CLIENT_API_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -18,7 +18,7 @@ async function checkResponse<T>(res: Response): Promise<T> {
 
 export async function updateHirakana(
   kana: IKana,
-): Promise<IUpdateKanaResponse> {
+): Promise<IUpdateHirakanaResponse> {
   try {
     const res = await fetch(`${address.CLIENT_API_URL}/hiragana/update`, {
       method: "PATCH",
@@ -31,7 +31,7 @@ export async function updateHirakana(
       }),
     });
 
-    return checkResponse<IUpdateKanaResponse>(res);
+    return checkResponse<IUpdateHirakanaResponse>(res);
   } catch (err) {
     if (err instanceof Error) {
       throw err;
@@ -43,7 +43,7 @@ export async function updateHirakana(
 
 export async function updateKatakana(
   kana: IKana,
-): Promise<IUpdateKanaResponse> {
+): Promise<IUpdateKatakanaResponse> {
   try {
     const res = await fetch(`${address.CLIENT_API_URL}/katakana/update`, {
       method: "PATCH",
@@ -54,7 +54,7 @@ export async function updateKatakana(
       }),
     });
 
-    return checkResponse<IUpdateKanaResponse>(res);
+    return checkResponse<IUpdateKatakanaResponse>(res);
   } catch (err) {
     if (err instanceof Error) {
       throw err;
