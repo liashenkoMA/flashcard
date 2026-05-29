@@ -8,7 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Katakana } from './katakana.schema';
 import { Model } from 'mongoose';
 import { KATAKANA_SEED } from './katakana.seed';
-import { User } from '@/src/modules/user/user.schema';
+import { User } from '../../../user/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { UpdateKatakanaDto } from './katakana.schema.dto';
