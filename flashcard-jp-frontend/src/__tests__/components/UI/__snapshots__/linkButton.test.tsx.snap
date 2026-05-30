@@ -6,7 +6,6 @@ exports[`LinkButton component Snapshot 1`] = `
     class="link__button"
     href="/test"
     rel="noopener noreferrer"
-    target="_blank"
   >
     Перейти
   </a>

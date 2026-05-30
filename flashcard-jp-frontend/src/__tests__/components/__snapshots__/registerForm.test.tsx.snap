@@ -97,7 +97,7 @@ exports[`Register Form component Snapshot 1`] = `
       class="registerform__errors"
     />
     <button
-      class="button "
+      class="button  default"
       type="submit"
     >
       Зарегистрироваться

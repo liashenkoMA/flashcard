@@ -1,8 +1,8 @@
 import Page, { IPageParams } from "@/app/(auth)/(jp)/kana/[slug]/page";
-import { getHirakana, getKatakana } from "@/_utils/server/kanaApi";
+import { getHiragana, getKatakana } from "@/_utils/server/kanaApi";
 
 jest.mock("@/_utils/server/kanaApi", () => ({
-  getHirakana: jest.fn(),
+  getHiragana: jest.fn(),
   getKatakana: jest.fn(),
 }));
 
@@ -18,7 +18,7 @@ describe("Kana Page", () => {
   });
 
   it("Вызывает getHirakana и возвращает данные без фильтра", async () => {
-    (getHirakana as jest.Mock).mockResolvedValue(mockKana);
+    (getHiragana as jest.Mock).mockResolvedValue(mockKana);
 
     const params = { slug: "hirakana" };
     const searchParams = {};
@@ -28,7 +28,7 @@ describe("Kana Page", () => {
       searchParams,
     } as IPageParams);
 
-    expect(getHirakana).toHaveBeenCalledTimes(1);
+    expect(getHiragana).toHaveBeenCalledTimes(1);
     expect(result.props.children.props.kana).toEqual(mockKana);
   });
 
@@ -48,7 +48,7 @@ describe("Kana Page", () => {
   });
 
   it("Фильтрует только изученные kana при type=repeat", async () => {
-    (getHirakana as jest.Mock).mockResolvedValue(mockKana);
+    (getHiragana as jest.Mock).mockResolvedValue(mockKana);
 
     const params = { slug: "hirakana" };
     const searchParams = { type: "repeat" };
@@ -58,7 +58,7 @@ describe("Kana Page", () => {
       searchParams,
     } as IPageParams);
 
-    expect(getHirakana).toHaveBeenCalledTimes(1);
+    expect(getHiragana).toHaveBeenCalledTimes(1);
     expect(result.props.children.props.kana).toEqual([
       { symbol: "あ", romaji: "a", learned: true },
       { symbol: "う", romaji: "u", learned: true },
@@ -66,7 +66,7 @@ describe("Kana Page", () => {
   });
 
   it("Если type не repeat — возвращает полный список", async () => {
-    (getHirakana as jest.Mock).mockResolvedValue(mockKana);
+    (getHiragana as jest.Mock).mockResolvedValue(mockKana);
 
     const params = { slug: "hiragana" };
     const searchParams = { type: "all" };

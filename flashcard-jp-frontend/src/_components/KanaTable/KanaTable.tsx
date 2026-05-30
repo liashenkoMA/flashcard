@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./kanaTable.module.scss";
-import { updateHirakana, updateKatakana } from "@/_utils/client/kanaApi";
+import { updateHiragana, updateKatakana } from "@/_utils/client/kanaApi";
 import KanaTableRow from "../KanaTableRow/KanaTableRow";
 import Accordion from "../UI/Accordion/Accordion";
 import { IKana } from "@/_interface/Interface";
@@ -18,7 +18,7 @@ export default function KanaTable({
   const [katakanaState, setKatakanaState] = useState(katakana);
 
   function toggleHiragana(el: IKana) {
-    updateHirakana(el)
+    updateHiragana(el)
       .then(() =>
         setHiraganaState((kana) =>
           kana.map((k) =>
@@ -26,7 +26,7 @@ export default function KanaTable({
           ),
         ),
       )
-      .catch((err) => console.log(err));
+      .catch((err: Error) => console.log(err));
   }
 
   function toggleKatakana(el: IKana) {

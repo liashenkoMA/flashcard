@@ -75,7 +75,7 @@ exports[`Login Form component Snapshot 1`] = `
       class="loginform__errors"
     />
     <button
-      class="button "
+      class="button  default"
       type="submit"
     >
       Войти

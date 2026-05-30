@@ -1,10 +1,10 @@
 import KanaPageComponent from "@/_components/KanaPageComponent/KanaPageComponent";
-import { updateHirakana, updateKatakana } from "@/_utils/client/kanaApi";
+import { updateHiragana, updateKatakana } from "@/_utils/client/kanaApi";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { ReactNode } from "react";
 
 jest.mock("@/_utils/client/kanaApi", () => ({
-  updateHirakana: jest.fn(),
+  updateHiragana: jest.fn(),
   updateKatakana: jest.fn(),
 }));
 
@@ -26,58 +26,95 @@ describe("KanaPageComponent", () => {
   });
 
   it("Показывает загрузку при пустом массиве", () => {
-    render(<KanaPageComponent kana={[]} params="hiragana" />);
+    render(
+      <KanaPageComponent
+        kana={[]}
+        params="hiragana"
+        searchParams={{ type: "learn" }}
+      />,
+    );
+
     expect(screen.getByText("Загрузка...")).toBeInTheDocument();
   });
 
   it("Рендер первой карточки после загрузки", async () => {
-    render(<KanaPageComponent kana={mockCards} params="hiragana" />);
+    render(
+      <KanaPageComponent
+        kana={mockCards}
+        params="hiragana"
+        searchParams={{ type: "learn" }}
+      />,
+    );
 
     expect(await screen.findByText(/あ|い|う/)).toBeInTheDocument();
   });
 
   it("Кнопка Вперед переключает карточку", async () => {
-    render(<KanaPageComponent kana={mockCards} params="hiragana" />);
+    render(
+      <KanaPageComponent
+        kana={mockCards}
+        params="hiragana"
+        searchParams={{ type: "learn" }}
+      />,
+    );
 
     await screen.findByText(/あ|い|う/);
 
-    fireEvent.click(screen.getByText("Вперед"));
+    fireEvent.click(screen.getByRole("button", { name: "Вперед" }));
 
     expect(screen.getByText(/あ|い|う/)).toBeInTheDocument();
   });
 
   it("Кнопка Назад переключает карточку", async () => {
-    render(<KanaPageComponent kana={mockCards} params="hiragana" />);
+    render(
+      <KanaPageComponent
+        kana={mockCards}
+        params="hiragana"
+        searchParams={{ type: "learn" }}
+      />,
+    );
 
     await screen.findByText(/あ|い|う/);
 
-    fireEvent.click(screen.getByText("Назад"));
+    fireEvent.click(screen.getByRole("button", { name: "Назад" }));
 
     expect(screen.getByText(/あ|い|う/)).toBeInTheDocument();
   });
 
   it("Кнопка Выучил вызывает updateHirakana", async () => {
-    (updateHirakana as jest.Mock).mockResolvedValue({});
+    (updateHiragana as jest.Mock).mockResolvedValue({});
 
-    render(<KanaPageComponent kana={mockCards} params="hiragana" />);
+    render(
+      <KanaPageComponent
+        kana={mockCards}
+        params="hiragana"
+        searchParams={{ type: undefined }}
+      />,
+    );
 
     await screen.findByText(/あ|い|う/);
 
-    fireEvent.click(screen.getByText("Выучил"));
+    fireEvent.click(screen.getByRole("button", { name: "Выучил" }));
 
     await waitFor(() => {
-      expect(updateHirakana).toHaveBeenCalled();
+      expect(updateHiragana).toHaveBeenCalled();
     });
   });
 
   it("Кнопка Выучил вызывает updateKatakana", async () => {
     (updateKatakana as jest.Mock).mockResolvedValue({});
 
-    render(<KanaPageComponent kana={mockCards} params="katakana" />);
+    render(
+      <KanaPageComponent
+        kana={mockCards}
+        params="katakana"
+        searchParams={{ type: undefined }}
+      />,
+    );
 
     await screen.findByText(/あ|い|う/);
 
-    fireEvent.click(screen.getByText("Выучил"));
+    fireEvent.click(screen.getByRole("button", { name: "Выучил" }));
 
     await waitFor(() => {
       expect(updateKatakana).toHaveBeenCalled();

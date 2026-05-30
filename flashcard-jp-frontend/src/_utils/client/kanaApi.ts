@@ -16,7 +16,7 @@ async function checkResponse<T>(res: Response): Promise<T> {
   return result;
 }
 
-export async function updateHirakana(
+export async function updateHiragana(
   kana: IKana,
 ): Promise<IUpdateHirakanaResponse> {
   try {

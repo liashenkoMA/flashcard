@@ -1,6 +1,10 @@
-import { IKana, IUpdateHirakanaResponse, IUpdateKatakanaResponse } from "@/_interface/Interface";
-import { updateHirakana, updateKatakana } from "@/_utils/client/kanaApi";
-import { getHirakana, getKatakana } from "@/_utils/server/kanaApi";
+import {
+  IKana,
+  IUpdateHirakanaResponse,
+  IUpdateKatakanaResponse,
+} from "@/_interface/Interface";
+import { updateHiragana, updateKatakana } from "@/_utils/client/kanaApi";
+import { getHiragana, getKatakana } from "@/_utils/server/kanaApi";
 
 global.fetch = jest.fn();
 
@@ -21,7 +25,7 @@ describe("Kana Api", () => {
     it("Ошибка сети при получении каны", async () => {
       mockFetch.mockRejectedValueOnce(new Error("Network Error"));
 
-      await expect(getHirakana()).rejects.toThrow("Network Error");
+      await expect(getHiragana()).rejects.toThrow("Network Error");
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
 
@@ -36,7 +40,7 @@ describe("Kana Api", () => {
         json: async () => mockResponse,
       } as Response);
 
-      const data = await getHirakana();
+      const data = await getHiragana();
 
       expect(data).toEqual(mockResponse);
       expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -60,7 +64,7 @@ describe("Kana Api", () => {
         json: async () => ({ message: "Internal Server Error" }),
       } as Response);
 
-      await expect(getHirakana()).rejects.toThrow("Internal Server Error");
+      await expect(getHiragana()).rejects.toThrow("Internal Server Error");
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
   });
@@ -71,7 +75,7 @@ describe("Kana Api", () => {
 
       mockFetch.mockRejectedValueOnce(new Error("Network Error"));
 
-      await expect(updateHirakana(mockHiragana)).rejects.toThrow(
+      await expect(updateHiragana(mockHiragana)).rejects.toThrow(
         "Network Error",
       );
       expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -90,7 +94,7 @@ describe("Kana Api", () => {
         json: async () => mockResponse,
       } as Response);
 
-      const result = await updateHirakana(mockHiragana);
+      const result = await updateHiragana(mockHiragana);
 
       expect(result).toEqual(mockResponse);
       expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -117,7 +121,7 @@ describe("Kana Api", () => {
         json: async () => ({ message: "Internal Server Error" }),
       } as Response);
 
-      await expect(updateHirakana(mockHiragana)).rejects.toThrow(
+      await expect(updateHiragana(mockHiragana)).rejects.toThrow(
         "Internal Server Error",
       );
       expect(mockFetch).toHaveBeenCalledTimes(1);

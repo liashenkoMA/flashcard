@@ -17,7 +17,7 @@ async function checkResponse<T>(res: Response): Promise<T> {
   return result;
 }
 
-export async function getHirakana(): Promise<IKana[]> {
+export async function getHiragana(): Promise<IKana[]> {
   const cookieStore = await cookies();
 
   try {

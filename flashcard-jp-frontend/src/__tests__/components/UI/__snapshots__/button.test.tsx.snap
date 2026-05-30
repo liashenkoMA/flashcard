@@ -3,7 +3,7 @@
 exports[`Button component Snapshot 1`] = `
 <div>
   <button
-    class="button "
+    class="button  default"
     type="submit"
   >
     Зарегистрироваться

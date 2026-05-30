@@ -1,7 +1,7 @@
 import styles from "./kana.module.scss";
 import { IKana } from "@/_interface/Interface";
 import KanaPageComponent from "@/_components/KanaPageComponent/KanaPageComponent";
-import { getHirakana, getKatakana } from "@/_utils/server/kanaApi";
+import { getHiragana, getKatakana } from "@/_utils/server/kanaApi";
 
 export interface IPageParams {
   params: { slug: string };
@@ -14,7 +14,7 @@ export default async function Page({ params, searchParams }: IPageParams) {
 
   const kana: IKana[] =
     awaitedParams.slug === "hirakana"
-      ? await getHirakana()
+      ? await getHiragana()
       : await getKatakana();
 
   function filterKana(kana: IKana[]) {

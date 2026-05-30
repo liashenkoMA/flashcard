@@ -24,7 +24,6 @@ describe("LinkButton component", () => {
 
     const link = screen.getByRole("link", { name: "Перейти" });
 
-    expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 

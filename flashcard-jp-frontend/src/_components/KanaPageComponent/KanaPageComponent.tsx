@@ -6,7 +6,7 @@ import { FlashCard } from "../FlashCard/FlashCard";
 import { IKana } from "@/_interface/Interface";
 import Button from "../UI/Button/Button";
 import { motion } from "framer-motion";
-import { updateHirakana, updateKatakana } from "@/_utils/client/kanaApi";
+import { updateHiragana, updateKatakana } from "@/_utils/client/kanaApi";
 
 function shuffle(arr: IKana[]) {
   const result = [...arr];
@@ -43,12 +43,15 @@ export default function KanaPageComponent({
 
   function previousCard() {
     setDirection(-1);
-    setIndexCard((prev) => (prev === cards.length - 1 ? 0 : prev + 1));
+    setIndexCard((prev) => (prev === 0 ? cards.length - 1 : prev - 1));
   }
 
-  function handleUpdateHiragana() {
+  function handleUpdateKana() {
     const currentCard = cards[indexCard];
-    const updateKana = params === "hirakana" ? updateHirakana : updateKatakana;
+
+    if (!currentCard) return;
+
+    const updateKana = params === "hiragana" ? updateHiragana : updateKatakana;
 
     updateKana(currentCard)
       .then(() => {
@@ -102,7 +105,7 @@ export default function KanaPageComponent({
             </Button>
           </div>
         ) : (
-          <Button type="button" onClick={handleUpdateHiragana}>
+          <Button type="button" onClick={handleUpdateKana}>
             Выучил
           </Button>
         )}

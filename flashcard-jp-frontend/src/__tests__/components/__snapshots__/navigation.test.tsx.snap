@@ -14,13 +14,13 @@ exports[`Navigation component Snapshot 1`] = `
       class="navigation__content navigation__content_type_close"
     >
       <button
-        class="button "
+        class="button  default"
         type="button"
       >
         Войти
       </button>
       <button
-        class="button "
+        class="button  default"
         type="button"
       >
         Зарегистрироваться
