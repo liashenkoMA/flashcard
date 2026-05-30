@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`TableButton component Snapshot 1`] = `
+<div>
+  <button
+    class="tablebutton tablebutton__learn"
+    type="button"
+  >
+    Выучить
+  </button>
+</div>
+`;
