@@ -29,7 +29,11 @@ export default async function Page({ params, searchParams }: IPageParams) {
 
   return (
     <section className={styles.kana}>
-      <KanaPageComponent kana={filteredKana} params={awaitedParams.slug} />
+      <KanaPageComponent
+        kana={filteredKana}
+        params={awaitedParams.slug}
+        searchParams={awaitedSearchParams}
+      />
     </section>
   );
 }

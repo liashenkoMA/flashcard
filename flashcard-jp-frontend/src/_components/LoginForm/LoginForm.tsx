@@ -90,8 +90,9 @@ export default function LoginForm() {
       <Button
         type="submit"
         disabled={passwordMismatch || loading || Boolean(errors)}
-        text={loading ? "Авторизация..." : "Войти"}
-      />
+      >
+        {loading ? "Авторизация..." : "Войти"}
+      </Button>
       <span className={styles.loginform__errors}>{serverErrorMessage}</span>
     </Form>
   );

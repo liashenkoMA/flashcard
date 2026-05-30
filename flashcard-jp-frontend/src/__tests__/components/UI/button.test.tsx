@@ -3,48 +3,56 @@ import Button from "@/_components/UI/Button/Button";
 
 describe("Button component", () => {
   it("Рендерит button, правильный текст", () => {
-    render(<Button text="Зарегистрироваться" />);
+    render(<Button>Зарегистрироваться</Button>);
 
     expect(
-      screen.getByRole("button", { name: "Зарегистрироваться" })
+      screen.getByRole("button", { name: "Зарегистрироваться" }),
     ).toBeInTheDocument();
   });
 
   it("Срабатывает onClick, disabled = false", () => {
-    const handleChange = jest.fn();
-    render(<Button text="Зарегистрироваться" onClick={handleChange} />);
+    const handleClick = jest.fn();
+
+    render(<Button onClick={handleClick}>Зарегистрироваться</Button>);
 
     fireEvent.click(screen.getByRole("button", { name: "Зарегистрироваться" }));
-    expect(handleChange).toHaveBeenCalledTimes(1);
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
   it("Не срабатывает onClick, disabled = true", () => {
-    const handleChange = jest.fn();
+    const handleClick = jest.fn();
+
     render(
-      <Button text="Зарегистрироваться" onClick={handleChange} disabled />
+      <Button onClick={handleClick} disabled>
+        Зарегистрироваться
+      </Button>,
     );
 
-    expect(
-      screen.getByRole("button", { name: "Зарегистрироваться" })
-    ).toBeDisabled();
+    const button = screen.getByRole("button", {
+      name: "Зарегистрироваться",
+    });
 
-    fireEvent.click(screen.getByRole("button", { name: "Зарегистрироваться" }));
+    expect(button).toBeDisabled();
 
-    expect(handleChange).toHaveBeenCalledTimes(0);
+    fireEvent.click(button);
+
+    expect(handleClick).not.toHaveBeenCalled();
   });
 
   it("Установили type", () => {
-    render(<Button text="Зарегистрироваться" type={"submit"} />);
+    render(<Button type="submit">Зарегистрироваться</Button>);
 
     expect(
-      screen.getByRole("button", { name: "Зарегистрироваться" })
+      screen.getByRole("button", { name: "Зарегистрироваться" }),
     ).toHaveAttribute("type", "submit");
   });
 
   it("Snapshot", () => {
     const { container } = render(
-      <Button text="Зарегистрироваться" type={"submit"} />
+      <Button type="submit">Зарегистрироваться</Button>,
     );
+
     expect(container).toMatchSnapshot();
   });
 });

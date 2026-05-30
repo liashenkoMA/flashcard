@@ -1,4 +1,4 @@
-import Page, { IPageParams } from "@/app/(auth)/kana/[slug]/page";
+import Page, { IPageParams } from "@/app/(auth)/(jp)/kana/[slug]/page";
 import { getHirakana, getKatakana } from "@/_utils/server/kanaApi";
 
 jest.mock("@/_utils/server/kanaApi", () => ({

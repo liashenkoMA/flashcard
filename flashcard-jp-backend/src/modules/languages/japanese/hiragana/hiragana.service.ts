@@ -102,7 +102,11 @@ export class HiraganaService implements OnModuleInit {
     await this.userModel.updateOne(
       {
         _id: payload.sub,
-        'learningProgress.language': { $ne: 'jp' },
+        learningProgress: {
+          $not: {
+            $elemMatch: { language: 'jp' },
+          },
+        },
       },
       {
         $push: {
@@ -117,21 +121,34 @@ export class HiraganaService implements OnModuleInit {
       },
     );
 
-    // Добавяем выученную хирагану пользователю
+    // Проверяем: есть ли уже эта хирагана у пользователя
+    const isLearned = user.learningProgress
+      .find((p) => p.language === 'jp')
+      ?.hiragana?.some((id) => id.toString() === kana._id.toString());
+
+    // TOGGLE: добавить или удалить
     await this.userModel.updateOne(
       {
         _id: payload.sub,
         'learningProgress.language': 'jp',
       },
-      {
-        $addToSet: {
-          'learningProgress.$.hiragana': kana._id,
-        },
-      },
+      isLearned
+        ? {
+            $pull: {
+              'learningProgress.$.hiragana': kana._id,
+            },
+          }
+        : {
+            $addToSet: {
+              'learningProgress.$.hiragana': kana._id,
+            },
+          },
     );
 
     return {
-      message: `${hiragana.symbol} - выучено`,
+      message: isLearned
+        ? `${hiragana.symbol} - удалено`
+        : `${hiragana.symbol} - выучено`,
       hiraganaId: kana._id,
     };
   }

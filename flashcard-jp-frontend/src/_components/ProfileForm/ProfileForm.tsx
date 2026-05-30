@@ -90,7 +90,7 @@ export default function ProfileForm() {
           newPassword: "",
           currentPassword: "",
           duplicate: "",
-        })
+        }),
       )
       .catch((err) => setServerErrorMessage(err.message))
       .finally(() => setIsLoading(false));
@@ -120,11 +120,9 @@ export default function ProfileForm() {
         <span className={styles.profileform__errors}>
           {passwordMismatch ? "Пароли не совпадают." : ""}
         </span>
-        <Button
-          type="submit"
-          disabled={isLoading || Boolean(errors)}
-          text={isLoading ? "Сохраняем изменения..." : "Изменить профиль"}
-        />
+        <Button type="submit" disabled={isLoading || Boolean(errors)}>
+          {isLoading ? "Сохраняем изменения..." : "Изменить профиль"}
+        </Button>
         <span className={styles.profileform__errors}>{serverErrorMessage}</span>
       </Form>
       <div className={styles.profileform__btn_type_delete}>
@@ -132,9 +130,11 @@ export default function ProfileForm() {
         <Button
           type="button"
           onClick={openDeleteProfileModal}
-          text="Удалить профиль"
           disabled={isLoading}
-        />
+          variant="danger"
+        >
+          Удалить профиль
+        </Button>
         <DeleteProfileModule isOpen={isOpen} onClose={openDeleteProfileModal} />
       </div>
     </div>

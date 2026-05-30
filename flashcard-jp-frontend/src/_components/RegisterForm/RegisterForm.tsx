@@ -87,8 +87,7 @@ export default function RegisterForm() {
       <Button
         type="submit"
         disabled={passwordMismatch || loading || Boolean(errors)}
-        text={loading ? "Отправка..." : "Зарегистрироваться"}
-      />
+      >{loading ? "Отправка..." : "Зарегистрироваться"}</Button>
       <span className={styles.registerform__errors}>{serverErrorMessage}</span>
     </Form>
   );

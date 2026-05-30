@@ -33,8 +33,10 @@ export default function DeleteProfileModule({
       <Form handleSubmit={handleSubmit}>
         <div className={styles.deleteprofile}>
           <div className={styles.deleteprofile__buttons}>
-            <Button type="submit" text="Да" />
-            <Button type="button" text="Нет" onClick={onClose} />
+            <Button type="submit">Да</Button>
+            <Button type="button" onClick={onClose}>
+              Нет
+            </Button>
           </div>
           <p className={styles.deleteprofile__errors}>{serverErrorMessage}</p>
         </div>

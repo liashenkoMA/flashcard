@@ -1,0 +1,26 @@
+@use "../../../variables" as v;
+@use "../../../mixins" as m;
+
+.tablebutton {
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  font-size: v.$font-size-x-small;
+  font-weight: v.$font-weight-medium;
+  line-height: v.$line-height-small;
+  @include m.hover {
+    cursor: pointer;
+    opacity: 0.9;
+    box-shadow: v.$shadow-default;
+  }
+
+  &__learn {
+    background-color: v.$color-button-learn-bg;
+  }
+
+  &__delete {
+    background-color: v.$color-button-delete-bg;
+    color: v.$color-text-main;
+  }
+}

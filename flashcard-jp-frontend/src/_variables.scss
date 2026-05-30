@@ -3,6 +3,8 @@ $white: #ffffff;
 $grey: #94a9c9;
 $red: #ff0000;
 $black: #000000;
+$green: #4ade80;
+$yellow: #facc15;
 $grey-dark: #0a1330;
 $black-dark: #081028;
 $blue-dark: #222f43;
@@ -20,6 +22,9 @@ $gradient-primary: linear-gradient(90deg, #cb3cff 20%, #7f25fb 68%);
 $color-text-main: $white;
 $color-text-link: $purple-light;
 $color-text-error: $red;
+$color-text-secondary: $grey;
+$color-accent-1: $green;
+$color-accent-2: $yellow;
 
 // Background colors
 $color-bg-page: $black-dark;
@@ -27,6 +32,8 @@ $color-bg-header: $grey-dark;
 $color-bg-footer: $grey-dark;
 $color-bg-card: $grey-dark;
 $color-bg-element: $grey-dark;
+$color-button-learn-bg: $green;
+$color-button-delete-bg: $red;
 
 //Border colors
 $color-border: $blue-dark;
@@ -38,6 +45,7 @@ $font-size-medium: 24px;
 $font-size-large: 32px;
 
 $font-weight-regular: 400;
+$font-weight-medium: 500;
 
 $line-height-small: 20px;
 $line-height-medium: 32px;

@@ -59,34 +59,38 @@ export default function Navigation() {
           <>
             <Button
               type="button"
-              text="Личный кабинет"
               onClick={() => {
                 router.push("/dashboard");
                 handleOpenMenu();
               }}
-            />
+            >
+              Личный кабинет
+            </Button>
             <Button
               type="button"
-              text="Выйти"
               onClick={async () => {
                 await logout();
                 dispatch(logoutAction());
                 router.push("/");
               }}
-            />
+            >
+              Выйти
+            </Button>
           </>
         ) : (
           <>
             <Button
               type="button"
-              text="Войти"
               onClick={() => handleClick({ mode: "login" })}
-            />
+            >
+              Войти
+            </Button>
             <Button
               type="button"
-              text="Зарегистрироваться"
               onClick={() => handleClick({ mode: "register" })}
-            />
+            >
+              Зарегистрироваться
+            </Button>
           </>
         )}
       </div>

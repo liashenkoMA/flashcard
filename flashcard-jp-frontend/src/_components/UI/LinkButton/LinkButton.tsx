@@ -12,7 +12,6 @@ export default function LinkButton({ href, text }: ILinkButton) {
       <Link
         href={href}
         className={styles.link__button}
-        target="_blank"
         rel="noopener noreferrer"
       >
         {text}

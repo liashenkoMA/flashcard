@@ -20,9 +20,13 @@ function shuffle(arr: IKana[]) {
 export default function KanaPageComponent({
   kana,
   params,
+  searchParams,
 }: {
   kana: IKana[];
   params: string;
+  searchParams: {
+    type?: string;
+  };
 }) {
   const [cards, setCards] = useState<IKana[]>([]);
   const [indexCard, setIndexCard] = useState(0);
@@ -44,7 +48,7 @@ export default function KanaPageComponent({
 
   function handleUpdateHiragana() {
     const currentCard = cards[indexCard];
-    const updateKana = params === "hiragana" ? updateHirakana : updateKatakana;
+    const updateKana = params === "hirakana" ? updateHirakana : updateKatakana;
 
     updateKana(currentCard)
       .then(() => {
@@ -81,10 +85,27 @@ export default function KanaPageComponent({
           </motion.div>
         </div>
         <div className={styles.kanaPageComponent__cards_navigation}>
-          <Button type="button" text="Назад" onClick={previousCard} />
-          <Button type="button" text="Вперед" onClick={nextCard} />
+          <Button type="button" onClick={previousCard}>
+            Назад
+          </Button>
+          <Button type="button" onClick={nextCard}>
+            Вперед
+          </Button>
         </div>
-        <Button type="button" text="Выучил" onClick={handleUpdateHiragana} />
+        {searchParams.type === "repeat" ? (
+          <div className={styles.kanaPageComponent__cards_navigation}>
+            <Button type="button" variant="danger" onClick={previousCard}>
+              Не знаю
+            </Button>
+            <Button type="button" variant="success" onClick={nextCard}>
+              Знаю
+            </Button>
+          </div>
+        ) : (
+          <Button type="button" onClick={handleUpdateHiragana}>
+            Выучил
+          </Button>
+        )}
       </div>
     </div>
   );

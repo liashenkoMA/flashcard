@@ -89,7 +89,7 @@ export class KatakanaService implements OnModuleInit {
       throw new NotFoundException('Такого пользователя не существует');
     }
 
-    // Поиск нужной катаканы
+    // Поиск катаканы
     const kana = await this.katakanaModel
       .findOne({ symbol: katakana.symbol })
       .exec();
@@ -102,7 +102,11 @@ export class KatakanaService implements OnModuleInit {
     await this.userModel.updateOne(
       {
         _id: payload.sub,
-        'learningProgress.language': { $ne: 'jp' },
+        learningProgress: {
+          $not: {
+            $elemMatch: { language: 'jp' },
+          },
+        },
       },
       {
         $push: {
@@ -117,21 +121,34 @@ export class KatakanaService implements OnModuleInit {
       },
     );
 
-    // Добавяем выученную катакану пользователю
+    // Проверяем: есть ли уже эта катакана у пользователя
+    const isLearned = user.learningProgress
+      .find((p) => p.language === 'jp')
+      ?.katakana?.some((id) => id.toString() === kana._id.toString());
+
+    // TOGGLE: добавить или удалить
     await this.userModel.updateOne(
       {
         _id: payload.sub,
         'learningProgress.language': 'jp',
       },
-      {
-        $addToSet: {
-          'learningProgress.$.katakana': kana._id,
-        },
-      },
+      isLearned
+        ? {
+            $pull: {
+              'learningProgress.$.katakana': kana._id,
+            },
+          }
+        : {
+            $addToSet: {
+              'learningProgress.$.katakana': kana._id,
+            },
+          },
     );
 
     return {
-      message: `${katakana.symbol} - выучено`,
+      message: isLearned
+        ? `${katakana.symbol} - удалено`
+        : `${katakana.symbol} - выучено`,
       katakanaId: kana._id,
     };
   }
