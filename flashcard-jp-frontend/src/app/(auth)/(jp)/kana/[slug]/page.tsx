@@ -1,7 +1,7 @@
 import styles from "./kana.module.scss";
 import { IKana } from "@/_interface/Interface";
 import KanaPageComponent from "@/_components/KanaPageComponent/KanaPageComponent";
-import { getHiragana, getKatakana } from "@/_utils/server/kanaApi";
+import { getHiragana, getKatakana } from "@/_utils/api/server/kanaApi";
 
 export interface IPageParams {
   params: { slug: string };

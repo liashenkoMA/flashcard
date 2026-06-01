@@ -92,3 +92,12 @@ export interface IUpdateKatakanaResponse {
   message: string;
   katakanaId: string;
 }
+
+export interface IKandji {
+  kanji: string;
+  translate: string;
+  jpRead: string;
+  chinaRead: string;
+  learn: boolean;
+  _id: string;
+}

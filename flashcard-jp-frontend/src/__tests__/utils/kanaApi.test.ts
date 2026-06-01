@@ -3,8 +3,8 @@ import {
   IUpdateHirakanaResponse,
   IUpdateKatakanaResponse,
 } from "@/_interface/Interface";
-import { updateHiragana, updateKatakana } from "@/_utils/client/kanaApi";
-import { getHiragana, getKatakana } from "@/_utils/server/kanaApi";
+import { updateHiragana, updateKatakana } from "@/_utils/api/client/kanaApi";
+import { getHiragana, getKatakana } from "@/_utils/api/server/kanaApi";
 
 global.fetch = jest.fn();
 

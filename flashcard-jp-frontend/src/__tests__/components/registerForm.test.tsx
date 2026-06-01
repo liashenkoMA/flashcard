@@ -1,6 +1,6 @@
 import RegisterForm from "@/_components/RegisterForm/RegisterForm";
 import { REGISTER_FORM_INPUTS } from "@/_constants/registerForm.constant";
-import { createUser } from "@/_utils/client/userApi";
+import { createUser } from "@/_utils/api/client/userApi";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 jest.mock("@/_utils/client/userApi", () => ({

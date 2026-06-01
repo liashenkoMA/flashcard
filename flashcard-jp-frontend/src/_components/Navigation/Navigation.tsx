@@ -3,9 +3,9 @@
 import styles from "./navigation.module.scss";
 import Button from "../UI/Button/Button";
 import { useEffect, useState } from "react";
-import { getUser } from "@/_utils/client/userApi";
+import { getUser } from "@/_utils/api/client/userApi";
 import { useRouter } from "next/navigation";
-import { logout } from "@/_utils/server/authApi";
+import { logout } from "@/_utils/api/server/authApi";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/_store/store";
 import { setUserName, logout as logoutAction } from "@/_store/authSlice";

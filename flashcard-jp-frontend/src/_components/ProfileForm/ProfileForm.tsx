@@ -7,7 +7,7 @@ import { PROFILE_FORM_INPUTS } from "@/_constants/profileForm.constant";
 import Input from "../UI/Input/Input";
 import { z } from "zod";
 import Button from "../UI/Button/Button";
-import { getUser, updateUser } from "@/_utils/client/userApi";
+import { getUser, updateUser } from "@/_utils/api/client/userApi";
 import DeleteProfileModule from "../DeleteProfileModal/DeleteProfileModal";
 
 const formSchema = z.object({

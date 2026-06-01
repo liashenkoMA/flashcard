@@ -36,13 +36,6 @@
   &__flipped {
     display: none;
   }
-
-  &__text {
-    font-size: v.$font-size-large;
-    font-weight: v.$font-weight-regular;
-    line-height: v.$line-height-large;
-    color: v.$color-text-main;
-  }
 }
 
 .card__animation_flipped {

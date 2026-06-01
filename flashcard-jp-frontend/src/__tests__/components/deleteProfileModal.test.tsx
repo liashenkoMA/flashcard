@@ -1,5 +1,5 @@
 import DeleteProfileModule from "@/_components/DeleteProfileModal/DeleteProfileModal";
-import { deleteUser } from "@/_utils/server/authApi";
+import { deleteUser } from "@/_utils/api/server/authApi";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
 

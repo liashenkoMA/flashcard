@@ -1,5 +1,5 @@
 import { IProfileFormData, IRegisterFormData } from "@/_interface/Interface";
-import { createUser, getUser, updateUser } from "@/_utils/client/userApi";
+import { createUser, getUser, updateUser } from "@/_utils/api/client/userApi";
 
 global.fetch = jest.fn();
 

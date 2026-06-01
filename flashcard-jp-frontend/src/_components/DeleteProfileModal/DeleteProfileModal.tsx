@@ -6,7 +6,7 @@ import Form from "../UI/Form/Form";
 import Modal from "../UI/Portal/Modal";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { deleteUser } from "@/_utils/server/authApi";
+import { deleteUser } from "@/_utils/api/server/authApi";
 
 interface IDeleteProfileProps {
   isOpen: boolean;

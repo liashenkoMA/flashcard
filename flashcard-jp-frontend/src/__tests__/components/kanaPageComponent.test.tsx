@@ -1,5 +1,5 @@
 import KanaPageComponent from "@/_components/KanaPageComponent/KanaPageComponent";
-import { updateHiragana, updateKatakana } from "@/_utils/client/kanaApi";
+import { updateHiragana, updateKatakana } from "@/_utils/api/client/kanaApi";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { ReactNode } from "react";
 

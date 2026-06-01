@@ -7,7 +7,7 @@ import { LOGIN_FORM_INPUTS } from "@/_constants/loginForm.constant";
 import { useState } from "react";
 import Form from "../UI/Form/Form";
 import { z } from "zod";
-import { login } from "@/_utils/server/authApi";
+import { login } from "@/_utils/api/server/authApi";
 import { useRouter } from "next/navigation";
 
 import { useDispatch } from "react-redux";

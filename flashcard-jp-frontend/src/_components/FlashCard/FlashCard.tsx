@@ -2,9 +2,14 @@
 
 import styles from "./flashcard.module.scss";
 import { useState } from "react";
-import { IKana } from "@/_interface/Interface";
 
-export function FlashCard({ card }: { card: IKana }) {
+export function FlashCard({
+  front,
+  back,
+}: {
+  front: React.ReactNode;
+  back: React.ReactNode;
+}) {
   const [isFlip, setIsFlip] = useState(false);
 
   return (
@@ -16,12 +21,12 @@ export function FlashCard({ card }: { card: IKana }) {
         <div
           className={`${styles.flashcard__frontside} ${isFlip ? styles.flashcard__flipped : ""}`}
         >
-          <p className={styles.flashcard__text}>{card.symbol}</p>
+          {front}
         </div>
         <div
           className={`${styles.flashcard__backside} ${isFlip ? "" : styles.flashcard__flipped}`}
         >
-          <p className={styles.flashcard__text}>{card.romaji}</p>
+          {back}
         </div>
       </div>
     </div>

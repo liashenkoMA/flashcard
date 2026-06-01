@@ -1,32 +1,23 @@
-"use client";
-
-import styles from "./KanaPageComponent.module.scss";
+import styles from "./KandziRepeatPageComponent.module.scss";
 import { useEffect, useState } from "react";
 import { FlashCard } from "../FlashCard/FlashCard";
-import { IKana } from "@/_interface/Interface";
 import Button from "../UI/Button/Button";
 import { motion } from "framer-motion";
-import { updateHiragana, updateKatakana } from "@/_utils/api/client/kanaApi";
+import { IKandji } from "@/_interface/Interface";
 import shuffle from "@/_utils/shuffle";
 
-export default function KanaPageComponent({
-  kana,
-  params,
-  searchParams,
+export default function KandjiRepeatPageComponent({
+  kanji,
 }: {
-  kana: IKana[];
-  params: string;
-  searchParams: {
-    type?: string;
-  };
+  kanji: IKandji[];
 }) {
-  const [cards, setCards] = useState<IKana[]>([]);
+  const [cards, setCards] = useState<IKandji[]>([]);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
 
   useEffect(() => {
-    setCards(shuffle<IKana>(kana));
-  }, [kana]);
+    setCards(shuffle<IKandji>(kanji));
+  }, [kanji]);
 
   function nextCard() {
     setDirection(1);
@@ -38,28 +29,10 @@ export default function KanaPageComponent({
     setIndexCard((prev) => (prev === 0 ? cards.length - 1 : prev - 1));
   }
 
-  function handleUpdateKana() {
-    const currentCard = cards[indexCard];
-
-    if (!currentCard) return;
-
-    const updateKana = params === "hiragana" ? updateHiragana : updateKatakana;
-
-    updateKana(currentCard)
-      .then(() => {
-        setCards((prev) => prev.filter((_, index) => index !== indexCard));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  if (!cards.length) return <div>Загрузка...</div>;
-
   return (
-    <div className={styles.kanaPageComponent}>
-      <div className={styles.kanaPageComponent__inner}>
-        <div className={styles.kanaPageComponent__cards}>
+    <div className={styles.kandzirepeatpagecomponent}>
+      <div className={styles.kandzirepeatpagecomponent__inner}>
+        <div className={styles.kandzirepeatpagecomponent__cards}>
           <motion.div
             key={indexCard}
             drag="x"
@@ -79,18 +52,18 @@ export default function KanaPageComponent({
             <FlashCard
               front={
                 <p className={styles.flashcard__text}>
-                  {cards[indexCard].symbol}
+                  {cards[indexCard].kanji}
                 </p>
               }
               back={
                 <p className={styles.flashcard__text}>
-                  {cards[indexCard].romaji}
+                  {cards[indexCard].translate}
                 </p>
               }
             />
           </motion.div>
         </div>
-        <div className={styles.kanaPageComponent__cards_navigation}>
+        <div className={styles.kandzirepeatpagecomponent__cards_navigation}>
           <Button type="button" onClick={previousCard}>
             Назад
           </Button>
@@ -98,20 +71,14 @@ export default function KanaPageComponent({
             Вперед
           </Button>
         </div>
-        {searchParams.type === "repeat" ? (
-          <div className={styles.kanaPageComponent__cards_navigation}>
-            <Button type="button" variant="danger" onClick={previousCard}>
-              Не знаю
-            </Button>
-            <Button type="button" variant="success" onClick={nextCard}>
-              Знаю
-            </Button>
-          </div>
-        ) : (
-          <Button type="button" onClick={handleUpdateKana}>
-            Выучил
+        <div className={styles.kandzirepeatpagecomponent__cards_navigation}>
+          <Button type="button" variant="danger" onClick={previousCard}>
+            Не знаю
           </Button>
-        )}
+          <Button type="button" variant="success" onClick={nextCard}>
+            Знаю
+          </Button>
+        </div>
       </div>
     </div>
   );

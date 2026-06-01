@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import KanaTable from "@/_components/KanaTable/KanaTable";
-import { updateHiragana, updateKatakana } from "@/_utils/client/kanaApi";
+import { updateHiragana, updateKatakana } from "@/_utils/api/client/kanaApi";
 import { IKana } from "@/_interface/Interface";
 
 jest.mock("@/_utils/client/kanaApi", () => ({

@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./kanaTable.module.scss";
-import { updateHiragana, updateKatakana } from "@/_utils/client/kanaApi";
+import { updateHiragana, updateKatakana } from "@/_utils/api/client/kanaApi";
 import KanaTableRow from "../KanaTableRow/KanaTableRow";
 import Accordion from "../UI/Accordion/Accordion";
 import { IKana } from "@/_interface/Interface";

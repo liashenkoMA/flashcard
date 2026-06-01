@@ -7,7 +7,7 @@ import { useState } from "react";
 import Button from "../UI/Button/Button";
 import Form from "../UI/Form/Form";
 import { z } from "zod";
-import { createUser } from "@/_utils/client/userApi";
+import { createUser } from "@/_utils/api/client/userApi";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Имя должно быть не короче 2 символов" }),

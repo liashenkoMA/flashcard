@@ -1,6 +1,6 @@
 import ProfileForm from "@/_components/ProfileForm/ProfileForm";
 import { PROFILE_FORM_INPUTS } from "@/_constants/profileForm.constant";
-import { getUser, updateUser } from "@/_utils/client/userApi";
+import { getUser, updateUser } from "@/_utils/api/client/userApi";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useRouter } from "next/navigation";
 

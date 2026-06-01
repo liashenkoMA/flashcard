@@ -1,6 +1,6 @@
 import LoginForm from "@/_components/LoginForm/LoginForm";
 import { LOGIN_FORM_INPUTS } from "@/_constants/loginForm.constant";
-import { login } from "@/_utils/server/authApi";
+import { login } from "@/_utils/api/server/authApi";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
 import { Provider } from "react-redux";
