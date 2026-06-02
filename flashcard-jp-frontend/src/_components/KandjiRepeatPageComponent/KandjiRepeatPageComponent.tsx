@@ -29,6 +29,8 @@ export default function KandjiRepeatPageComponent({
     setIndexCard((prev) => (prev === 0 ? cards.length - 1 : prev - 1));
   }
 
+  if (!cards.length) return <div>Загрузка...</div>;
+
   return (
     <div className={styles.kandzirepeatpagecomponent}>
       <div className={styles.kandzirepeatpagecomponent__inner}>
