@@ -8,7 +8,7 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("@/_utils/client/userApi", () => ({
+jest.mock("@/_utils/api/client/userApi", () => ({
   getUser: jest.fn().mockResolvedValue({
     name: "Иван",
     email: "test@mail.ru",

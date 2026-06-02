@@ -3,7 +3,7 @@ import { updateHiragana, updateKatakana } from "@/_utils/api/client/kanaApi";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { ReactNode } from "react";
 
-jest.mock("@/_utils/client/kanaApi", () => ({
+jest.mock("@/_utils/api/client/kanaApi", () => ({
   updateHiragana: jest.fn(),
   updateKatakana: jest.fn(),
 }));

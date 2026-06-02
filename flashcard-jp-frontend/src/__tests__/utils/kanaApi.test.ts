@@ -40,7 +40,7 @@ describe("Kana Api", () => {
         json: async () => mockResponse,
       } as Response);
 
-      const data = await getHiragana();
+      const data: IKana[] = await getHiragana();
 
       expect(data).toEqual(mockResponse);
       expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -94,7 +94,8 @@ describe("Kana Api", () => {
         json: async () => mockResponse,
       } as Response);
 
-      const result = await updateHiragana(mockHiragana);
+      const result: IUpdateHirakanaResponse =
+        await updateHiragana(mockHiragana);
 
       expect(result).toEqual(mockResponse);
       expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -147,7 +148,7 @@ describe("Kana Api", () => {
         json: async () => mockResponse,
       } as Response);
 
-      const data = await getKatakana();
+      const data: IKana[] = await getKatakana();
 
       expect(data).toEqual(mockResponse);
       expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -203,7 +204,7 @@ describe("Kana Api", () => {
         json: async () => mockResponse,
       } as Response);
 
-      const data = await updateKatakana(mockKatakana);
+      const data: IUpdateKatakanaResponse = await updateKatakana(mockKatakana);
 
       await expect(data).toEqual(mockResponse);
       expect(mockFetch).toHaveBeenCalledTimes(1);

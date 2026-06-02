@@ -7,7 +7,7 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("@/_utils/server/authApi", () => ({
+jest.mock("@/_utils/api/server/authApi", () => ({
   deleteUser: jest.fn(),
 }));
 

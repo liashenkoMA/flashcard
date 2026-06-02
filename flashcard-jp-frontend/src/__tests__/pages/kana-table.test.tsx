@@ -1,7 +1,7 @@
 import Page from "../../app/(auth)/(jp)/tables/table-kana/page";
 import { getHiragana, getKatakana } from "@/_utils/api/server/kanaApi";
 
-jest.mock("@/_utils/server/kanaApi", () => ({
+jest.mock("@/_utils/api/server/kanaApi", () => ({
   getHiragana: jest.fn(),
   getKatakana: jest.fn(),
 }));

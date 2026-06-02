@@ -3,7 +3,7 @@ import KanaTable from "@/_components/KanaTable/KanaTable";
 import { updateHiragana, updateKatakana } from "@/_utils/api/client/kanaApi";
 import { IKana } from "@/_interface/Interface";
 
-jest.mock("@/_utils/client/kanaApi", () => ({
+jest.mock("@/_utils/api/client/kanaApi", () => ({
   updateHiragana: jest.fn(),
   updateKatakana: jest.fn(),
 }));
