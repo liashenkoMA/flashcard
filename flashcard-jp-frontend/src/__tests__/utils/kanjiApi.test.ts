@@ -1,4 +1,4 @@
-import { IKandji } from "@/_interface/Interface";
+import { IKanji } from "@/_interface/Interface";
 import { getKanji } from "@/_utils/api/server/kanjiApi";
 
 global.fetch = jest.fn();
@@ -32,7 +32,7 @@ describe("Kanji API", () => {
           translate: "день, солнце",
           jpRead: "ひ、び、か",
           chinaRead: "ニチ、ジツ",
-          learn: false,
+          learned: false,
         },
         {
           _id: "2",
@@ -40,7 +40,7 @@ describe("Kanji API", () => {
           translate: "месяц, луна",
           jpRead: "つき",
           chinaRead: "ゲツ、ガツ",
-          learn: true,
+          learned: true,
         },
       ];
 
@@ -49,7 +49,7 @@ describe("Kanji API", () => {
         json: async () => mockResponse,
       } as Response);
 
-      const data: IKandji[] = await getKanji();
+      const data: IKanji[] = await getKanji();
 
       await expect(data).toEqual(mockResponse);
       expect(mockFetch).toHaveBeenCalledTimes(1);

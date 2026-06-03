@@ -31,7 +31,7 @@ export default function Page() {
             href="/kandzi/repeat"
             text="Учим кандзи"
           />
-          <LinkButton href="/tables/kandzi" text="Все кандзи" />
+          <LinkButton href="/tables/table-kanji" text="Все кандзи" />
         </Accordion>
       </div>
 

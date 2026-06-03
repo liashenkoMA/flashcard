@@ -93,11 +93,11 @@ export interface IUpdateKatakanaResponse {
   katakanaId: string;
 }
 
-export interface IKandji {
+export interface IKanji {
   kanji: string;
   translate: string;
   jpRead: string;
   chinaRead: string;
-  learn: boolean;
+  learned: boolean;
   _id: string;
 }

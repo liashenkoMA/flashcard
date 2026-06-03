@@ -1,0 +1,46 @@
+@use "../../variables" as v;
+
+.kanjitablerow {
+  width: 100%;
+  min-height: 60px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  background-color: v.$color-bg-element;
+  border: 1px solid v.$color-border;
+  border-radius: 15px;
+
+  &__symbol {
+    color: v.$color-text-main;
+    font-size: v.$font-size-large;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-large;
+  }
+
+  &__readings {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__reading {
+    max-width: 100%;
+    color: v.$color-text-secondary;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+  }
+
+  &__reading_type_jpread {
+    color: v.$color-accent-2;
+  }
+
+  &__reading_type_chread {
+    color: v.$color-accent-1;
+  }
+
+  &__reading_type_translate {
+    color: v.$color-text-secondary;
+  }
+}

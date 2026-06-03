@@ -1,6 +1,6 @@
 "use server";
 
-import { IKandji } from "@/_interface/Interface";
+import { IKanji } from "@/_interface/Interface";
 import { cookies } from "next/headers";
 
 const address = {
@@ -17,7 +17,7 @@ async function checkResponse<T>(res: Response): Promise<T> {
   return result;
 }
 
-export async function getKanji(): Promise<IKandji[]> {
+export async function getKanji(): Promise<IKanji[]> {
   const cookiesStore = await cookies();
 
   try {
@@ -30,7 +30,7 @@ export async function getKanji(): Promise<IKandji[]> {
       },
     });
 
-    return checkResponse<IKandji[]>(res);
+    return checkResponse<IKanji[]>(res);
   } catch (err) {
     if (err instanceof Error) {
       throw err;

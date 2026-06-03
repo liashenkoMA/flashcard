@@ -1,6 +1,6 @@
 @use "../../variables" as v;
 
-.kandzirepeatpagecomponent {
+.kandjirepeatpagecomponent {
   width: 100%;
   height: 100%;
   display: flex;
@@ -20,9 +20,27 @@
   }
 }
 
+.flashcard__text_lists {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .flashcard__text {
   font-size: v.$font-size-large;
   font-weight: v.$font-weight-regular;
   line-height: v.$line-height-large;
   color: v.$color-text-main;
+}
+
+.flashcard__text_type_front {
+  color: v.$color-text-main;
+}
+
+.flashcard__text_type_jpread {
+  color: v.$color-accent-2;
+}
+
+.flashcard__text_type_chread {
+  color: v.$color-accent-1;
 }

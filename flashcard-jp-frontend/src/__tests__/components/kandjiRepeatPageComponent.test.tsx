@@ -15,7 +15,7 @@ const mockKanjiCards = [
     translate: "день, солнце",
     jpRead: "ひ、び、か",
     chinaRead: "ニチ、ジツ",
-    learn: false,
+    learned: false,
   },
   {
     _id: "2",
@@ -23,7 +23,7 @@ const mockKanjiCards = [
     translate: "месяц, луна",
     jpRead: "つき",
     chinaRead: "ゲツ、ガツ",
-    learn: true,
+    learned: true,
   },
 ];
 

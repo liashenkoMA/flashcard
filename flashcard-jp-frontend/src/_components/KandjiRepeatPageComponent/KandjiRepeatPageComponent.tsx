@@ -1,22 +1,24 @@
-import styles from "./KandziRepeatPageComponent.module.scss";
+"use client";
+
+import styles from "./KandjiRepeatPageComponent.module.scss";
 import { useEffect, useState } from "react";
 import { FlashCard } from "../FlashCard/FlashCard";
 import Button from "../UI/Button/Button";
 import { motion } from "framer-motion";
-import { IKandji } from "@/_interface/Interface";
+import { IKanji } from "@/_interface/Interface";
 import shuffle from "@/_utils/shuffle";
 
 export default function KandjiRepeatPageComponent({
   kanji,
 }: {
-  kanji: IKandji[];
+  kanji: IKanji[];
 }) {
-  const [cards, setCards] = useState<IKandji[]>([]);
+  const [cards, setCards] = useState<IKanji[]>([]);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
 
   useEffect(() => {
-    setCards(shuffle<IKandji>(kanji));
+    setCards(shuffle<IKanji>(kanji));
   }, [kanji]);
 
   function nextCard() {
@@ -32,9 +34,9 @@ export default function KandjiRepeatPageComponent({
   if (!cards.length) return <div>Загрузка...</div>;
 
   return (
-    <div className={styles.kandzirepeatpagecomponent}>
-      <div className={styles.kandzirepeatpagecomponent__inner}>
-        <div className={styles.kandzirepeatpagecomponent__cards}>
+    <div className={styles.kandjirepeatpagecomponent}>
+      <div className={styles.kandjirepeatpagecomponent__inner}>
+        <div className={styles.kandjirepeatpagecomponent__cards}>
           <motion.div
             key={indexCard}
             drag="x"
@@ -53,19 +55,33 @@ export default function KandjiRepeatPageComponent({
           >
             <FlashCard
               front={
-                <p className={styles.flashcard__text}>
+                <p
+                  className={`${styles.flashcard__text} ${styles.flashcard__text_type_front}`}
+                >
                   {cards[indexCard].kanji}
                 </p>
               }
               back={
-                <p className={styles.flashcard__text}>
-                  {cards[indexCard].translate}
-                </p>
+                <div className={styles.flashcard__text_lists}>
+                  <p
+                    className={`${styles.flashcard__text} ${styles.flashcard__text_type_jpread}`}
+                  >
+                    {cards[indexCard].jpRead}
+                  </p>
+                  <p
+                    className={`${styles.flashcard__text} ${styles.flashcard__text_type_chread}`}
+                  >
+                    {cards[indexCard].chinaRead}
+                  </p>
+                  <p className={styles.flashcard__text}>
+                    {cards[indexCard].translate}
+                  </p>
+                </div>
               }
             />
           </motion.div>
         </div>
-        <div className={styles.kandzirepeatpagecomponent__cards_navigation}>
+        <div className={styles.kandjirepeatpagecomponent__cards_navigation}>
           <Button type="button" onClick={previousCard}>
             Назад
           </Button>
@@ -73,7 +89,7 @@ export default function KandjiRepeatPageComponent({
             Вперед
           </Button>
         </div>
-        <div className={styles.kandzirepeatpagecomponent__cards_navigation}>
+        <div className={styles.kandjirepeatpagecomponent__cards_navigation}>
           <Button type="button" variant="danger" onClick={previousCard}>
             Не знаю
           </Button>
