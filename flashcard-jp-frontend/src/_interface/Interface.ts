@@ -101,3 +101,17 @@ export interface IKanji {
   learned: boolean;
   _id: string;
 }
+
+export interface IKanjiFormData {
+  kanji: string;
+  jpRead: string;
+  chinaRead: string;
+  translate: string;
+}
+
+export interface IKanjiFormInput {
+  kanji: string;
+  jpRead: string;
+  chinaRead: string;
+  translate: string;
+}

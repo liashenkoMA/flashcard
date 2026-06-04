@@ -26,9 +26,9 @@ export default function Page() {
         </Accordion>
 
         <Accordion header="Кандзи">
-          <LinkButton href="/kandzi/add" text="Добавить кандзи" />
+          <LinkButton href="/kanji/add" text="Добавить кандзи" />
           <LinkButton
-            href="/kandzi/repeat"
+            href="/kanji/repeat"
             text="Учим кандзи"
           />
           <LinkButton href="/tables/table-kanji" text="Все кандзи" />

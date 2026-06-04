@@ -30,7 +30,7 @@ export default function KanjiTableRow({
       >
         {kanji.translate}
       </p>
-      <TableButton learned={kanji.learned ?? false} onClick={deleteKanji} />
+      <TableButton learned={true} onClick={deleteKanji} />
     </li>
   );
 }

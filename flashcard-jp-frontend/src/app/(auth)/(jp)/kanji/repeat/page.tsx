@@ -1,4 +1,4 @@
-import styles from "./kandjiRepeat.module.scss";
+import styles from "./kanjiRepeat.module.scss";
 import { IKanji } from "@/_interface/Interface";
 import KandjiRepeatPageComponent from "@/_components/KandjiRepeatPageComponent/KandjiRepeatPageComponent";
 import { getKanji } from "@/_utils/api/server/kanjiApi";

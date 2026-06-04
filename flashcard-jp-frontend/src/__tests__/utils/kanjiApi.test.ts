@@ -1,4 +1,5 @@
 import { IKanji } from "@/_interface/Interface";
+import { addKanji } from "@/_utils/api/client/kanjiApi";
 import { getKanji } from "@/_utils/api/server/kanjiApi";
 
 global.fetch = jest.fn();
@@ -74,6 +75,66 @@ describe("Kanji API", () => {
       } as Response);
 
       await expect(getKanji()).rejects.toThrow("Internal Server Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("addKanji", () => {
+    const mockFormData = {
+      kanji: "日",
+      jpRead: "ひ、び、か",
+      chinaRead: "ニチ、ジツ",
+      translate: "день, солнце",
+    };
+
+    it("Ошибка сети при добавлении кандзи", async () => {
+      mockFetch.mockRejectedValueOnce(new Error("Network Error"));
+
+      await expect(addKanji(mockFormData)).rejects.toThrow("Network Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Успешное добавление кандзи", async () => {
+      const mockResponse = {
+        data: "Кандзи успешно загружены",
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response);
+
+      const data = await addKanji(mockFormData);
+
+      expect(data).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining("/user"), {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          kanji: mockFormData.kanji,
+          jpRead: mockFormData.jpRead,
+          chinaRead: mockFormData.chinaRead,
+          translate: mockFormData.translate,
+        }),
+      });
+    });
+
+    it("Сервер вернул !res.ok", async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 400,
+        json: async () => ({
+          message: "Internal Server Error",
+        }),
+      } as Response);
+
+      await expect(addKanji(mockFormData)).rejects.toThrow(
+        "Internal Server Error",
+      );
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
   });
