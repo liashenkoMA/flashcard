@@ -21,7 +21,7 @@ services:
     image: mongo:7
     container_name: flashcard-mongo-dev
     ports:
-      - "27017:27017"
+      - "27018:27017"
     volumes:
       - mongo_data:/data/db
 

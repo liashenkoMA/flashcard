@@ -17,9 +17,9 @@ export default function Page() {
         </Accordion>
 
         <Accordion header="Хирагана">
-          <LinkButton href="/kana/hirakana" text="Изучить хирагану" />
+          <LinkButton href="/kana/hiragana" text="Изучить хирагану" />
           <LinkButton
-            href="/kana/hirakana?type=repeat"
+            href="/kana/hiragana?type=repeat"
             text="Повторить изученное"
           />
           <LinkButton href="/tables/table-kana" text="Вся хирагана" />

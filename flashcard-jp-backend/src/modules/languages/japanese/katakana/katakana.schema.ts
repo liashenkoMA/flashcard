@@ -10,7 +10,10 @@ export class Katakana {
   @Prop({ required: true })
   romaji: string;
 
-  @Prop()
+  @Prop({
+    enum: ['a', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w'],
+    required: false,
+  })
   group?: string;
 
   @Prop({

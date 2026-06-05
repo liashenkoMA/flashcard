@@ -12,6 +12,7 @@ import {
   Katakana,
   KatakanaSchema,
 } from './modules/languages/japanese/katakana/katakana.schema';
+import { KanjiModule } from './modules/languages/japanese/kanji/kanji.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import {
     AuthModule,
     HiraganaModule,
     KatakanaModule,
+    KanjiModule,
   ],
 })
 export class AppModule {}

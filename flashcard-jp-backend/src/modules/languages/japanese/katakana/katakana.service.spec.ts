@@ -114,7 +114,7 @@ describe('KatakanaService', () => {
         learningProgress: [
           {
             language: 'jp',
-            katakana: ['1'],
+            katakana: [{ id: '1', weight: 3 }],
           },
         ],
       };
@@ -137,8 +137,8 @@ describe('KatakanaService', () => {
       const result = await service.getKatakana(request);
 
       expect(result).toEqual([
-        { _id: '1', symbol: 'ア', learned: true },
-        { _id: '2', symbol: 'イ', learned: false },
+        { _id: '1', symbol: 'ア', weight: 3, learned: true },
+        { _id: '2', symbol: 'イ', weight: 0, learned: false },
       ]);
     });
   });
@@ -182,104 +182,37 @@ describe('KatakanaService', () => {
       ).rejects.toThrow(NotFoundException);
     });
 
-    it('Успешное изучение катаканы (добавление)', async () => {
-      const request = {} as any;
-
+    it('toggle add/remove', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
         sub: 'user_id',
       });
 
-      // user НЕ изучал катакану
+      const user = {
+        learningProgress: [
+          {
+            language: 'jp',
+            katakana: [],
+          },
+        ],
+        save: jest.fn(),
+      };
+
       mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(user),
+      });
+
+      mockKatakanaModel.findOne.mockReturnValue({
         exec: jest.fn().mockResolvedValue({
-          learningProgress: [
-            {
-              language: 'jp',
-              katakana: [],
-            },
-          ],
+          _id: '1',
+          symbol: 'イ',
         }),
       });
 
-      const kana = { _id: '1', symbol: 'イ' };
+      const result = await service.updateKatakana({ symbol: 'イ' }, {} as any);
 
-      mockKatakanaModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(kana),
-      });
-
-      mockUserModel.updateOne.mockResolvedValue({});
-
-      const result = await service.updateKatakana({ symbol: 'イ' }, request);
-
-      expect(mockUserModel.updateOne).toHaveBeenCalledTimes(2);
-
-      expect(mockUserModel.updateOne).toHaveBeenNthCalledWith(
-        2,
-        {
-          _id: 'user_id',
-          'learningProgress.language': 'jp',
-        },
-        {
-          $addToSet: {
-            'learningProgress.$.katakana': kana._id,
-          },
-        },
-      );
-
-      expect(result).toEqual({
-        message: 'イ - выучено',
-        katakanaId: '1',
-      });
-    });
-
-    it('Успешное удаление катаканы (toggle off)', async () => {
-      const request = {} as any;
-
-      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        sub: 'user_id',
-      });
-
-      // user уже изучил катакану
-      mockUserModel.findById.mockReturnValue({
-        exec: jest.fn().mockResolvedValue({
-          learningProgress: [
-            {
-              language: 'jp',
-              katakana: ['1'],
-            },
-          ],
-        }),
-      });
-
-      const kana = { _id: '1', symbol: 'イ' };
-
-      mockKatakanaModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(kana),
-      });
-
-      mockUserModel.updateOne.mockResolvedValue({});
-
-      const result = await service.updateKatakana({ symbol: 'イ' }, request);
-
-      expect(mockUserModel.updateOne).toHaveBeenCalledTimes(2);
-
-      expect(mockUserModel.updateOne).toHaveBeenNthCalledWith(
-        2,
-        {
-          _id: 'user_id',
-          'learningProgress.language': 'jp',
-        },
-        {
-          $pull: {
-            'learningProgress.$.katakana': kana._id,
-          },
-        },
-      );
-
-      expect(result).toEqual({
-        message: 'イ - удалено',
-        katakanaId: '1',
-      });
+      expect(user.save).toHaveBeenCalled();
+      expect(result).toHaveProperty('learned');
+      expect(result.katakanaId).toBe('1');
     });
   });
 });

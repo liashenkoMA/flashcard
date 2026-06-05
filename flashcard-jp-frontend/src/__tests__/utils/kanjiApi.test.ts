@@ -1,5 +1,5 @@
 import { IKanji } from "@/_interface/Interface";
-import { addKanji } from "@/_utils/api/client/kanjiApi";
+import { addKanji, deleteKanji } from "@/_utils/api/client/kanjiApi";
 import { getKanji } from "@/_utils/api/server/kanjiApi";
 
 global.fetch = jest.fn();
@@ -108,19 +108,22 @@ describe("Kanji API", () => {
 
       expect(data).toEqual(mockResponse);
       expect(mockFetch).toHaveBeenCalledTimes(1);
-      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining("/user"), {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining("/kanji"),
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            kanji: mockFormData.kanji,
+            jpRead: mockFormData.jpRead,
+            chinaRead: mockFormData.chinaRead,
+            translate: mockFormData.translate,
+          }),
         },
-        body: JSON.stringify({
-          kanji: mockFormData.kanji,
-          jpRead: mockFormData.jpRead,
-          chinaRead: mockFormData.chinaRead,
-          translate: mockFormData.translate,
-        }),
-      });
+      );
     });
 
     it("Сервер вернул !res.ok", async () => {
@@ -135,6 +138,66 @@ describe("Kanji API", () => {
       await expect(addKanji(mockFormData)).rejects.toThrow(
         "Internal Server Error",
       );
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("deleteKanji", () => {
+    const mockKanji: IKanji = {
+      _id: "1",
+      kanji: "日",
+      translate: "день, солнце",
+      jpRead: "ひ、び、か",
+      chinaRead: "ニチ、ジツ",
+      learned: false,
+    };
+
+    it("Ошибка сети при удалении кандзи", async () => {
+      mockFetch.mockRejectedValueOnce(new Error("Network Error"));
+
+      await expect(deleteKanji(mockKanji)).rejects.toThrow("Network Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Успешное удаление кандзи", async () => {
+      const mockResponse = {
+        data: "Кандзи успешно удалён",
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response);
+
+      const data = await deleteKanji(mockKanji);
+
+      expect(data).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining(`/kanji/${mockKanji._id}`),
+        {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    });
+
+    it("Сервер вернул !res.ok", async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 400,
+        json: async () => ({
+          message: "Internal Server Error",
+        }),
+      } as Response);
+
+      await expect(deleteKanji(mockKanji)).rejects.toThrow(
+        "Internal Server Error",
+      );
+
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
   });

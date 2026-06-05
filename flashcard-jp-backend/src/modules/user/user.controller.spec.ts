@@ -64,7 +64,7 @@ describe('UserController', () => {
     expect(result).toEqual(user);
   });
 
-  it('updatehUser', async () => {
+  it('updateUser', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
     } as any;
@@ -82,7 +82,7 @@ describe('UserController', () => {
 
     mockUserService.updateUser.mockResolvedValue(response);
 
-    const result = await controller.updatehUser(dto as any, request);
+    const result = await controller.updateUser(dto as any, request);
 
     expect(mockUserService.updateUser).toHaveBeenCalledWith(dto, request);
     expect(result).toEqual(response);

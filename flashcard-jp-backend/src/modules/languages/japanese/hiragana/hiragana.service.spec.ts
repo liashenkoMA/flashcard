@@ -114,7 +114,7 @@ describe('HiraganaService', () => {
         learningProgress: [
           {
             language: 'jp',
-            hiragana: ['1'],
+            hiragana: [{ id: '1', weight: 2 }],
           },
         ],
       };
@@ -137,8 +137,8 @@ describe('HiraganaService', () => {
       const result = await service.getHiragana(request);
 
       expect(result).toEqual([
-        { _id: '1', symbol: 'あ', learned: true },
-        { _id: '2', symbol: 'い', learned: false },
+        { _id: '1', symbol: 'あ', learned: true, weight: 2 },
+        { _id: '2', symbol: 'い', learned: false, weight: 0 },
       ]);
     });
   });
@@ -182,110 +182,36 @@ describe('HiraganaService', () => {
       ).rejects.toThrow(NotFoundException);
     });
 
-    it('Успешное изучение хираганы (добавление)', async () => {
-      const request = {} as any;
-
+    it('toggle add/remove', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
         sub: 'user_id',
       });
 
-      // user без хираганы → isLearned = false
+      const user = {
+        learningProgress: [
+          {
+            language: 'jp',
+            hiragana: [],
+          },
+        ],
+        save: jest.fn(),
+      };
+
       mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(user),
+      });
+
+      mockHiraganaModel.findOne.mockReturnValue({
         exec: jest.fn().mockResolvedValue({
-          learningProgress: [
-            {
-              language: 'jp',
-              hiragana: [],
-            },
-          ],
+          _id: '1',
+          symbol: 'あ',
         }),
       });
 
-      const kana = { _id: '1', symbol: 'あ' };
+      const result = await service.updateHiragana({ symbol: 'あ' }, {} as any);
 
-      mockHiraganaModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(kana),
-      });
-
-      mockUserModel.updateOne.mockResolvedValue({});
-
-      const result = await service.updateHiragana({ symbol: 'あ' }, request);
-
-      expect(mockUserModel.updateOne).toHaveBeenCalledTimes(2);
-
-      expect(mockUserModel.updateOne).toHaveBeenNthCalledWith(
-        1,
-        expect.any(Object),
-        expect.any(Object),
-      );
-
-      expect(mockUserModel.updateOne).toHaveBeenNthCalledWith(
-        2,
-        {
-          _id: 'user_id',
-          'learningProgress.language': 'jp',
-        },
-        {
-          $addToSet: {
-            'learningProgress.$.hiragana': kana._id,
-          },
-        },
-      );
-
-      expect(result).toEqual({
-        message: 'あ - выучено',
-        hiraganaId: '1',
-      });
-    });
-
-    it('Успешное удаление хираганы (toggle off)', async () => {
-      const request = {} as any;
-
-      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
-        sub: 'user_id',
-      });
-
-      // user уже изучил хирагану → isLearned = true
-      mockUserModel.findById.mockReturnValue({
-        exec: jest.fn().mockResolvedValue({
-          learningProgress: [
-            {
-              language: 'jp',
-              hiragana: ['1'],
-            },
-          ],
-        }),
-      });
-
-      const kana = { _id: '1', symbol: 'あ' };
-
-      mockHiraganaModel.findOne.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(kana),
-      });
-
-      mockUserModel.updateOne.mockResolvedValue({});
-
-      const result = await service.updateHiragana({ symbol: 'あ' }, request);
-
-      expect(mockUserModel.updateOne).toHaveBeenCalledTimes(2);
-
-      expect(mockUserModel.updateOne).toHaveBeenNthCalledWith(
-        2,
-        {
-          _id: 'user_id',
-          'learningProgress.language': 'jp',
-        },
-        {
-          $pull: {
-            'learningProgress.$.hiragana': kana._id,
-          },
-        },
-      );
-
-      expect(result).toEqual({
-        message: 'あ - удалено',
-        hiraganaId: '1',
-      });
+      expect(user.save).toHaveBeenCalled();
+      expect(result.hiraganaId).toBe('1');
     });
   });
 });

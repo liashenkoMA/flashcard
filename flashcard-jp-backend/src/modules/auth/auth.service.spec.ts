@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 describe('AuthService', () => {
@@ -45,7 +45,7 @@ describe('AuthService', () => {
     });
 
     await expect(service.signIn('test@mail.ru', '1234')).rejects.toThrow(
-      NotFoundException,
+      UnauthorizedException,
     );
   });
 

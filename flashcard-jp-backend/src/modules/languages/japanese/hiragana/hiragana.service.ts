@@ -64,18 +64,17 @@ export class HiraganaService implements OnModuleInit {
     // Получаем весь прогресс пользователя
     const progress = user.learningProgress?.find((p) => p.language === 'jp');
 
-    // Создаем коллекцию Set с выученной каной
-    const learnedSet = new Set(
-      (progress?.hiragana || []).map((id) => id.toString()),
+    const learnedMap = new Map(
+      (progress?.hiragana || []).map((h: any) => [h.id.toString(), h.weight]),
     );
 
     // Получаем весь список хироганы
     const hiragana = await this.hiraganaModel.find().lean();
 
-    // Возвращаем пользователю данные
     return hiragana.map((item) => ({
       ...item,
-      learned: learnedSet.has(item._id.toString()),
+      learned: learnedMap.has(item._id.toString()),
+      weight: learnedMap.get(item._id.toString()) ?? 0,
     }));
   }
 
@@ -89,7 +88,7 @@ export class HiraganaService implements OnModuleInit {
       throw new NotFoundException('Такого пользователя не существует');
     }
 
-    // Поиск нужной хираганы
+    // Ищем хирагану
     const kana = await this.hiraganaModel
       .findOne({ symbol: hiragana.symbol })
       .exec();
@@ -98,57 +97,52 @@ export class HiraganaService implements OnModuleInit {
       throw new NotFoundException('Хирагана не найдена');
     }
 
-    // Создаем progress, если его нет
-    await this.userModel.updateOne(
-      {
-        _id: payload.sub,
-        learningProgress: {
-          $not: {
-            $elemMatch: { language: 'jp' },
-          },
-        },
-      },
-      {
-        $push: {
-          learningProgress: {
-            language: 'jp',
-            hiragana: [],
-            katakana: [],
-            kanji: [],
-            words: [],
-          },
-        },
-      },
+    // Находим progress пользователя
+    let progress = user.learningProgress.find((p) => p.language === 'jp');
+
+    // Если нет - создаем
+    if (!progress) {
+      progress = {
+        language: 'jp',
+        hiragana: [],
+        katakana: [],
+        kanji: [],
+        words: [],
+      };
+
+      user.learningProgress.push(progress);
+    }
+
+    // Проверяем, выучена ли кана или нет
+    const index = progress.hiragana.findIndex(
+      (h: any) => h.id.toString() === kana._id.toString(),
     );
 
-    // Проверяем: есть ли уже эта хирагана у пользователя
-    const isLearned = user.learningProgress
-      .find((p) => p.language === 'jp')
-      ?.hiragana?.some((id) => id.toString() === kana._id.toString());
+    let learned: boolean;
 
-    // TOGGLE: добавить или удалить
-    await this.userModel.updateOne(
-      {
-        _id: payload.sub,
-        'learningProgress.language': 'jp',
-      },
-      isLearned
-        ? {
-            $pull: {
-              'learningProgress.$.hiragana': kana._id,
-            },
-          }
-        : {
-            $addToSet: {
-              'learningProgress.$.hiragana': kana._id,
-            },
-          },
-    );
+    // хирагана уже есть у пользователя? Значит "убрать"
+    if (index !== -1) {
+      // удаляем элемент из массива прогресса
+      progress.hiragana.splice(index, 1);
+      learned = false;
+    } else {
+      // хираганы нет у пользователя? Значит "Добавить"
+      progress.hiragana.push({
+        id: kana._id,
+
+        // Стартовый вес каны
+        weight: 1,
+      } as any);
+
+      learned = true;
+    }
+
+    await user.save();
 
     return {
-      message: isLearned
-        ? `${hiragana.symbol} - удалено`
-        : `${hiragana.symbol} - выучено`,
+      message: learned
+        ? `${hiragana.symbol} - выучено`
+        : `${hiragana.symbol} - удалено`,
       hiraganaId: kana._id,
     };
   }

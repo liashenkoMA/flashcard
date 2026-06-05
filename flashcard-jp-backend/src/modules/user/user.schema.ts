@@ -2,25 +2,39 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { isEmail } from 'validator';
 
-@Schema()
+export type LanguageCode = 'jp' | 'cn' | 'kr';
+
+@Schema({ _id: false })
+export class LearningProgressItem {
+  @Prop({ type: Types.ObjectId, required: true })
+  id: Types.ObjectId;
+
+  @Prop({ default: 1 })
+  weight: number;
+}
+
+export const LearningProgressItemSchema =
+  SchemaFactory.createForClass(LearningProgressItem);
+
+@Schema({ _id: false })
 export class LearningProgress {
   @Prop({
     required: true,
-    enum: ['jp', 'cn'],
+    enum: ['jp', 'cn', 'kr'],
   })
-  language: string;
+  language: LanguageCode;
+
+  @Prop({ type: [LearningProgressItemSchema], default: [] })
+  hiragana: LearningProgressItem[];
+
+  @Prop({ type: [LearningProgressItemSchema], default: [] })
+  katakana: LearningProgressItem[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Kanji' }], default: [] })
   kanji: Types.ObjectId[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Words' }], default: [] })
   words: Types.ObjectId[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Hiragana' }], default: [] })
-  hiragana: Types.ObjectId[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Katakana' }], default: [] })
-  katakana: Types.ObjectId[];
 }
 
 export const LearningProgressSchema =

@@ -14,6 +14,11 @@ const HIRAGANA_UPDATE = 'update';
 const KATAKANA = 'katakana';
 const KATAKANA_UPDATE = 'update';
 
+//=== KANJI ===
+const KANJI = 'kanji';
+const KANJI_ADD = 'add';
+const KANJI_DELETE = 'delete';
+
 export const ROUTES = {
   AUTH,
   SIGN_IN,
@@ -23,4 +28,7 @@ export const ROUTES = {
   HIRAGANA_UPDATE,
   KATAKANA,
   KATAKANA_UPDATE,
+  KANJI,
+  KANJI_ADD,
+  KANJI_DELETE,
 } as const;

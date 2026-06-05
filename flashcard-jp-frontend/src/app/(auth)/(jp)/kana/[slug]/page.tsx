@@ -13,7 +13,7 @@ export default async function Page({ params, searchParams }: IPageParams) {
   const awaitedSearchParams = await searchParams;
 
   const kana: IKana[] =
-    awaitedParams.slug === "hirakana"
+    awaitedParams.slug === "hiragana"
       ? await getHiragana()
       : await getKatakana();
 

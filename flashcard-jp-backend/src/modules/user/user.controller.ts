@@ -27,7 +27,7 @@ export class UserController {
   }
 
   @Patch(ROUTES.USER_UPDATE)
-  updatehUser(@Body() userData: UpdateUserDto, @Req() request: Request) {
+  updateUser(@Body() userData: UpdateUserDto, @Req() request: Request) {
     return this.userService.updateUser(userData, request);
   }
 

@@ -17,10 +17,13 @@ export class Hiragana {
   group?: string;
 
   @Prop({
-    enum: ['dakuten', 'handakuten', 'combo'],
-    required: false,
+    enum: ['base', 'dakuten', 'handakuten', 'combo'],
+    default: 'base',
   })
   type?: KanaType;
+
+  @Prop()
+  baseSymbol?: string;
 
   @Prop({ required: false })
   isSmall?: boolean;

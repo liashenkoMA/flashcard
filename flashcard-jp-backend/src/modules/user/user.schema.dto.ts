@@ -1,26 +1,34 @@
-import { HiraganaDto } from '../languages/japanese/hiragana/hiragana.schema.dto';
 import { KanjiDto } from '../languages/japanese/kanji/kanji.schema.dto';
-import { KatakanaDto } from '../languages/japanese/katakana/katakana.schema.dto';
 import { WordsDto } from '../languages/japanese/words/words.schema.dto';
 
-export enum languageCode {
+export enum LanguageCode {
   JP = 'jp',
   CN = 'cn',
+  KR = 'kr',
+}
+
+export class LearningProgressItemDto {
+  id: string;
+  weight: number;
 }
 
 export class LearningProgressDto {
-  language: languageCode;
+  language: LanguageCode;
   kanji: KanjiDto[];
   words: WordsDto[];
-  hiragana: HiraganaDto[];
-  katakana: KatakanaDto[];
+  hiragana: LearningProgressItemDto[];
+  katakana: LearningProgressItemDto[];
 }
 
 export class UserDto {
   name: string;
   email: string;
-  password: string;
   learningProgress: LearningProgressDto[];
+}
+
+export class LoginUserDto {
+  email: string;
+  password: string;
 }
 
 export class CreateUserDto {

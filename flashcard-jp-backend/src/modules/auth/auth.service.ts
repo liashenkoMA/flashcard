@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../user/user.schema';
 import { Model } from 'mongoose';
@@ -20,7 +16,8 @@ export class AuthService {
     const user = await this.userModel.findOne({ email: email }).exec();
 
     if (!user) {
-      throw new NotFoundException('Пользователя не существует');
+      // Чтобы не догадались, есть такой пользователь или нет
+      throw new UnauthorizedException('Почта или пароль не верные');
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);

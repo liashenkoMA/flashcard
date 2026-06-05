@@ -49,20 +49,19 @@ describe('KatakanaController', () => {
       cookies: { session_flashcard: 'token' },
     } as any;
 
-    const dto = {
+    const dto: UpdateKatakanaDto = {
       symbol: 'ア',
     };
 
     const response = {
-      message: 'Прогресс обновлён',
+      message: 'ア - выучено',
+      katakanaId: '1',
+      learned: true,
     };
 
     mockKatakanaService.updateKatakana.mockResolvedValue(response);
 
-    const result = await controller.updateKatakana(
-      dto as UpdateKatakanaDto,
-      request,
-    );
+    const result = await controller.updateKatakana(dto, request);
 
     expect(mockKatakanaService.updateKatakana).toHaveBeenCalledWith(
       dto,

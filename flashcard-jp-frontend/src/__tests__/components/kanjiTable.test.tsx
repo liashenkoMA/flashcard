@@ -1,5 +1,10 @@
 import KanjiTable from "@/_components/KanjiTable/KanjiTable";
-import { render, screen } from "@testing-library/react";
+import { deleteKanji } from "@/_utils/api/client/kanjiApi";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+jest.mock("@/_utils/api/client/kanjiApi", () => ({
+  deleteKanji: jest.fn(),
+}));
 
 describe("KanjiTable", () => {
   beforeEach(() => {
@@ -25,5 +30,23 @@ describe("KanjiTable", () => {
     expect(screen.getByText("日")).toBeInTheDocument();
   });
 
-  it("Вызывает deleteKanji при клике", () => {});
+  it("Вызывает deleteKanji при клике", async () => {
+    (deleteKanji as jest.Mock).mockResolvedValueOnce({
+      data: "Кандзи успешно удалён",
+    });
+
+    render(<KanjiTable kanji={mockKanji} />);
+
+    const deleteButton = screen.getByRole("button", {
+      name: /удалить/i,
+    });
+
+    fireEvent.click(deleteButton);
+
+    await waitFor(() => {
+      expect(deleteKanji).toHaveBeenCalledTimes(1);
+    });
+
+    expect(deleteKanji).toHaveBeenCalledWith(mockKanji[0]);
+  });
 });

@@ -65,8 +65,8 @@ export class KatakanaService implements OnModuleInit {
     const progress = user.learningProgress?.find((p) => p.language === 'jp');
 
     // Создаем коллекцию Set с выученной каной
-    const learnedSet = new Set(
-      (progress?.katakana || []).map((id) => id.toString()),
+    const learnedMap = new Map(
+      (progress?.katakana || []).map((k: any) => [k.id.toString(), k.weight]),
     );
 
     // Получаем весь список катаканы
@@ -75,21 +75,20 @@ export class KatakanaService implements OnModuleInit {
     // Возвращаем пользователю данные
     return katakana.map((item) => ({
       ...item,
-      learned: learnedSet.has(item._id.toString()),
+      weight: learnedMap.get(item._id.toString()) ?? 0,
+      learned: learnedMap.has(item._id.toString()),
     }));
   }
 
   async updateKatakana(katakana: UpdateKatakanaDto, request: Request) {
     const payload = await this.validateAndGetPayload(request);
 
-    // Проверка пользователя
     const user = await this.userModel.findById(payload.sub).exec();
 
     if (!user) {
       throw new NotFoundException('Такого пользователя не существует');
     }
-
-    // Поиск катаканы
+    // ищем кану
     const kana = await this.katakanaModel
       .findOne({ symbol: katakana.symbol })
       .exec();
@@ -98,58 +97,50 @@ export class KatakanaService implements OnModuleInit {
       throw new NotFoundException('Катакана не найдена');
     }
 
-    // Создаем progress, если его нет
-    await this.userModel.updateOne(
-      {
-        _id: payload.sub,
-        learningProgress: {
-          $not: {
-            $elemMatch: { language: 'jp' },
-          },
-        },
-      },
-      {
-        $push: {
-          learningProgress: {
-            language: 'jp',
-            hiragana: [],
-            katakana: [],
-            kanji: [],
-            words: [],
-          },
-        },
-      },
+    // ищем или создаём jp progress
+    let progress = user.learningProgress.find((p) => p.language === 'jp');
+
+    if (!progress) {
+      progress = {
+        language: 'jp',
+        hiragana: [],
+        katakana: [],
+        kanji: [],
+        words: [],
+      };
+
+      user.learningProgress.push(progress);
+    }
+
+    // проверяем есть ли уже элемент
+    const index = progress.katakana.findIndex(
+      (k: any) => k.id.toString() === kana._id.toString(),
     );
 
-    // Проверяем: есть ли уже эта катакана у пользователя
-    const isLearned = user.learningProgress
-      .find((p) => p.language === 'jp')
-      ?.katakana?.some((id) => id.toString() === kana._id.toString());
+    let learned: boolean;
 
-    // TOGGLE: добавить или удалить
-    await this.userModel.updateOne(
-      {
-        _id: payload.sub,
-        'learningProgress.language': 'jp',
-      },
-      isLearned
-        ? {
-            $pull: {
-              'learningProgress.$.katakana': kana._id,
-            },
-          }
-        : {
-            $addToSet: {
-              'learningProgress.$.katakana': kana._id,
-            },
-          },
-    );
+    if (index !== -1) {
+      // remove
+      progress.katakana.splice(index, 1);
+      learned = false;
+    } else {
+      // add
+      progress.katakana.push({
+        id: kana._id,
+        weight: 1,
+      } as any);
+
+      learned = true;
+    }
+
+    await user.save();
 
     return {
-      message: isLearned
-        ? `${katakana.symbol} - удалено`
-        : `${katakana.symbol} - выучено`,
+      message: learned
+        ? `${katakana.symbol} - выучено`
+        : `${katakana.symbol} - удалено`,
       katakanaId: kana._id,
+      learned,
     };
   }
 }

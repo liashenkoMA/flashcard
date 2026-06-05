@@ -1,0 +1,109 @@
+import { Test, TestingModule } from '@nestjs/testing';
+import { KanjiController } from './kanji.controller';
+import { KanjiService } from './kanji.service';
+import { KanjiDto } from './kanji.schema.dto';
+
+describe('KanjiController', () => {
+  let controller: KanjiController;
+  let mockKanjiService: any;
+
+  beforeEach(async () => {
+    jest.resetAllMocks();
+
+    mockKanjiService = {
+      addKanji: jest.fn(),
+      getKanji: jest.fn(),
+      deleteKanji: jest.fn(),
+    };
+
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [KanjiController],
+      providers: [
+        {
+          provide: KanjiService,
+          useValue: mockKanjiService,
+        },
+      ],
+    }).compile();
+
+    controller = module.get<KanjiController>(KanjiController);
+  });
+
+  describe('addKanji', () => {
+    it('Добавление кандзи', async () => {
+      const request = {
+        cookies: { session_flashcard: 'token' },
+      } as any;
+
+      const dto: KanjiDto = {
+        _id: '1',
+        kanji: '日',
+        translate: 'солнце',
+        jpRead: 'にち',
+        chinaRead: 'ri',
+        weight: 1,
+      };
+
+      const response = {
+        data: '日 - добавлено',
+      };
+
+      mockKanjiService.addKanji.mockResolvedValue(response);
+
+      const result = await controller.addKanji(request, dto);
+
+      expect(mockKanjiService.addKanji).toHaveBeenCalledWith(dto, request);
+      expect(result).toEqual(response);
+    });
+  });
+
+  describe('getKanji', () => {
+    it('Получение кандзи пользователя', async () => {
+      const request = {
+        cookies: { session_flashcard: 'token' },
+      } as any;
+
+      const response = [
+        {
+          _id: '1',
+          kanji: '日',
+          translate: 'солнце',
+          jpRead: 'にち',
+          chinaRead: 'ri',
+        },
+      ];
+
+      mockKanjiService.getKanji.mockResolvedValue(response);
+
+      const result = await controller.getKanji(request);
+
+      expect(mockKanjiService.getKanji).toHaveBeenCalledWith(request);
+      expect(result).toEqual(response);
+    });
+  });
+
+  describe('deleteKanji', () => {
+    it('Удаление кандзи по id', async () => {
+      const request = {
+        cookies: { session_flashcard: 'token' },
+      } as any;
+
+      const kanjiId = 'abc123';
+
+      const response = {
+        message: 'Кандзи удалено',
+      };
+
+      mockKanjiService.deleteKanji.mockResolvedValue(response);
+
+      const result = await controller.deleteKanji(request, kanjiId);
+
+      expect(mockKanjiService.deleteKanji).toHaveBeenCalledWith(
+        kanjiId,
+        request,
+      );
+
+      expect(result).toEqual(response);
+    });
+  });
+});

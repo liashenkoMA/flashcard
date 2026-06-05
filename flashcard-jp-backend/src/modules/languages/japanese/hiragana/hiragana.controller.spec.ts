@@ -49,20 +49,18 @@ describe('HiraganaController', () => {
       cookies: { session_flashcard: 'token' },
     } as any;
 
-    const dto = {
+    const dto: UpdateHiraganaDto = {
       symbol: 'あ',
     };
 
     const response = {
-      message: 'Прогресс обновлён',
+      message: 'あ - выучено',
+      hiraganaId: '1',
     };
 
     mockHiraganaService.updateHiragana.mockResolvedValue(response);
 
-    const result = await controller.updateHiragana(
-      dto as UpdateHiraganaDto,
-      request,
-    );
+    const result = await controller.updateHiragana(dto, request);
 
     expect(mockHiraganaService.updateHiragana).toHaveBeenCalledWith(
       dto,

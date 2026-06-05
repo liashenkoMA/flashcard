@@ -1,4 +1,4 @@
-import { IKanjiFormData } from "@/_interface/Interface";
+import { IKanji, IKanjiFormData } from "@/_interface/Interface";
 
 const address = {
   baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -17,7 +17,7 @@ export async function addKanji(
   formData: IKanjiFormData,
 ): Promise<{ data: string }> {
   try {
-    const res = await fetch(`${address.baseUrl}/user`, {
+    const res = await fetch(`${address.baseUrl}/kanji/add`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -29,6 +29,26 @@ export async function addKanji(
         chinaRead: formData.chinaRead,
         translate: formData.translate,
       }),
+    });
+
+    return checkResponse<{ data: string }>(res);
+  } catch (err) {
+    if (err instanceof Error) {
+      throw err;
+    }
+
+    throw new Error("Network error");
+  }
+}
+
+export async function deleteKanji(formData: IKanji) {
+  try {
+    const res = await fetch(`${address.baseUrl}/kanji/${formData._id}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     return checkResponse<{ data: string }>(res);

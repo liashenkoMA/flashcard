@@ -20,7 +20,7 @@ describe("Kana Page", () => {
   it("Вызывает getHirakana и возвращает данные без фильтра", async () => {
     (getHiragana as jest.Mock).mockResolvedValue(mockKana);
 
-    const params = { slug: "hirakana" };
+    const params = { slug: "hiragana" };
     const searchParams = {};
 
     const result = await Page({
@@ -50,7 +50,7 @@ describe("Kana Page", () => {
   it("Фильтрует только изученные kana при type=repeat", async () => {
     (getHiragana as jest.Mock).mockResolvedValue(mockKana);
 
-    const params = { slug: "hirakana" };
+    const params = { slug: "hiragana" };
     const searchParams = { type: "repeat" };
 
     const result = await Page({
