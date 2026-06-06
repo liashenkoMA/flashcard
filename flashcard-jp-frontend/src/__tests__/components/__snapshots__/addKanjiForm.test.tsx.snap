@@ -87,7 +87,7 @@ exports[`Add Kanji Form component Snapshot 1`] = `
       />
     </label>
     <span
-      class="addkanjiform__errors"
+      class="addkanjiform__success"
     />
     <button
       class="button  default"
@@ -95,6 +95,9 @@ exports[`Add Kanji Form component Snapshot 1`] = `
     >
       Добавить
     </button>
+    <span
+      class="addkanjiform__errors"
+    />
   </form>
 </div>
 `;

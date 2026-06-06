@@ -39,6 +39,7 @@ export default function AddKanjiForm() {
 
     setFormData({ ...formData, [name]: value });
     setErrors(undefined);
+    setServerMessage("");
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -56,16 +57,17 @@ export default function AddKanjiForm() {
     setServerErrorMessage("");
 
     addKanji(formData)
-      .then((res) => setServerMessage(res.data))
+      .then((res) => {
+        setFormData(InitialFormState);
+        setServerMessage(res.data);
+      })
       .catch((err) => setServerErrorMessage(err.message))
       .finally(() => {
         setIsLoading(false);
       });
   }
 
-  return serverMessage ? (
-    <span className={styles.addkanjiform__success}>{serverMessage}</span>
-  ) : (
+  return (
     <Form handleSubmit={handleSubmit}>
       {KANJI_FORM_INPUTS.map((input) => (
         <Input
@@ -76,10 +78,11 @@ export default function AddKanjiForm() {
           errors={errors?.fieldErrors?.[input.name]?.join(", ")}
         />
       ))}
-      <span className={styles.addkanjiform__errors}>{serverErrorMessage}</span>
+      <span className={styles.addkanjiform__success}>{serverMessage}</span>
       <Button type="submit" disabled={loading || Boolean(errors)}>
         {loading ? "Отправка..." : "Добавить"}
       </Button>
+      <span className={styles.addkanjiform__errors}>{serverErrorMessage}</span>
     </Form>
   );
 }
