@@ -1,4 +1,5 @@
 import styles from "./tableKana.module.scss";
+import ButtonUp from "@/_components/ButtonUp/ButtonUp";
 import KanaTable from "@/_components/KanaTable/KanaTable";
 import { getHiragana, getKatakana } from "@/_utils/api/server/kanaApi";
 
@@ -9,8 +10,11 @@ export default async function Page() {
   ]);
 
   return (
-    <section className={styles.tableKana}>
-      <KanaTable hiragana={hiragana} katakana={katakana} />
-    </section>
+    <>
+      <section className={styles.tableKana}>
+        <KanaTable hiragana={hiragana} katakana={katakana} />
+      </section>
+      <ButtonUp />
+    </>
   );
 }
