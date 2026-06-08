@@ -17,7 +17,10 @@ const KATAKANA_UPDATE = 'update';
 //=== KANJI ===
 const KANJI = 'kanji';
 const KANJI_ADD = 'add';
-const KANJI_DELETE = 'delete';
+
+//=== WORDS ===
+const WORDS = 'words';
+const WORDS_ADD = 'add';
 
 export const ROUTES = {
   AUTH,
@@ -30,5 +33,6 @@ export const ROUTES = {
   KATAKANA_UPDATE,
   KANJI,
   KANJI_ADD,
-  KANJI_DELETE,
+  WORDS,
+  WORDS_ADD,
 } as const;

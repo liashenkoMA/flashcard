@@ -3,18 +3,18 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Word } from './words.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Kanji } from './kanji.schema';
 import { User } from '../../../user/user.schema';
-import { Request } from 'express';
+import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { KanjiDto } from './kanji.schema.dto';
+import { Request } from 'express';
+import { WordDto } from './words.schema.dto';
 
 @Injectable()
-export class KanjiService {
+export class WordsService {
   constructor(
-    @InjectModel(Kanji.name) private kanjiModel: Model<Kanji>,
+    @InjectModel(Word.name) private wordModel: Model<Word>,
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
   ) {}
@@ -35,7 +35,7 @@ export class KanjiService {
     }
   }
 
-  async addKanji(kanji: KanjiDto, request: Request): Promise<{ data: string }> {
+  async addWord(word: WordDto, request: Request): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
@@ -44,22 +44,21 @@ export class KanjiService {
       throw new NotFoundException('Такого пользователя не существует');
     }
 
-    await this.kanjiModel.create({
+    await this.wordModel.create({
       userId: payload.sub,
-      kanji: kanji.kanji,
-      translate: kanji.translate,
-      jpRead: kanji.jpRead,
-      chinaRead: kanji.chinaRead,
+      word: word.word,
+      translate: word.translate,
+      category: word.category,
       weight: 1,
       srs: null,
     });
 
     return {
-      data: `${kanji.kanji} - добавлено`,
+      data: `${word.word} - добавлено`,
     };
   }
 
-  async getKanji(request: Request) {
+  async getWord(request) {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
@@ -68,26 +67,26 @@ export class KanjiService {
       throw new NotFoundException('Такого пользователя не существует');
     }
 
-    return this.kanjiModel.find({ userId: payload.sub }).exec();
+    return this.wordModel.find({ userId: payload.sub }).exec();
   }
 
-  async deleteKanji(
-    kanjiId: string,
+  async deleteWord(
+    wordId: string,
     request: Request,
   ): Promise<{ message: string }> {
     const payload = await this.validateAndGetPayload(request);
 
-    const result = await this.kanjiModel.deleteOne({
-      _id: kanjiId,
+    const result = await this.wordModel.deleteOne({
+      _id: wordId,
       userId: payload.sub,
     });
 
     if (result.deletedCount === 0) {
-      throw new NotFoundException('Кандзи не найдено');
+      throw new NotFoundException('Слово не найдено');
     }
 
     return {
-      message: 'Кандзи удалено',
+      message: 'Слово удалено',
     };
   }
 }
