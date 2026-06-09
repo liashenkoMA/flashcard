@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Add Word Form component Snapshot 1`] = `
+<div>
+  <form
+    class="form"
+    novalidate=""
+  >
+    <label
+      class="form__field"
+    >
+      <span
+        class="input__placeholder"
+      >
+        Введите слово:
+      </span>
+      <input
+        class="input"
+        name="word"
+        placeholder="ありがとう"
+        required=""
+        type="text"
+        value=""
+      />
+      <span
+        class="input__error"
+      />
+    </label>
+    <label
+      class="form__field"
+    >
+      <span
+        class="input__placeholder"
+      >
+        Перевод:
+      </span>
+      <input
+        class="input"
+        name="translate"
+        placeholder="Спасибо"
+        required=""
+        type="text"
+        value=""
+      />
+      <span
+        class="input__error"
+      />
+    </label>
+    <label
+      class="addWordForm__form_field"
+    >
+      <select
+        class="addWordForm__lists"
+      >
+        <option
+          value="Без категории"
+        >
+          Без категории
+        </option>
+        <option
+          value="Новая категория?"
+        >
+          + новая категория
+        </option>
+      </select>
+    </label>
+    <span
+      class="addWordForm__text addWordForm__success"
+    />
+    <span
+      class="addWordForm__text addWordForm__errors"
+    />
+    <button
+      class="button  default"
+      type="submit"
+    >
+      Добавить
+    </button>
+    <span
+      class="addWordForm__text addWordForm__errors"
+    />
+  </form>
+</div>
+`;

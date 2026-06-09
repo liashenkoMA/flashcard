@@ -27,11 +27,14 @@ export default function Page() {
 
         <Accordion header="Кандзи">
           <LinkButton href="/kanji/add" text="Добавить кандзи" />
-          <LinkButton
-            href="/kanji/repeat"
-            text="Учим кандзи"
-          />
+          <LinkButton href="/kanji/repeat" text="Учим кандзи" />
           <LinkButton href="/tables/table-kanji" text="Все кандзи" />
+        </Accordion>
+
+        <Accordion header="Слова">
+          <LinkButton href="/words/add" text="Добавить слово" />
+          <LinkButton href="/words/repeat" text="Учим слова" />
+          <LinkButton href="/tables/table-words" text="Все слова" />
         </Accordion>
       </div>
 

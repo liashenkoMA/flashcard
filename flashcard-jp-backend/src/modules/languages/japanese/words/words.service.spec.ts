@@ -23,6 +23,7 @@ describe('WordsService', () => {
       create: jest.fn(),
       find: jest.fn(),
       deleteOne: jest.fn(),
+      distinct: jest.fn(),
     };
 
     mockUserModel = {
@@ -218,6 +219,44 @@ describe('WordsService', () => {
       expect(result).toEqual({
         message: 'Слово удалено',
       });
+    });
+  });
+
+  describe('getWordsCategory', () => {
+    it('Ошибка если пользователь не найден', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(
+        service.getWordsCategory({ cookies: {} } as any),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Успешное получение категорий', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({ _id: 'user_id' }),
+      });
+
+      const wordsCategoryList = ['Машины', 'Еда'];
+
+      mockWordModel.distinct = jest.fn().mockResolvedValue(wordsCategoryList);
+
+      const result = await service.getWordsCategory({ cookies: {} } as any);
+
+      expect(mockWordModel.distinct).toHaveBeenCalledWith('category', {
+        userId: 'user_id',
+      });
+
+      expect(result).toEqual(wordsCategoryList);
     });
   });
 });

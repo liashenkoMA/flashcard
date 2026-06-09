@@ -115,3 +115,21 @@ export interface IKanjiFormInput {
   chinaRead: string;
   translate: string;
 }
+
+export interface IWord {
+  _id: string;
+  word: string;
+  translate: string;
+  category: string;
+}
+
+export interface IWordFormData {
+  word: string;
+  translate: string;
+  category: string;
+}
+
+export interface IWordFormInput {
+  word: string;
+  translate: string;
+}

@@ -1,0 +1,16 @@
+@use "../../../../../variables" as v;
+
+.addword {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  &__title {
+    text-align: center;
+    color: v.$color-text-main;
+    font-size: v.$font-size-medium;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-medium;
+  }
+}

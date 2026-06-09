@@ -30,4 +30,9 @@ export class WordsController {
   deleteWord(@Req() request: Request, @Param('id') wordId: string) {
     return this.wordsService.deleteWord(wordId, request);
   }
+
+  @Get(ROUTES.WORDS_GET_CATEGORY)
+  getWordsCategory(@Req() request: Request) {
+    return this.wordsService.getWordsCategory(request);
+  }
 }

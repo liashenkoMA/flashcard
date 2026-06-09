@@ -89,4 +89,18 @@ export class WordsService {
       message: 'Слово удалено',
     };
   }
+
+  async getWordsCategory(request: Request): Promise<string[]> {
+    const payload = await this.validateAndGetPayload(request);
+
+    const user = await this.userModel.findById(payload.sub).exec();
+
+    if (!user) {
+      throw new NotFoundException('Такого пользователя не существует');
+    }
+
+    return this.wordModel.distinct('category', {
+      userId: payload.sub,
+    });
+  }
 }

@@ -14,6 +14,7 @@ describe('WordsController', () => {
       addWord: jest.fn(),
       getWord: jest.fn(),
       deleteWord: jest.fn(),
+      getWordsCategory: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -100,8 +101,25 @@ describe('WordsController', () => {
       const result = await controller.deleteWord(request, wordId);
 
       expect(mockWordsService.deleteWord).toHaveBeenCalledWith(wordId, request);
-
       expect(result).toEqual(response);
+    });
+  });
+
+  describe('getWordsCategory', () => {
+    it('Получение категорий слов пользователя', async () => {
+      const request = {
+        cookies: { session_flashcard: 'token' },
+      } as any;
+
+      const response = ['Машины', 'Пища'];
+
+      mockWordsService.getWordsCategory.mockResolvedValue(response);
+
+      const result = await controller.getWordsCategory(request);
+
+      expect(mockWordsService.getWordsCategory).toHaveBeenCalledWith(request);
+      expect(result).toEqual(response);
+      expect(mockWordsService.getWordsCategory).toHaveBeenCalledTimes(1);
     });
   });
 });

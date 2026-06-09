@@ -21,6 +21,7 @@ const KANJI_ADD = 'add';
 //=== WORDS ===
 const WORDS = 'words';
 const WORDS_ADD = 'add';
+const WORDS_GET_CATEGORY = 'category';
 
 export const ROUTES = {
   AUTH,
@@ -35,4 +36,5 @@ export const ROUTES = {
   KANJI_ADD,
   WORDS,
   WORDS_ADD,
+  WORDS_GET_CATEGORY,
 } as const;
