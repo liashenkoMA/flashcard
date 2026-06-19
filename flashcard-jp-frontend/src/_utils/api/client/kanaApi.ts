@@ -8,7 +8,6 @@ import {
   IUpdateKatakanaWeightResponse,
   IWeightStatus,
 } from "@/_interface/Interface";
-import { symbol } from "zod";
 
 const address = {
   CLIENT_API_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
