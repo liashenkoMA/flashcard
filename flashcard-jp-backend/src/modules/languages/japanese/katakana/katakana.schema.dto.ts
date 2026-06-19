@@ -11,3 +11,8 @@ export class KatakanaDto {
 export class UpdateKatakanaDto {
   symbol: string;
 }
+
+export class UpdateKatakanaWeightDto {
+  symbol: string;
+  status: 'remember' | 'forgot';
+}

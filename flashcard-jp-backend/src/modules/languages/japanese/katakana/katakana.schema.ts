@@ -20,13 +20,19 @@ export class Katakana {
     enum: ['base', 'dakuten', 'handakuten', 'combo'],
     default: 'base',
   })
-  type: KanaType;
+  type?: KanaType;
 
   @Prop()
   baseSymbol?: string;
 
-  @Prop({ default: false })
-  isSmall: boolean;
+  @Prop({ required: false })
+  isSmall?: boolean;
+
+  @Prop({
+    default: 0,
+    min: 0,
+  })
+  weight: number;
 }
 
 export const KatakanaSchema = SchemaFactory.createForClass(Katakana);

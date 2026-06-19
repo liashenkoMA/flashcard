@@ -81,6 +81,7 @@ export interface IKana {
   type?: "dakuten" | "handakuten" | "combo";
   isSmall?: boolean;
   learned?: boolean;
+  weight: number;
 }
 
 export interface IUpdateHirakanaResponse {
@@ -100,6 +101,7 @@ export interface IKanji {
   chinaRead: string;
   learned: boolean;
   _id: string;
+  weight: number;
 }
 
 export interface IKanjiFormData {
@@ -121,6 +123,7 @@ export interface IWord {
   word: string;
   translate: string;
   category: string;
+  weight: number;
 }
 
 export interface IWordFormData {
@@ -132,4 +135,22 @@ export interface IWordFormData {
 export interface IWordFormInput {
   word: string;
   translate: string;
+}
+
+export interface IWeightCard {
+  weight: number;
+}
+
+export interface IWeightStatus {
+  status: "remember" | "forgot";
+}
+
+export interface IUpdateHiraganaWeightResponse {
+  message: string;
+  hiraganaId: string;
+}
+
+export interface IUpdateKatakanaWeightResponse {
+  message: string;
+  katakanaId: string;
 }

@@ -6,7 +6,12 @@ import { FlashCard } from "../FlashCard/FlashCard";
 import { IKana } from "@/_interface/Interface";
 import Button from "../UI/Button/Button";
 import { motion } from "framer-motion";
-import { updateHiragana, updateKatakana } from "@/_utils/api/client/kanaApi";
+import {
+  updateHiragana,
+  updateHiraganaWeight,
+  updateKatakana,
+  updateKatakanaWeight,
+} from "@/_utils/api/client/kanaApi";
 import shuffle from "@/_utils/shuffle";
 
 export default function KanaPageComponent({
@@ -54,6 +59,36 @@ export default function KanaPageComponent({
       });
   }
 
+  function handleRemember() {
+    const currentCard = cards[indexCard];
+
+    if (!currentCard) return;
+
+    const updateKanaWeight =
+      params === "hiragana" ? updateHiraganaWeight : updateKatakanaWeight;
+
+    updateKanaWeight(currentCard, { status: "remember" })
+      .then(() => nextCard())
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleForgot() {
+    const currentCard = cards[indexCard];
+
+    if (!currentCard) return;
+
+    const updateKanaWeight =
+      params === "hiragana" ? updateHiraganaWeight : updateKatakanaWeight;
+
+    updateKanaWeight(currentCard, { status: "forgot" })
+      .then(() => nextCard())
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   if (!cards.length) return <div>Загрузка...</div>;
 
   return (
@@ -90,27 +125,29 @@ export default function KanaPageComponent({
             />
           </motion.div>
         </div>
-        <div className={styles.kanaPageComponent__cards_navigation}>
-          <Button type="button" onClick={previousCard}>
-            Назад
-          </Button>
-          <Button type="button" onClick={nextCard}>
-            Вперед
-          </Button>
-        </div>
         {searchParams.type === "repeat" ? (
           <div className={styles.kanaPageComponent__cards_navigation}>
-            <Button type="button" variant="danger" onClick={previousCard}>
+            <Button type="button" variant="danger" onClick={handleForgot}>
               Не знаю
             </Button>
-            <Button type="button" variant="success" onClick={nextCard}>
+            <Button type="button" variant="success" onClick={handleRemember}>
               Знаю
             </Button>
           </div>
         ) : (
-          <Button type="button" onClick={handleUpdateKana}>
-            Выучил
-          </Button>
+          <>
+            <div className={styles.kanaPageComponent__cards_navigation}>
+              <Button type="button" onClick={previousCard}>
+                Назад
+              </Button>
+              <Button type="button" onClick={nextCard}>
+                Вперед
+              </Button>
+            </div>
+            <Button type="button" variant="success" onClick={handleUpdateKana}>
+              Запомнил
+            </Button>
+          </>
         )}
       </div>
     </div>

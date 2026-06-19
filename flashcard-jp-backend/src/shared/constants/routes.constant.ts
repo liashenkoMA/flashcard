@@ -9,10 +9,12 @@ const USER_UPDATE = 'update';
 //=== HIRAGANA ===
 const HIRAGANA = 'hiragana';
 const HIRAGANA_UPDATE = 'update';
+const HIRAGANA_WEIGHT_UPDATE = 'updateweight';
 
 //=== KATAKANA ===
 const KATAKANA = 'katakana';
 const KATAKANA_UPDATE = 'update';
+const KATAKANA_WEIGHT_UPDATE = 'updateweight';
 
 //=== KANJI ===
 const KANJI = 'kanji';
@@ -30,8 +32,10 @@ export const ROUTES = {
   USER_UPDATE,
   HIRAGANA,
   HIRAGANA_UPDATE,
+  HIRAGANA_WEIGHT_UPDATE,
   KATAKANA,
   KATAKANA_UPDATE,
+  KATAKANA_WEIGHT_UPDATE,
   KANJI,
   KANJI_ADD,
   WORDS,

@@ -27,6 +27,12 @@ export class Hiragana {
 
   @Prop({ required: false })
   isSmall?: boolean;
+
+  @Prop({
+    default: 0,
+    min: 0,
+  })
+  weight: number;
 }
 
 export const HiraganaSchema = SchemaFactory.createForClass(Hiragana);

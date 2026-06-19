@@ -11,7 +11,11 @@ import { KATAKANA_SEED } from './katakana.seed';
 import { User } from '../../../user/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UpdateKatakanaDto } from './katakana.schema.dto';
+import {
+  UpdateKatakanaDto,
+  UpdateKatakanaWeightDto,
+} from './katakana.schema.dto';
+import { WEIGHT } from '@/src/shared/constants/learning.constant';
 
 @Injectable()
 export class KatakanaService implements OnModuleInit {
@@ -141,6 +145,59 @@ export class KatakanaService implements OnModuleInit {
         : `${katakana.symbol} - удалено`,
       katakanaId: kana._id,
       learned,
+    };
+  }
+
+  async updateKatakanaWeight(
+    katakana: UpdateKatakanaWeightDto,
+    request: Request,
+  ) {
+    const payload = await this.validateAndGetPayload(request);
+
+    // Проверка пользователя
+    const user = await this.userModel.findById(payload.sub).exec();
+
+    if (!user) {
+      throw new NotFoundException('Такого пользователя не существует');
+    }
+
+    // Ищем катакану
+    const kana = await this.katakanaModel
+      .findOne({ symbol: katakana.symbol })
+      .exec();
+
+    if (!kana) {
+      throw new NotFoundException('Катакана не найдена');
+    }
+
+    // Находим progress пользователя
+    const progress = user.learningProgress.find((p) => p.language === 'jp');
+
+    const kanaProgress = progress.katakana.find(
+      (k) => k.id.toString() === kana._id.toString(),
+    );
+
+    // Если статус remember - уменьшаем вес
+    if (katakana.status === 'remember') {
+      kanaProgress.weight = Math.max(1, kanaProgress.weight - 1);
+    }
+
+    // Если статус forgot - увеличиваем вес
+    if (katakana.status === 'forgot') {
+      kanaProgress.weight = Math.min(
+        WEIGHT.MAX_CARD_WEIGHT,
+        kanaProgress.weight + 1,
+      );
+    }
+
+    await user.save();
+
+    return {
+      message:
+        katakana.status === 'remember'
+          ? `${katakana.symbol} - выучил`
+          : `${katakana.symbol} - забыл`,
+      katakanaId: kana._id,
     };
   }
 }

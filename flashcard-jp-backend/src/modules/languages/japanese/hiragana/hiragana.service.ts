@@ -11,7 +11,11 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../../../user/user.schema';
 import { HIRAGANA_SEED } from './hiragana.seed';
 import { OnModuleInit } from '@nestjs/common';
-import { UpdateHiraganaDto } from './hiragana.schema.dto';
+import {
+  UpdateHiraganaDto,
+  UpdateHiraganaWeightDto,
+} from './hiragana.schema.dto';
+import { WEIGHT } from '@/src/shared/constants/learning.constant';
 
 @Injectable()
 export class HiraganaService implements OnModuleInit {
@@ -143,6 +147,59 @@ export class HiraganaService implements OnModuleInit {
       message: learned
         ? `${hiragana.symbol} - выучено`
         : `${hiragana.symbol} - удалено`,
+      hiraganaId: kana._id,
+    };
+  }
+
+  async updateHiraganaWeight(
+    hiragana: UpdateHiraganaWeightDto,
+    request: Request,
+  ) {
+    const payload = await this.validateAndGetPayload(request);
+
+    // Проверка пользователя
+    const user = await this.userModel.findById(payload.sub).exec();
+
+    if (!user) {
+      throw new NotFoundException('Такого пользователя не существует');
+    }
+
+    // Ищем хирагану
+    const kana = await this.hiraganaModel
+      .findOne({ symbol: hiragana.symbol })
+      .exec();
+
+    if (!kana) {
+      throw new NotFoundException('Хирагана не найдена');
+    }
+
+    // Находим progress пользователя
+    const progress = user.learningProgress.find((p) => p.language === 'jp');
+
+    const kanaProgress = progress.hiragana.find(
+      (h) => h.id.toString() === kana._id.toString(),
+    );
+
+    // Если статус remember - уменьшаем вес
+    if (hiragana.status === 'remember') {
+      kanaProgress.weight = Math.max(1, kanaProgress.weight - 1);
+    }
+
+    // Если статус forgot - увеличиваем вес
+    if (hiragana.status === 'forgot') {
+      kanaProgress.weight = Math.min(
+        WEIGHT.MAX_CARD_WEIGHT,
+        kanaProgress.weight + 1,
+      );
+    }
+
+    await user.save();
+
+    return {
+      message:
+        hiragana.status === 'remember'
+          ? `${hiragana.symbol} - выучил`
+          : `${hiragana.symbol} - забыл`,
       hiraganaId: kana._id,
     };
   }

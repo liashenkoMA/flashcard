@@ -2,6 +2,7 @@ import styles from "./kana.module.scss";
 import { IKana } from "@/_interface/Interface";
 import KanaPageComponent from "@/_components/KanaPageComponent/KanaPageComponent";
 import { getHiragana, getKatakana } from "@/_utils/api/server/kanaApi";
+import buildWeightedDeck from "@/_utils/buildWeightedDeck";
 
 export interface IPageParams {
   params: { slug: string };
@@ -18,19 +19,20 @@ export default async function Page({ params, searchParams }: IPageParams) {
       : await getKatakana();
 
   function filterKana(kana: IKana[]) {
-    if (awaitedSearchParams.type === "repeat") {
-      return kana.filter((kana) => kana.learned === true);
-    }
-
-    return kana;
+    return kana.filter((kana) => kana.learned === true);
   }
 
   const filteredKana = filterKana(kana);
 
+  const preparedKana =
+    awaitedSearchParams.type === "repeat"
+      ? buildWeightedDeck(filteredKana)
+      : kana;
+
   return (
     <section className={styles.kana}>
       <KanaPageComponent
-        kana={filteredKana}
+        kana={preparedKana}
         params={awaitedParams.slug}
         searchParams={awaitedSearchParams}
       />

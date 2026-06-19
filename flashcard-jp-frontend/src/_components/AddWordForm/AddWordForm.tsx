@@ -74,7 +74,7 @@ export default function AddWordForm() {
       setErrors(errors);
       return;
     }
-    console.log(formData);
+
     setIsLoading(true);
     setServerErrorMessage("");
 
@@ -121,7 +121,6 @@ export default function AddWordForm() {
                 {list}
               </option>
             ))}
-
           <option value="Новая категория?">+ новая категория</option>
         </select>
       </label>

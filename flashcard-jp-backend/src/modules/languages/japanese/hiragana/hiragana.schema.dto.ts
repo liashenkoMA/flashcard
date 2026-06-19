@@ -11,3 +11,8 @@ export class HiraganaDto {
 export class UpdateHiraganaDto {
   symbol: string;
 }
+
+export class UpdateHiraganaWeightDto {
+  symbol: string;
+  status: 'remember' | 'forgot';
+}
