@@ -215,4 +215,162 @@ describe('KatakanaService', () => {
       expect(result.katakanaId).toBe('1');
     });
   });
+
+  describe('updateKatakanaWeight', () => {
+    it('Ошибка пользователь не существует', async () => {
+      const request = {
+        cookies: { session_flashcard: 'valid_token' },
+      } as any;
+
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(
+        service.updateKatakanaWeight(
+          {
+            symbol: 'イ',
+            status: 'remember',
+          },
+          request,
+        ),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Ошибка катакана не найдена', async () => {
+      const request = {} as any;
+
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          learningProgress: [
+            {
+              language: 'jp',
+              katakana: [
+                {
+                  id: '1',
+                  weight: 2,
+                },
+              ],
+            },
+          ],
+        }),
+      });
+
+      mockKatakanaModel.findOne.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(
+        service.updateKatakanaWeight(
+          {
+            symbol: 'イ',
+            status: 'remember',
+          },
+          request,
+        ),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Уменьшает вес если статус remember', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const user = {
+        learningProgress: [
+          {
+            language: 'jp',
+            katakana: [
+              {
+                id: '1',
+                weight: 3,
+              },
+            ],
+          },
+        ],
+        save: jest.fn(),
+      };
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(user),
+      });
+
+      mockKatakanaModel.findOne.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: '1',
+          symbol: 'イ',
+        }),
+      });
+
+      const result = await service.updateKatakanaWeight(
+        {
+          symbol: 'イ',
+          status: 'remember',
+        },
+        {} as any,
+      );
+
+      expect(user.learningProgress[0].katakana[0].weight).toBe(2);
+      expect(user.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        message: 'イ - выучил',
+        katakanaId: '1',
+      });
+    });
+
+    it('Увеличивает вес если статус forgot', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const user = {
+        learningProgress: [
+          {
+            language: 'jp',
+            katakana: [
+              {
+                id: '1',
+                weight: 2,
+              },
+            ],
+          },
+        ],
+        save: jest.fn(),
+      };
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(user),
+      });
+
+      mockKatakanaModel.findOne.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: '1',
+          symbol: 'イ',
+        }),
+      });
+
+      const result = await service.updateKatakanaWeight(
+        {
+          symbol: 'イ',
+          status: 'forgot',
+        },
+        {} as any,
+      );
+
+      expect(user.learningProgress[0].katakana[0].weight).toBe(3);
+      expect(user.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        message: 'イ - забыл',
+        katakanaId: '1',
+      });
+    });
+  });
 });

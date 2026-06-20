@@ -214,4 +214,162 @@ describe('HiraganaService', () => {
       expect(result.hiraganaId).toBe('1');
     });
   });
+
+  describe('updateHiraganaWeight', () => {
+    it('Ошибка пользователь не существует', async () => {
+      const request = {
+        cookies: { session_flashcard: 'valid_token' },
+      } as any;
+
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(
+        service.updateHiraganaWeight(
+          {
+            symbol: 'あ',
+            status: 'remember',
+          },
+          request,
+        ),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Ошибка хирагана не найдена', async () => {
+      const request = {} as any;
+
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          learningProgress: [
+            {
+              language: 'jp',
+              hiragana: [
+                {
+                  id: '1',
+                  weight: 2,
+                },
+              ],
+            },
+          ],
+        }),
+      });
+
+      mockHiraganaModel.findOne.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(
+        service.updateHiraganaWeight(
+          {
+            symbol: 'あ',
+            status: 'remember',
+          },
+          request,
+        ),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Уменьшает вес если статус remember', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const user = {
+        learningProgress: [
+          {
+            language: 'jp',
+            hiragana: [
+              {
+                id: '1',
+                weight: 3,
+              },
+            ],
+          },
+        ],
+        save: jest.fn(),
+      };
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(user),
+      });
+
+      mockHiraganaModel.findOne.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: '1',
+          symbol: 'あ',
+        }),
+      });
+
+      const result = await service.updateHiraganaWeight(
+        {
+          symbol: 'あ',
+          status: 'remember',
+        },
+        {} as any,
+      );
+
+      expect(user.learningProgress[0].hiragana[0].weight).toBe(2);
+      expect(user.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        message: 'あ - выучил',
+        hiraganaId: '1',
+      });
+    });
+
+    it('Увеличивает вес если статус forgot', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const user = {
+        learningProgress: [
+          {
+            language: 'jp',
+            hiragana: [
+              {
+                id: '1',
+                weight: 2,
+              },
+            ],
+          },
+        ],
+        save: jest.fn(),
+      };
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(user),
+      });
+
+      mockHiraganaModel.findOne.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: '1',
+          symbol: 'あ',
+        }),
+      });
+
+      const result = await service.updateHiraganaWeight(
+        {
+          symbol: 'あ',
+          status: 'forgot',
+        },
+        {} as any,
+      );
+
+      expect(user.learningProgress[0].hiragana[0].weight).toBe(3);
+      expect(user.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        message: 'あ - забыл',
+        hiraganaId: '1',
+      });
+    });
+  });
 });

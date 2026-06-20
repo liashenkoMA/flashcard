@@ -15,7 +15,7 @@ import {
   UpdateKatakanaDto,
   UpdateKatakanaWeightDto,
 } from './katakana.schema.dto';
-import { WEIGHT } from '@/src/shared/constants/learning.constant';
+import { WEIGHT } from '../../../../shared/constants/learning.constant';
 
 @Injectable()
 export class KatakanaService implements OnModuleInit {

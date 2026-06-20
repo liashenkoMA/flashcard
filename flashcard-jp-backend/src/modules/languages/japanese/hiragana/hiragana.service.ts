@@ -15,7 +15,7 @@ import {
   UpdateHiraganaDto,
   UpdateHiraganaWeightDto,
 } from './hiragana.schema.dto';
-import { WEIGHT } from '@/src/shared/constants/learning.constant';
+import { WEIGHT } from '../../../../shared/constants/learning.constant';
 
 @Injectable()
 export class HiraganaService implements OnModuleInit {

@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { KatakanaController } from './katakana.controller';
 import { KatakanaService } from './katakana.service';
-import { UpdateKatakanaDto } from './katakana.schema.dto';
+import {
+  UpdateKatakanaDto,
+  UpdateKatakanaWeightDto,
+} from './katakana.schema.dto';
 
 describe('KatakanaController', () => {
   let controller: KatakanaController;
@@ -11,6 +14,7 @@ describe('KatakanaController', () => {
     mockKatakanaService = {
       getKatakana: jest.fn(),
       updateKatakana: jest.fn(),
+      updateKatakanaWeight: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -64,6 +68,32 @@ describe('KatakanaController', () => {
     const result = await controller.updateKatakana(dto, request);
 
     expect(mockKatakanaService.updateKatakana).toHaveBeenCalledWith(
+      dto,
+      request,
+    );
+    expect(result).toEqual(response);
+  });
+
+  it('updateKatakanaWeight', async () => {
+    const request = {
+      cookies: { session_flashcard: 'token' },
+    } as any;
+
+    const dto: UpdateKatakanaWeightDto = {
+      symbol: 'ア',
+      status: 'remember',
+    };
+
+    const response = {
+      message: 'ア - выучил',
+      katakanaId: '1',
+    };
+
+    mockKatakanaService.updateKatakanaWeight.mockResolvedValue(response);
+
+    const result = await controller.updateKatakanaWeight(dto, request);
+
+    expect(mockKatakanaService.updateKatakanaWeight).toHaveBeenCalledWith(
       dto,
       request,
     );

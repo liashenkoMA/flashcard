@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HiraganaController } from './hiragana.controller';
 import { HiraganaService } from './hiragana.service';
-import { UpdateHiraganaDto } from './hiragana.schema.dto';
+import {
+  UpdateHiraganaDto,
+  UpdateHiraganaWeightDto,
+} from './hiragana.schema.dto';
 
 describe('HiraganaController', () => {
   let controller: HiraganaController;
@@ -11,6 +14,7 @@ describe('HiraganaController', () => {
     mockHiraganaService = {
       getHiragana: jest.fn(),
       updateHiragana: jest.fn(),
+      updateHiraganaWeight: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -63,6 +67,32 @@ describe('HiraganaController', () => {
     const result = await controller.updateHiragana(dto, request);
 
     expect(mockHiraganaService.updateHiragana).toHaveBeenCalledWith(
+      dto,
+      request,
+    );
+    expect(result).toEqual(response);
+  });
+
+  it('updateHiraganaWeight', async () => {
+    const request = {
+      cookies: { session_flashcard: 'token' },
+    } as any;
+
+    const dto: UpdateHiraganaWeightDto = {
+      symbol: 'あ',
+      status: 'remember',
+    };
+
+    const response = {
+      message: 'Вес хираганы обновлен',
+      hiraganaId: '1',
+    };
+
+    mockHiraganaService.updateHiraganaWeight.mockResolvedValue(response);
+
+    const result = await controller.updateHiraganaWeight(dto, request);
+
+    expect(mockHiraganaService.updateHiraganaWeight).toHaveBeenCalledWith(
       dto,
       request,
     );
