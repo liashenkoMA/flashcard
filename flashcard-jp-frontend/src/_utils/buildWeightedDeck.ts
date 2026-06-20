@@ -9,7 +9,7 @@ function buildWeightedDeck<T extends IWeightCard>(cards: T[]): T[] {
       result.push(card);
     }
   }
-  console.log(result)
+
   return result;
 }
 

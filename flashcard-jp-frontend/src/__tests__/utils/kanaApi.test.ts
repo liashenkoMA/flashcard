@@ -1,9 +1,16 @@
 import {
   IKana,
+  IUpdateHiraganaWeightResponse,
   IUpdateHirakanaResponse,
   IUpdateKatakanaResponse,
+  IUpdateKatakanaWeightResponse,
 } from "@/_interface/Interface";
-import { updateHiragana, updateKatakana } from "@/_utils/api/client/kanaApi";
+import {
+  updateHiragana,
+  updateHiraganaWeight,
+  updateKatakana,
+  updateKatakanaWeight,
+} from "@/_utils/api/client/kanaApi";
 import { getHiragana, getKatakana } from "@/_utils/api/server/kanaApi";
 
 global.fetch = jest.fn();
@@ -31,8 +38,8 @@ describe("Kana Api", () => {
 
     it("Успешное получение каны", async () => {
       const mockResponse: IKana[] = [
-        { symbol: "あ", romaji: "a", group: "a", learned: false },
-        { symbol: "い", romaji: "i", group: "a", learned: false },
+        { symbol: "あ", romaji: "a", group: "a", learned: false, weight: 1 },
+        { symbol: "い", romaji: "i", group: "a", learned: false, weight: 1 },
       ];
 
       mockFetch.mockResolvedValueOnce({
@@ -71,7 +78,7 @@ describe("Kana Api", () => {
 
   describe("updateHiragana", () => {
     it("Ошибка сети при изучении каны", async () => {
-      const mockHiragana = { symbol: "が", romaji: "ga" };
+      const mockHiragana = { symbol: "が", romaji: "ga", weight: 1 };
 
       mockFetch.mockRejectedValueOnce(new Error("Network Error"));
 
@@ -82,7 +89,7 @@ describe("Kana Api", () => {
     });
 
     it("Успешное изучение каны", async () => {
-      const mockHiragana = { symbol: "が", romaji: "ga" };
+      const mockHiragana = { symbol: "が", romaji: "ga", weight: 1 };
 
       const mockResponse: IUpdateHirakanaResponse = {
         message: "Выучена",
@@ -115,7 +122,7 @@ describe("Kana Api", () => {
     });
 
     it("Сервер вернул !res.ok", async () => {
-      const mockHiragana = { symbol: "が", romaji: "ga" };
+      const mockHiragana = { symbol: "が", romaji: "ga", weight: 1 };
 
       mockFetch.mockResolvedValueOnce({
         ok: false,
@@ -139,8 +146,8 @@ describe("Kana Api", () => {
 
     it("Успешное получение каны", async () => {
       const mockResponse: IKana[] = [
-        { symbol: "ア", romaji: "a", group: "a", learned: false },
-        { symbol: "イ", romaji: "i", group: "a", learned: false },
+        { symbol: "ア", romaji: "a", group: "a", learned: false, weight: 1 },
+        { symbol: "イ", romaji: "i", group: "a", learned: false, weight: 1 },
       ];
 
       mockFetch.mockResolvedValueOnce({
@@ -181,7 +188,7 @@ describe("Kana Api", () => {
 
   describe("updatekatakana", () => {
     it("Ошибка сети при получении каны", async () => {
-      const mockKatakana = { symbol: "ア", romaji: "a" };
+      const mockKatakana = { symbol: "ア", romaji: "a", weight: 1 };
 
       mockFetch.mockRejectedValueOnce(new Error("Network Error"));
 
@@ -192,7 +199,7 @@ describe("Kana Api", () => {
     });
 
     it("Успешное получение каны", async () => {
-      const mockKatakana = { symbol: "ア", romaji: "a" };
+      const mockKatakana = { symbol: "ア", romaji: "a", weight: 1 };
 
       const mockResponse: IUpdateKatakanaResponse = {
         message: "Выучена",
@@ -224,7 +231,7 @@ describe("Kana Api", () => {
     });
 
     it("Сервер вернул !res.ok", async () => {
-      const mockKatakana = { symbol: "ア", romaji: "a" };
+      const mockKatakana = { symbol: "ア", romaji: "a", weight: 1 };
 
       mockFetch.mockResolvedValueOnce({
         ok: false,
@@ -235,6 +242,158 @@ describe("Kana Api", () => {
       await expect(updateKatakana(mockKatakana)).rejects.toThrow(
         "Internal Server Error",
       );
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("updateHiraganaWeight", () => {
+    it("Ошибка сети при изменении веса хираганы", async () => {
+      const mockHiragana = {
+        symbol: "が",
+        romaji: "ga",
+        weight: 1,
+      };
+
+      mockFetch.mockRejectedValueOnce(new Error("Network Error"));
+
+      await expect(
+        updateHiraganaWeight(mockHiragana, { status: "remember" }),
+      ).rejects.toThrow("Network Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Успешное изменение веса хираганы", async () => {
+      const mockHiragana = {
+        symbol: "が",
+        romaji: "ga",
+        weight: 1,
+      };
+
+      const mockResponse: IUpdateHiraganaWeightResponse = {
+        message: "Вес обновлен",
+        hiraganaId: "123",
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response);
+
+      const result = await updateHiraganaWeight(mockHiragana, {
+        status: "remember",
+      });
+
+      expect(result).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining("/hiragana/updateweight"),
+        expect.objectContaining({
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            symbol: mockHiragana.symbol,
+            status: "remember",
+          }),
+        }),
+      );
+    });
+
+    it("Сервер вернул !res.ok при изменении веса хираганы", async () => {
+      const mockHiragana = {
+        symbol: "が",
+        romaji: "ga",
+        weight: 1,
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({
+          message: "Internal Server Error",
+        }),
+      } as Response);
+
+      await expect(
+        updateHiraganaWeight(mockHiragana, { status: "forgot" }),
+      ).rejects.toThrow("Internal Server Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("updateKatakanaWeight", () => {
+    it("Ошибка сети при изменении веса катаканы", async () => {
+      const mockKatakana = {
+        symbol: "ア",
+        romaji: "a",
+        weight: 1,
+      };
+
+      mockFetch.mockRejectedValueOnce(new Error("Network Error"));
+
+      await expect(
+        updateKatakanaWeight(mockKatakana, { status: "remember" }),
+      ).rejects.toThrow("Network Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Успешное изменение веса катаканы", async () => {
+      const mockKatakana = {
+        symbol: "ア",
+        romaji: "a",
+        weight: 1,
+      };
+
+      const mockResponse: IUpdateKatakanaWeightResponse = {
+        message: "Вес обновлен",
+        katakanaId: "123",
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response);
+
+      const result = await updateKatakanaWeight(mockKatakana, {
+        status: "remember",
+      });
+
+      expect(result).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining("/katakana/updateweight"),
+        expect.objectContaining({
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            symbol: mockKatakana.symbol,
+            status: "remember",
+          }),
+        }),
+      );
+    });
+
+    it("Сервер вернул !res.ok при изменении веса катаканы", async () => {
+      const mockKatakana = {
+        symbol: "ア",
+        romaji: "a",
+        weight: 1,
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({
+          message: "Internal Server Error",
+        }),
+      } as Response);
+
+      await expect(
+        updateKatakanaWeight(mockKatakana, { status: "forgot" }),
+      ).rejects.toThrow("Internal Server Error");
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
   });

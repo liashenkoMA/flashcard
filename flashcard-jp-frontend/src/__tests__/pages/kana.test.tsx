@@ -1,6 +1,8 @@
 import Page, { IPageParams } from "@/app/(auth)/(jp)/kana/[slug]/page";
 import { getHiragana, getKatakana } from "@/_utils/api/server/kanaApi";
+import buildWeightedDeck from "@/_utils/buildWeightedDeck";
 
+jest.mock("@/_utils/buildWeightedDeck", () => jest.fn());
 jest.mock("@/_utils/api/server/kanaApi", () => ({
   getHiragana: jest.fn(),
   getKatakana: jest.fn(),
@@ -47,8 +49,16 @@ describe("Kana Page", () => {
     expect(result.props.children.props.kana).toEqual(mockKana);
   });
 
-  it("Фильтрует только изученные kana при type=repeat", async () => {
+  it("При type=repeat передает изученные kana в buildWeightedDeck", async () => {
     (getHiragana as jest.Mock).mockResolvedValue(mockKana);
+
+    const weightedKana = [
+      { symbol: "あ", romaji: "a", learned: true },
+      { symbol: "う", romaji: "u", learned: true },
+      { symbol: "あ", romaji: "a", learned: true },
+    ];
+
+    (buildWeightedDeck as jest.Mock).mockReturnValue(weightedKana);
 
     const params = { slug: "hiragana" };
     const searchParams = { type: "repeat" };
@@ -58,11 +68,11 @@ describe("Kana Page", () => {
       searchParams,
     } as IPageParams);
 
-    expect(getHiragana).toHaveBeenCalledTimes(1);
-    expect(result.props.children.props.kana).toEqual([
+    expect(buildWeightedDeck).toHaveBeenCalledWith([
       { symbol: "あ", romaji: "a", learned: true },
       { symbol: "う", romaji: "u", learned: true },
     ]);
+    expect(result.props.children.props.kana).toEqual(weightedKana);
   });
 
   it("Если type не repeat — возвращает полный список", async () => {
