@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { WordsController } from './words.controller';
 import { WordsService } from './words.service';
-import { WordDto } from './words.schema.dto';
+import { UpdateWordWeightDto, WordDto } from './words.schema.dto';
 
 describe('WordsController', () => {
   let controller: WordsController;
@@ -15,6 +15,7 @@ describe('WordsController', () => {
       getWord: jest.fn(),
       deleteWord: jest.fn(),
       getWordsCategory: jest.fn(),
+      updateWordWeight: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -120,6 +121,33 @@ describe('WordsController', () => {
       expect(mockWordsService.getWordsCategory).toHaveBeenCalledWith(request);
       expect(result).toEqual(response);
       expect(mockWordsService.getWordsCategory).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('updateWordWeight', () => {
+    it('Изменение веса слова', async () => {
+      const request = {
+        cookies: { session_flashcard: 'token' },
+      } as any;
+
+      const dto: UpdateWordWeightDto = {
+        wordId: '1',
+        status: 'remember',
+      };
+
+      const response = {
+        message: 'arigatou - вес изменен',
+      };
+
+      mockWordsService.updateWordWeight.mockResolvedValue(response);
+
+      const result = await controller.updateWordWeight(dto, request);
+
+      expect(mockWordsService.updateWordWeight).toHaveBeenCalledWith(
+        dto,
+        request,
+      );
+      expect(result).toEqual(response);
     });
   });
 });

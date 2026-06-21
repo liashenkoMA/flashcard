@@ -1,4 +1,9 @@
-import { IWord, IWordFormData } from "@/_interface/Interface";
+import {
+  IUpdateWordWeightResponse,
+  IWeightStatus,
+  IWord,
+  IWordFormData,
+} from "@/_interface/Interface";
 
 const address = {
   baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -75,6 +80,31 @@ export async function getWordsCategory(): Promise<string[]> {
     if (err instanceof Error) {
       throw err;
     }
+    throw new Error("Network error");
+  }
+}
+
+export async function updateWordWeight(
+  word: IWord,
+  status: IWeightStatus,
+): Promise<IUpdateWordWeightResponse> {
+  try {
+    const res = await fetch(`${address.baseUrl}/words/updateweight`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        wordId: word._id,
+        status: status.status,
+      }),
+    });
+
+    return checkResponse<IUpdateWordWeightResponse>(res);
+  } catch (err) {
+    if (err instanceof Error) {
+      throw err;
+    }
+
     throw new Error("Network error");
   }
 }

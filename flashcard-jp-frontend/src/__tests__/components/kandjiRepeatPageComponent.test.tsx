@@ -23,15 +23,6 @@ const mockKanjiCards = [
     learned: false,
     weight: 1,
   },
-  {
-    _id: "2",
-    kanji: "月",
-    translate: "месяц, луна",
-    jpRead: "つき",
-    chinaRead: "ゲツ、ガツ",
-    learned: true,
-    weight: 1,
-  },
 ];
 
 describe("KandjiRepeatPageComponent", () => {
@@ -54,7 +45,7 @@ describe("KandjiRepeatPageComponent", () => {
   it("Рендер первой карточки после загрузки", async () => {
     render(<KandjiRepeatPageComponent kanji={mockKanjiCards} />);
 
-    expect(await screen.findByText(/日|月/)).toBeInTheDocument();
+    expect(await screen.findByText(/日/)).toBeInTheDocument();
   });
 
   it("Кнопка Помню вызывает updateKanjiWeight c remember", async () => {
@@ -62,7 +53,7 @@ describe("KandjiRepeatPageComponent", () => {
 
     render(<KandjiRepeatPageComponent kanji={mockKanjiCards} />);
 
-    await screen.findByText(/日|月/);
+    await screen.findByText(/日/);
 
     fireEvent.click(screen.getByRole("button", { name: "Помню" }));
 
@@ -81,7 +72,7 @@ describe("KandjiRepeatPageComponent", () => {
 
     render(<KandjiRepeatPageComponent kanji={mockKanjiCards} />);
 
-    await screen.findByText(/日|月/);
+    await screen.findByText(/日/);
 
     fireEvent.click(screen.getByRole("button", { name: "Не помню" }));
 

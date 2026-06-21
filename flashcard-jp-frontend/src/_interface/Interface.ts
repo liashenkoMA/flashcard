@@ -158,3 +158,7 @@ export interface IUpdateKatakanaWeightResponse {
 export interface IUpdateKanjiWeightResponse {
   message: string;
 }
+
+export interface IUpdateWordWeightResponse {
+  message: string;
+}

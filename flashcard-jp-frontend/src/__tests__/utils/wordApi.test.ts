@@ -1,5 +1,9 @@
 import { IWord, IWordFormData } from "@/_interface/Interface";
-import { addWord, deleteWord } from "@/_utils/api/client/wordApi";
+import {
+  addWord,
+  deleteWord,
+  updateWordWeight,
+} from "@/_utils/api/client/wordApi";
 import { getWord } from "@/_utils/api/server/wordApi";
 import { getWordsCategory } from "@/_utils/api/client/wordApi";
 
@@ -33,6 +37,7 @@ describe("Words API", () => {
           word: "こんにちは",
           translate: "привет",
           category: "greeting",
+          weight: 1,
         },
       ];
 
@@ -133,6 +138,7 @@ describe("Words API", () => {
       word: "こんにちは",
       translate: "привет",
       category: "greeting",
+      weight: 1,
     };
 
     it("Ошибка сети при удалении слова", async () => {
@@ -220,6 +226,74 @@ describe("Words API", () => {
       } as Response);
 
       await expect(getWordsCategory()).rejects.toThrow("Internal Server Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("updateWordWeight", () => {
+    const mockWord: IWord = {
+      _id: "1",
+      word: "こんにちは",
+      translate: "привет",
+      category: "greeting",
+      weight: 1,
+    };
+
+    it("Ошибка сети при изменении веса слова", async () => {
+      mockFetch.mockRejectedValueOnce(new Error("Network Error"));
+
+      await expect(
+        updateWordWeight(mockWord, { status: "remember" }),
+      ).rejects.toThrow("Network Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Успешное изменение веса слова", async () => {
+      const mockResponse = {
+        message: "Вес успешно изменён",
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response);
+
+      const data = await updateWordWeight(mockWord, {
+        status: "remember",
+      });
+
+      expect(data).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining("/words/updateweight"),
+        {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            wordId: mockWord._id,
+            status: "remember",
+          }),
+        },
+      );
+    });
+
+    it("Сервер вернул !res.ok", async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 400,
+        json: async () => ({
+          message: "Internal Server Error",
+        }),
+      } as Response);
+
+      await expect(
+        updateWordWeight(mockWord, {
+          status: "remember",
+        }),
+      ).rejects.toThrow("Internal Server Error");
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
   });

@@ -6,3 +6,8 @@ export class WordDto {
   weight: number;
   srs?: any;
 }
+
+export class UpdateWordWeightDto {
+  wordId: string;
+  status: 'remember' | 'forgot';
+}

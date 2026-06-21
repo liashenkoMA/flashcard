@@ -24,6 +24,7 @@ describe('WordsService', () => {
       find: jest.fn(),
       deleteOne: jest.fn(),
       distinct: jest.fn(),
+      findOne: jest.fn(),
     };
 
     mockUserModel = {
@@ -257,6 +258,119 @@ describe('WordsService', () => {
       });
 
       expect(result).toEqual(wordsCategoryList);
+    });
+  });
+
+  describe('updateWordWeight', () => {
+    it('Ошибка если пользователь не найден', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(
+        service.updateWordWeight(
+          {
+            wordId: '1',
+            status: 'remember',
+          } as any,
+          { cookies: {} } as any,
+        ),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Ошибка если слово не найдено', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+        }),
+      });
+
+      mockWordModel.findOne.mockResolvedValue(null);
+
+      await expect(
+        service.updateWordWeight(
+          {
+            wordId: 'word_id',
+            status: 'remember',
+          } as any,
+          { cookies: {} } as any,
+        ),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Уменьшает вес если remember', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+        }),
+      });
+
+      const word = {
+        _id: '1',
+        word: 'hello',
+        weight: 3,
+        save: jest.fn(),
+      };
+
+      mockWordModel.findOne.mockResolvedValue(word);
+
+      const result = await service.updateWordWeight(
+        {
+          wordId: '1',
+          status: 'remember',
+        } as any,
+        { cookies: {} } as any,
+      );
+
+      expect(word.weight).toBe(2);
+      expect(word.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        message: 'hello - вес изменен',
+      });
+    });
+
+    it('Увеличивает вес если forgot', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+        }),
+      });
+
+      const word = {
+        _id: '1',
+        word: 'hello',
+        weight: 2,
+        save: jest.fn(),
+      };
+
+      mockWordModel.findOne.mockResolvedValue(word);
+
+      await service.updateWordWeight(
+        {
+          wordId: '1',
+          status: 'forgot',
+        } as any,
+        { cookies: {} } as any,
+      );
+
+      expect(word.weight).toBe(3);
+      expect(word.save).toHaveBeenCalled();
     });
   });
 });

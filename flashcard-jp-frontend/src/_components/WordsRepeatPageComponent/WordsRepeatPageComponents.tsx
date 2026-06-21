@@ -7,6 +7,7 @@ import shuffle from "@/_utils/shuffle";
 import { motion } from "framer-motion";
 import { FlashCard } from "../FlashCard/FlashCard";
 import Button from "../UI/Button/Button";
+import { updateWordWeight } from "@/_utils/api/client/wordApi";
 
 export default function WordsRepeatPageComponent({
   words,
@@ -29,6 +30,18 @@ export default function WordsRepeatPageComponent({
   function previousCard() {
     setDirection(-1);
     setIndexCard((prev) => (prev === 0 ? cards.length - 1 : prev - 1));
+  }
+
+  function updateWordCardWeight(status: "remember" | "forgot") {
+    const currentCard = cards[indexCard];
+
+    if (!currentCard) return;
+
+    updateWordWeight(currentCard, { status: status })
+      .then(() => nextCard())
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   if (!cards.length) return <div>Загрузка...</div>;
@@ -70,19 +83,19 @@ export default function WordsRepeatPageComponent({
           </motion.div>
         </div>
         <div className={styles.wordsrepeatpagecomponent__cards_navigation}>
-          <Button type="button" onClick={previousCard}>
-            Назад
+          <Button
+            type="button"
+            variant="danger"
+            onClick={() => updateWordCardWeight("forgot")}
+          >
+            Не помню
           </Button>
-          <Button type="button" onClick={nextCard}>
-            Вперед
-          </Button>
-        </div>
-        <div className={styles.wordsrepeatpagecomponent__cards_navigation}>
-          <Button type="button" variant="danger" onClick={previousCard}>
-            Не знаю
-          </Button>
-          <Button type="button" variant="success" onClick={nextCard}>
-            Знаю
+          <Button
+            type="button"
+            variant="success"
+            onClick={() => updateWordCardWeight("remember")}
+          >
+            Помню
           </Button>
         </div>
       </div>

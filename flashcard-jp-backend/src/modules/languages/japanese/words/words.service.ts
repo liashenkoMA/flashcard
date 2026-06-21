@@ -9,7 +9,8 @@ import { User } from '../../../user/user.schema';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { WordDto } from './words.schema.dto';
+import { UpdateWordWeightDto, WordDto } from './words.schema.dto';
+import { WEIGHT } from '../../../../shared/constants/learning.constant';
 
 @Injectable()
 export class WordsService {
@@ -102,5 +103,41 @@ export class WordsService {
     return this.wordModel.distinct('category', {
       userId: payload.sub,
     });
+  }
+
+  async updateWordWeight(word: UpdateWordWeightDto, request: Request) {
+    const payload = await this.validateAndGetPayload(request);
+
+    const user = await this.userModel.findById(payload.sub).exec();
+
+    if (!user) {
+      throw new NotFoundException('Такого пользователя не существует');
+    }
+
+    // Ищем слово
+    const data = await this.wordModel.findOne({
+      _id: word.wordId,
+      userId: payload.sub,
+    });
+
+    if (!data) {
+      throw new NotFoundException('Слово не найдено');
+    }
+
+    // Если статус remember - уменьшаем вес
+    if (word.status === 'remember') {
+      data.weight = Math.max(1, data.weight - 1);
+    }
+
+    // Если статус forgot - увеличиваем вес
+    if (word.status === 'forgot') {
+      data.weight = Math.min(WEIGHT.MAX_CARD_WEIGHT, data.weight + 1);
+    }
+
+    await data.save();
+
+    return {
+      message: `${data.word} - вес изменен`,
+    };
   }
 }

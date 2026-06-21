@@ -5,11 +5,12 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Req,
 } from '@nestjs/common';
 import { WordsService } from './words.service';
-import { WordDto } from './words.schema.dto';
+import { UpdateWordWeightDto, WordDto } from './words.schema.dto';
 import { Request } from 'express';
 
 @Controller(ROUTES.WORDS)
@@ -34,5 +35,10 @@ export class WordsController {
   @Get(ROUTES.WORDS_GET_CATEGORY)
   getWordsCategory(@Req() request: Request) {
     return this.wordsService.getWordsCategory(request);
+  }
+
+  @Patch(ROUTES.WORDS_WEIGHT_UPDATE)
+  updateWordWeight(@Body() word: UpdateWordWeightDto, @Req() request: Request) {
+    return this.wordsService.updateWordWeight(word, request);
   }
 }
