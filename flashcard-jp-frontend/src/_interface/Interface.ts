@@ -154,3 +154,7 @@ export interface IUpdateKatakanaWeightResponse {
   message: string;
   katakanaId: string;
 }
+
+export interface IUpdateKanjiWeightResponse {
+  message: string;
+}

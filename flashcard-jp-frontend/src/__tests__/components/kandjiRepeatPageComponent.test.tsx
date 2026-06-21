@@ -1,11 +1,16 @@
 import KandjiRepeatPageComponent from "@/_components/KandjiRepeatPageComponent/KandjiRepeatPageComponent";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { ReactNode } from "react";
+import { updateKanjiWeight } from "@/_utils/api/client/kanjiApi";
 
 jest.mock("framer-motion", () => ({
   motion: {
     div: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   },
+}));
+
+jest.mock("@/_utils/api/client/kanjiApi", () => ({
+  updateKanjiWeight: jest.fn(),
 }));
 
 const mockKanjiCards = [
@@ -16,6 +21,7 @@ const mockKanjiCards = [
     jpRead: "ひ、び、か",
     chinaRead: "ニチ、ジツ",
     learned: false,
+    weight: 1,
   },
   {
     _id: "2",
@@ -24,12 +30,19 @@ const mockKanjiCards = [
     jpRead: "つき",
     chinaRead: "ゲツ、ガツ",
     learned: true,
+    weight: 1,
   },
 ];
 
 describe("KandjiRepeatPageComponent", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it("Показывает загрузку при пустом массиве", async () => {
@@ -44,23 +57,41 @@ describe("KandjiRepeatPageComponent", () => {
     expect(await screen.findByText(/日|月/)).toBeInTheDocument();
   });
 
-  it("Кнопка Вперед переключает карточку", async () => {
+  it("Кнопка Помню вызывает updateKanjiWeight c remember", async () => {
+    (updateKanjiWeight as jest.Mock).mockResolvedValue({});
+
     render(<KandjiRepeatPageComponent kanji={mockKanjiCards} />);
 
     await screen.findByText(/日|月/);
 
-    fireEvent.click(screen.getByRole("button", { name: "Вперед" }));
+    fireEvent.click(screen.getByRole("button", { name: "Помню" }));
 
-    expect(screen.getByText(/日|月/)).toBeInTheDocument();
+    expect(updateKanjiWeight).toHaveBeenCalledWith(
+      expect.objectContaining({
+        kanji: mockKanjiCards[0].kanji,
+      }),
+      {
+        status: "remember",
+      },
+    );
   });
 
-  it("Кнопка Назад переключает карточку", async () => {
+  it("Кнопка Не помню вызывает updateKanjiWeight c forgot", async () => {
+    (updateKanjiWeight as jest.Mock).mockResolvedValue({});
+
     render(<KandjiRepeatPageComponent kanji={mockKanjiCards} />);
 
     await screen.findByText(/日|月/);
 
-    fireEvent.click(screen.getByRole("button", { name: "Назад" }));
+    fireEvent.click(screen.getByRole("button", { name: "Не помню" }));
 
-    expect(screen.getByText(/日|月/)).toBeInTheDocument();
+    expect(updateKanjiWeight).toHaveBeenCalledWith(
+      expect.objectContaining({
+        kanji: mockKanjiCards[0].kanji,
+      }),
+      {
+        status: "forgot",
+      },
+    );
   });
 });

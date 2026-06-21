@@ -9,7 +9,8 @@ import { Kanji } from './kanji.schema';
 import { User } from '../../../user/user.schema';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { KanjiDto } from './kanji.schema.dto';
+import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
+import { WEIGHT } from '../../../../shared/constants/learning.constant';
 
 @Injectable()
 export class KanjiService {
@@ -88,6 +89,42 @@ export class KanjiService {
 
     return {
       message: 'Кандзи удалено',
+    };
+  }
+
+  async updateKanjiWeight(kanji: UpdateKanjiWeightDto, request: Request) {
+    const payload = await this.validateAndGetPayload(request);
+
+    const user = await this.userModel.findById(payload.sub).exec();
+
+    if (!user) {
+      throw new NotFoundException('Такого пользователя не существует');
+    }
+
+    // Ищем кандзи
+    const data = await this.kanjiModel.findOne({
+      _id: kanji.kanjiId,
+      userId: payload.sub,
+    });
+
+    if (!data) {
+      throw new NotFoundException('Кандзи не найдено');
+    }
+
+    // Если статус remember - уменьшаем вес
+    if (kanji.status === 'remember') {
+      data.weight = Math.max(1, data.weight - 1);
+    }
+
+    // Если статус forgot - увеличиваем вес
+    if (kanji.status === 'forgot') {
+      data.weight = Math.min(WEIGHT.MAX_CARD_WEIGHT, data.weight + 1);
+    }
+
+    await data.save();
+
+    return {
+      message: `${data.kanji} - вес изменен`,
     };
   }
 }

@@ -59,7 +59,7 @@ export default function KanaPageComponent({
       });
   }
 
-  function handleRemember() {
+  function updateKanaCardWeight(status: "remember" | "forgot") {
     const currentCard = cards[indexCard];
 
     if (!currentCard) return;
@@ -67,22 +67,7 @@ export default function KanaPageComponent({
     const updateKanaWeight =
       params === "hiragana" ? updateHiraganaWeight : updateKatakanaWeight;
 
-    updateKanaWeight(currentCard, { status: "remember" })
-      .then(() => nextCard())
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  function handleForgot() {
-    const currentCard = cards[indexCard];
-
-    if (!currentCard) return;
-
-    const updateKanaWeight =
-      params === "hiragana" ? updateHiraganaWeight : updateKatakanaWeight;
-
-    updateKanaWeight(currentCard, { status: "forgot" })
+    updateKanaWeight(currentCard, { status: status })
       .then(() => nextCard())
       .catch((err) => {
         console.log(err);
@@ -127,10 +112,18 @@ export default function KanaPageComponent({
         </div>
         {searchParams.type === "repeat" ? (
           <div className={styles.kanaPageComponent__cards_navigation}>
-            <Button type="button" variant="danger" onClick={handleForgot}>
+            <Button
+              type="button"
+              variant="danger"
+              onClick={() => updateKanaCardWeight("forgot")}
+            >
               Не знаю
             </Button>
-            <Button type="button" variant="success" onClick={handleRemember}>
+            <Button
+              type="button"
+              variant="success"
+              onClick={() => updateKanaCardWeight("remember")}
+            >
               Знаю
             </Button>
           </div>

@@ -1,5 +1,9 @@
 import { IKanji } from "@/_interface/Interface";
-import { addKanji, deleteKanji } from "@/_utils/api/client/kanjiApi";
+import {
+  addKanji,
+  deleteKanji,
+  updateKanjiWeight,
+} from "@/_utils/api/client/kanjiApi";
 import { getKanji } from "@/_utils/api/server/kanjiApi";
 
 global.fetch = jest.fn();
@@ -110,7 +114,7 @@ describe("Kanji API", () => {
       expect(mockFetch).toHaveBeenCalledTimes(1);
       expect(mockFetch).toHaveBeenCalledWith(
         expect.stringContaining("/kanji"),
-        {
+        expect.objectContaining({
           method: "POST",
           credentials: "include",
           headers: {
@@ -122,7 +126,7 @@ describe("Kanji API", () => {
             chinaRead: mockFormData.chinaRead,
             translate: mockFormData.translate,
           }),
-        },
+        }),
       );
     });
 
@@ -150,6 +154,7 @@ describe("Kanji API", () => {
       jpRead: "ひ、び、か",
       chinaRead: "ニチ、ジツ",
       learned: false,
+      weight: 1,
     };
 
     it("Ошибка сети при удалении кандзи", async () => {
@@ -198,6 +203,71 @@ describe("Kanji API", () => {
         "Internal Server Error",
       );
 
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("updateKanjiWeight", () => {
+    const mockKanjiData = {
+      kanji: "日",
+      jpRead: "ひ、び、か",
+      chinaRead: "ニチ、ジツ",
+      translate: "день, солнце",
+      _id: "123",
+      weight: 1,
+      learned: true,
+    };
+
+    it("Ошибка сети при изменении веса кандзи", async () => {
+      mockFetch.mockRejectedValueOnce(new Error("Network Error"));
+
+      await expect(
+        updateKanjiWeight(mockKanjiData, { status: "remember" }),
+      ).rejects.toThrow("Network Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Успешное изменение веса кандзи", async () => {
+      const mockResponse = {
+        message: "Вес успешно изменили",
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => mockResponse,
+      } as Response);
+
+      const data = await updateKanjiWeight(mockKanjiData, {
+        status: "remember",
+      });
+
+      expect(data).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining("/kanji/updateweight"),
+        expect.objectContaining({
+          method: "PATCH",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            kanjiId: mockKanjiData._id,
+            status: "remember",
+          }),
+        }),
+      );
+    });
+
+    it("Сервер вернул !res.ok", async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 400,
+        json: async () => ({ message: "Internal Server Error" }),
+      } as Response);
+
+      await expect(
+        updateKanjiWeight(mockKanjiData, { status: "remember" }),
+      ).rejects.toThrow("Internal Server Error");
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
   });

@@ -6,11 +6,12 @@ import {
   Post,
   Param,
   Req,
+  Patch,
 } from '@nestjs/common';
 import { KanjiService } from './kanji.service';
 import { ROUTES } from '../../../../shared/constants/routes.constant';
 import { Request } from 'express';
-import { KanjiDto } from './kanji.schema.dto';
+import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
 
 @Controller(ROUTES.KANJI)
 export class KanjiController {
@@ -29,5 +30,13 @@ export class KanjiController {
   @Delete(':id')
   deleteKanji(@Req() request: Request, @Param('id') kanjiId: string) {
     return this.kanjiService.deleteKanji(kanjiId, request);
+  }
+
+  @Patch(ROUTES.KANJI_WEIGHT_UPDATE)
+  updateKanjiWeight(
+    @Body() kanji: UpdateKanjiWeightDto,
+    @Req() request: Request,
+  ) {
+    return this.kanjiService.updateKanjiWeight(kanji, request);
   }
 }

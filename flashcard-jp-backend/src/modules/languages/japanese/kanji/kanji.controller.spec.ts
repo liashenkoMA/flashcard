@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { KanjiController } from './kanji.controller';
 import { KanjiService } from './kanji.service';
-import { KanjiDto } from './kanji.schema.dto';
+import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
 
 describe('KanjiController', () => {
   let controller: KanjiController;
@@ -14,6 +14,7 @@ describe('KanjiController', () => {
       addKanji: jest.fn(),
       getKanji: jest.fn(),
       deleteKanji: jest.fn(),
+      updateKanjiWeight: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -103,6 +104,34 @@ describe('KanjiController', () => {
         request,
       );
 
+      expect(result).toEqual(response);
+    });
+  });
+
+  describe('updateKanjiWeight', () => {
+    it('Изменение веса кандзи', async () => {
+      const request = {
+        cookies: { session_flashcard: 'token' },
+      } as any;
+
+      const dto: UpdateKanjiWeightDto = {
+        kanjiId: '123',
+        status: 'remember',
+      };
+
+      const response = {
+        message: '日 - выучил',
+        kanjiId: '123',
+      };
+
+      mockKanjiService.updateKanjiWeight.mockResolvedValue(response);
+
+      const result = await controller.updateKanjiWeight(dto, request);
+
+      expect(mockKanjiService.updateKanjiWeight).toHaveBeenCalledWith(
+        dto,
+        request,
+      );
       expect(result).toEqual(response);
     });
   });

@@ -7,3 +7,8 @@ export class KanjiDto {
   weight: number;
   srs?: any;
 }
+
+export class UpdateKanjiWeightDto {
+  kanjiId: string;
+  status: 'remember' | 'forgot';
+}

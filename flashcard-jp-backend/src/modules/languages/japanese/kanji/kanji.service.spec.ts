@@ -23,6 +23,7 @@ describe('KanjiService', () => {
       create: jest.fn(),
       find: jest.fn(),
       deleteOne: jest.fn(),
+      findOne: jest.fn(),
     };
 
     mockUserModel = {
@@ -220,6 +221,122 @@ describe('KanjiService', () => {
 
       expect(result).toEqual({
         message: 'Кандзи удалено',
+      });
+    });
+  });
+
+  describe('updateKanjiWeight', () => {
+    it('Ошибка если пользователь не найден', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(
+        service.updateKanjiWeight(
+          {
+            kanjiId: '123',
+            status: 'remember',
+          },
+          { cookies: {} } as any,
+        ),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Ошибка если кандзи не найдено', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+        }),
+      });
+
+      mockKanjiModel.findOne.mockResolvedValue(null);
+
+      await expect(
+        service.updateKanjiWeight(
+          {
+            kanjiId: '123',
+            status: 'remember',
+          },
+          { cookies: {} } as any,
+        ),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Уменьшает вес при remember', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+        }),
+      });
+
+      const kanji = {
+        _id: '123',
+        kanji: '日',
+        weight: 3,
+        save: jest.fn(),
+      };
+
+      mockKanjiModel.findOne.mockResolvedValue(kanji);
+
+      const result = await service.updateKanjiWeight(
+        {
+          kanjiId: '123',
+          status: 'remember',
+        },
+        { cookies: {} } as any,
+      );
+
+      expect(kanji.weight).toBe(2);
+      expect(kanji.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        message: '日 - вес изменен',
+      });
+    });
+
+    it('Увеличивает вес при forgot', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+        }),
+      });
+
+      const kanji = {
+        _id: '123',
+        kanji: '月',
+        weight: 2,
+        save: jest.fn(),
+      };
+
+      mockKanjiModel.findOne.mockResolvedValue(kanji);
+
+      const result = await service.updateKanjiWeight(
+        {
+          kanjiId: '123',
+          status: 'forgot',
+        },
+        { cookies: {} } as any,
+      );
+
+      expect(kanji.weight).toBe(3);
+      expect(kanji.save).toHaveBeenCalled();
+      expect(result).toEqual({
+        message: '月 - вес изменен',
       });
     });
   });

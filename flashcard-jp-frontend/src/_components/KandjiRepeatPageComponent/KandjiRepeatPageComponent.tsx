@@ -7,6 +7,7 @@ import Button from "../UI/Button/Button";
 import { motion } from "framer-motion";
 import { IKanji } from "@/_interface/Interface";
 import shuffle from "@/_utils/shuffle";
+import { updateKanjiWeight } from "@/_utils/api/client/kanjiApi";
 
 export default function KandjiRepeatPageComponent({
   kanji,
@@ -29,6 +30,18 @@ export default function KandjiRepeatPageComponent({
   function previousCard() {
     setDirection(-1);
     setIndexCard((prev) => (prev === 0 ? cards.length - 1 : prev - 1));
+  }
+
+  function updateKanjiCardWeight(status: "remember" | "forgot") {
+    const currentCard = cards[indexCard];
+
+    if (!currentCard) return;
+
+    updateKanjiWeight(currentCard, { status: status })
+      .then(() => nextCard())
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   if (!cards.length) return <div>Загрузка...</div>;
@@ -82,19 +95,19 @@ export default function KandjiRepeatPageComponent({
           </motion.div>
         </div>
         <div className={styles.kandjirepeatpagecomponent__cards_navigation}>
-          <Button type="button" onClick={previousCard}>
-            Назад
+          <Button
+            type="button"
+            variant="danger"
+            onClick={() => updateKanjiCardWeight("forgot")}
+          >
+            Не помню
           </Button>
-          <Button type="button" onClick={nextCard}>
-            Вперед
-          </Button>
-        </div>
-        <div className={styles.kandjirepeatpagecomponent__cards_navigation}>
-          <Button type="button" variant="danger" onClick={previousCard}>
-            Не знаю
-          </Button>
-          <Button type="button" variant="success" onClick={nextCard}>
-            Знаю
+          <Button
+            type="button"
+            variant="success"
+            onClick={() => updateKanjiCardWeight("remember")}
+          >
+            Помню
           </Button>
         </div>
       </div>

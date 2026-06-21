@@ -19,11 +19,13 @@ const KATAKANA_WEIGHT_UPDATE = 'updateweight';
 //=== KANJI ===
 const KANJI = 'kanji';
 const KANJI_ADD = 'add';
+const KANJI_WEIGHT_UPDATE = 'updateweight';
 
 //=== WORDS ===
 const WORDS = 'words';
 const WORDS_ADD = 'add';
 const WORDS_GET_CATEGORY = 'category';
+const WORDS_WEIGHT_UPDATE = 'updateweight';
 
 export const ROUTES = {
   AUTH,
@@ -38,7 +40,9 @@ export const ROUTES = {
   KATAKANA_WEIGHT_UPDATE,
   KANJI,
   KANJI_ADD,
+  KANJI_WEIGHT_UPDATE,
   WORDS,
   WORDS_ADD,
   WORDS_GET_CATEGORY,
+  WORDS_WEIGHT_UPDATE,
 } as const;
