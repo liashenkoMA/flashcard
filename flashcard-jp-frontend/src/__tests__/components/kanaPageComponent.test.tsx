@@ -22,9 +22,9 @@ jest.mock("framer-motion", () => ({
 }));
 
 const mockCards = [
-  { symbol: "あ", romaji: "a", weight: 1 },
-  { symbol: "い", romaji: "i", weight: 1 },
-  { symbol: "う", romaji: "u", weight: 1 },
+  { symbol: "あ", romaji: "a", weight: 1, _id: "1" },
+  { symbol: "い", romaji: "i", weight: 1, _id: "1" },
+  { symbol: "う", romaji: "u", weight: 1, _id: "1" },
 ];
 
 describe("KanaPageComponent", () => {

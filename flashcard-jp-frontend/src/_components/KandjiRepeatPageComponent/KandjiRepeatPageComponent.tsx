@@ -6,8 +6,8 @@ import { FlashCard } from "../FlashCard/FlashCard";
 import Button from "../UI/Button/Button";
 import { motion } from "framer-motion";
 import { IKanji } from "@/_interface/Interface";
-import shuffle from "@/_utils/shuffle";
 import { updateKanjiWeight } from "@/_utils/api/client/kanjiApi";
+import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
 
 export default function KandjiRepeatPageComponent({
   kanji,
@@ -19,7 +19,7 @@ export default function KandjiRepeatPageComponent({
   const [direction, setDirection] = useState(0);
 
   useEffect(() => {
-    setCards(shuffle<IKanji>(kanji));
+    setCards(separateDuplicatesShuffleCards<IKanji>(kanji));
   }, [kanji]);
 
   function nextCard() {

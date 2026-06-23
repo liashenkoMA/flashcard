@@ -19,6 +19,7 @@ describe("KanjiTable", () => {
       jpRead: "ひ、び、か",
       chinaRead: "ニチ、ジツ",
       learned: false,
+      weight: 1,
     },
   ];
 

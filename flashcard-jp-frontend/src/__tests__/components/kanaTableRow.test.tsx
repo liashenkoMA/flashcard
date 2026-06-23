@@ -11,6 +11,8 @@ const mockKana = {
   symbol: "あ",
   romaji: "a",
   learned: false,
+  _id: "1",
+  weight: 1,
 };
 
 describe("KanaTableRow", () => {

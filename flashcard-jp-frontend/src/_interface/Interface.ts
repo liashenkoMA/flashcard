@@ -81,6 +81,7 @@ export interface IKana {
   type?: "dakuten" | "handakuten" | "combo";
   isSmall?: boolean;
   learned?: boolean;
+  _id: string;
   weight: number;
 }
 

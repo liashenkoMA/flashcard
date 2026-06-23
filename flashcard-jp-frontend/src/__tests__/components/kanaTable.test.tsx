@@ -37,9 +37,13 @@ jest.mock("@/_components/UI/Accordion/Accordion", () => {
   };
 });
 
-const hiraganaMock = [{ symbol: "あ", romaji: "a", learned: false }];
+const hiraganaMock = [
+  { symbol: "あ", romaji: "a", learned: false, _id: "1", weight: 1 },
+];
 
-const katakanaMock = [{ symbol: "ア", romaji: "a", learned: false }];
+const katakanaMock = [
+  { symbol: "ア", romaji: "a", learned: false, _id: "1", weight: 1 },
+];
 
 describe("KanaTable", () => {
   beforeEach(() => {

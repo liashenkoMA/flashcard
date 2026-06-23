@@ -12,7 +12,7 @@ import {
   updateKatakana,
   updateKatakanaWeight,
 } from "@/_utils/api/client/kanaApi";
-import shuffle from "@/_utils/shuffle";
+import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
 
 export default function KanaPageComponent({
   kana,
@@ -30,7 +30,7 @@ export default function KanaPageComponent({
   const [direction, setDirection] = useState(0);
 
   useEffect(() => {
-    setCards(shuffle<IKana>(kana));
+    setCards(separateDuplicatesShuffleCards<IKana>(kana));
   }, [kana]);
 
   function nextCard() {

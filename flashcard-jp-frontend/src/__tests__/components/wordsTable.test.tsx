@@ -17,6 +17,7 @@ describe("WordTable", () => {
       word: "こんにちは",
       translate: "привет",
       category: "greeting",
+      weight: 1,
     },
   ];
 

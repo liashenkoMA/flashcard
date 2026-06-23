@@ -1,4 +1,4 @@
-import { IKanji } from "@/_interface/Interface";
+import { IKanji, IKanjiFormData } from "@/_interface/Interface";
 import {
   addKanji,
   deleteKanji,
@@ -30,7 +30,7 @@ describe("Kanji API", () => {
     });
 
     it("Успешное получение кандзи", async () => {
-      const mockResponse = [
+      const mockResponse: IKanji[] = [
         {
           _id: "1",
           kanji: "日",
@@ -38,6 +38,7 @@ describe("Kanji API", () => {
           jpRead: "ひ、び、か",
           chinaRead: "ニチ、ジツ",
           learned: false,
+          weight: 1,
         },
         {
           _id: "2",
@@ -46,6 +47,7 @@ describe("Kanji API", () => {
           jpRead: "つき",
           chinaRead: "ゲツ、ガツ",
           learned: true,
+          weight: 1,
         },
       ];
 
@@ -84,7 +86,7 @@ describe("Kanji API", () => {
   });
 
   describe("addKanji", () => {
-    const mockFormData = {
+    const mockFormData: IKanjiFormData = {
       kanji: "日",
       jpRead: "ひ、び、か",
       chinaRead: "ニチ、ジツ",
@@ -208,7 +210,7 @@ describe("Kanji API", () => {
   });
 
   describe("updateKanjiWeight", () => {
-    const mockKanjiData = {
+    const mockKanjiData: IKanji = {
       kanji: "日",
       jpRead: "ひ、び、か",
       chinaRead: "ニチ、ジツ",

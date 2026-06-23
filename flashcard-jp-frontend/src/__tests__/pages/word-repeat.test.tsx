@@ -1,6 +1,7 @@
 import { getWord } from "@/_utils/api/server/wordApi";
 import Page from "../../app/(auth)/(jp)/words/repeat/page";
 import buildWeightedDeck from "@/_utils/buildWeightedDeck";
+import { IWord } from "@/_interface/Interface";
 
 jest.mock("@/_utils/buildWeightedDeck", () => jest.fn());
 
@@ -22,14 +23,13 @@ describe("Word Repeat Page", () => {
   });
 
   it("Передает слова через buildWeightedDeck", async () => {
-    const mockWords = [
+    const mockWords: IWord[] = [
       {
         _id: "1",
         word: "猫",
         translate: "кошка",
         category: "животные",
         weight: 3,
-        learned: true,
       },
     ];
 

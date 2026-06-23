@@ -3,9 +3,9 @@ import buildWeightedDeck from "@/_utils/buildWeightedDeck";
 describe("buildWeightedDeck", () => {
   it("Возвращает копию массива если веса равны 1", () => {
     const cards = [
-      { symbol: "あ", romaji: "a", weight: 1 },
-      { symbol: "い", romaji: "i", weight: 1 },
-      { symbol: "う", romaji: "u", weight: 1 },
+      { symbol: "あ", romaji: "a", weight: 1, _id: "1" },
+      { symbol: "い", romaji: "i", weight: 1, _id: "1" },
+      { symbol: "う", romaji: "u", weight: 1, _id: "1" },
     ];
 
     const result = buildWeightedDeck(cards);
@@ -16,8 +16,8 @@ describe("buildWeightedDeck", () => {
 
   it("Не изменяет исходный массив", () => {
     const cards = [
-      { symbol: "あ", romaji: "a", weight: 2 },
-      { symbol: "い", romaji: "i", weight: 2 },
+      { symbol: "あ", romaji: "a", weight: 2, _id: "1" },
+      { symbol: "い", romaji: "i", weight: 2, _id: "1" },
     ];
 
     const original = [...cards];
@@ -29,8 +29,8 @@ describe("buildWeightedDeck", () => {
 
   it("Карточка с большим весом появляется чаще", () => {
     const cards = [
-      { symbol: "あ", romaji: "a", weight: 5 },
-      { symbol: "い", romaji: "i", weight: 1 },
+      { symbol: "あ", romaji: "a", weight: 5, _id: "1" },
+      { symbol: "い", romaji: "i", weight: 1, _id: "1" },
     ];
 
     const result = buildWeightedDeck(cards);

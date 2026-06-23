@@ -1,13 +1,13 @@
 "use client";
 
-import { IWord } from "@/_interface/Interface";
 import styles from "./wordsRepeatPageComponent.module.scss";
+import { IWord } from "@/_interface/Interface";
 import { useEffect, useState } from "react";
-import shuffle from "@/_utils/shuffle";
 import { motion } from "framer-motion";
 import { FlashCard } from "../FlashCard/FlashCard";
 import Button from "../UI/Button/Button";
 import { updateWordWeight } from "@/_utils/api/client/wordApi";
+import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
 
 export default function WordsRepeatPageComponent({
   words,
@@ -19,7 +19,7 @@ export default function WordsRepeatPageComponent({
   const [direction, setDirection] = useState(0);
 
   useEffect(() => {
-    setCards(shuffle<IWord>(words));
+    setCards(separateDuplicatesShuffleCards<IWord>(words));
   }, [words]);
 
   function nextCard() {

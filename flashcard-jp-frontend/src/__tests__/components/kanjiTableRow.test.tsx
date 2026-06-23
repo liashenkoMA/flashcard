@@ -14,6 +14,7 @@ const mockKanji = {
   jpRead: "ひ、び、か",
   chinaRead: "ニチ、ジツ",
   learned: false,
+  weight: 1,
 };
 
 describe("KanjiTableRow", () => {

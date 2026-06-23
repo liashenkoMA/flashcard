@@ -38,8 +38,22 @@ describe("Kana Api", () => {
 
     it("Успешное получение каны", async () => {
       const mockResponse: IKana[] = [
-        { symbol: "あ", romaji: "a", group: "a", learned: false, weight: 1 },
-        { symbol: "い", romaji: "i", group: "a", learned: false, weight: 1 },
+        {
+          symbol: "あ",
+          romaji: "a",
+          group: "a",
+          learned: false,
+          weight: 1,
+          _id: "1",
+        },
+        {
+          symbol: "い",
+          romaji: "i",
+          group: "a",
+          learned: false,
+          weight: 1,
+          _id: "1",
+        },
       ];
 
       mockFetch.mockResolvedValueOnce({
@@ -78,7 +92,7 @@ describe("Kana Api", () => {
 
   describe("updateHiragana", () => {
     it("Ошибка сети при изучении каны", async () => {
-      const mockHiragana = { symbol: "が", romaji: "ga", weight: 1 };
+      const mockHiragana = { symbol: "が", romaji: "ga", weight: 1, _id: "1" };
 
       mockFetch.mockRejectedValueOnce(new Error("Network Error"));
 
@@ -89,7 +103,7 @@ describe("Kana Api", () => {
     });
 
     it("Успешное изучение каны", async () => {
-      const mockHiragana = { symbol: "が", romaji: "ga", weight: 1 };
+      const mockHiragana = { symbol: "が", romaji: "ga", weight: 1, _id: "1" };
 
       const mockResponse: IUpdateHirakanaResponse = {
         message: "Выучена",
@@ -122,7 +136,7 @@ describe("Kana Api", () => {
     });
 
     it("Сервер вернул !res.ok", async () => {
-      const mockHiragana = { symbol: "が", romaji: "ga", weight: 1 };
+      const mockHiragana = { symbol: "が", romaji: "ga", weight: 1, _id: "1" };
 
       mockFetch.mockResolvedValueOnce({
         ok: false,
@@ -146,8 +160,22 @@ describe("Kana Api", () => {
 
     it("Успешное получение каны", async () => {
       const mockResponse: IKana[] = [
-        { symbol: "ア", romaji: "a", group: "a", learned: false, weight: 1 },
-        { symbol: "イ", romaji: "i", group: "a", learned: false, weight: 1 },
+        {
+          symbol: "ア",
+          romaji: "a",
+          group: "a",
+          learned: false,
+          weight: 1,
+          _id: "1",
+        },
+        {
+          symbol: "イ",
+          romaji: "i",
+          group: "a",
+          learned: false,
+          weight: 1,
+          _id: "1",
+        },
       ];
 
       mockFetch.mockResolvedValueOnce({
@@ -188,7 +216,7 @@ describe("Kana Api", () => {
 
   describe("updatekatakana", () => {
     it("Ошибка сети при получении каны", async () => {
-      const mockKatakana = { symbol: "ア", romaji: "a", weight: 1 };
+      const mockKatakana = { symbol: "ア", romaji: "a", weight: 1, _id: "1" };
 
       mockFetch.mockRejectedValueOnce(new Error("Network Error"));
 
@@ -199,7 +227,7 @@ describe("Kana Api", () => {
     });
 
     it("Успешное получение каны", async () => {
-      const mockKatakana = { symbol: "ア", romaji: "a", weight: 1 };
+      const mockKatakana = { symbol: "ア", romaji: "a", weight: 1, _id: "1" };
 
       const mockResponse: IUpdateKatakanaResponse = {
         message: "Выучена",
@@ -231,7 +259,7 @@ describe("Kana Api", () => {
     });
 
     it("Сервер вернул !res.ok", async () => {
-      const mockKatakana = { symbol: "ア", romaji: "a", weight: 1 };
+      const mockKatakana = { symbol: "ア", romaji: "a", weight: 1, _id: "1" };
 
       mockFetch.mockResolvedValueOnce({
         ok: false,
@@ -252,6 +280,7 @@ describe("Kana Api", () => {
         symbol: "が",
         romaji: "ga",
         weight: 1,
+        _id: "1",
       };
 
       mockFetch.mockRejectedValueOnce(new Error("Network Error"));
@@ -267,6 +296,7 @@ describe("Kana Api", () => {
         symbol: "が",
         romaji: "ga",
         weight: 1,
+        _id: "1",
       };
 
       const mockResponse: IUpdateHiraganaWeightResponse = {
@@ -306,6 +336,7 @@ describe("Kana Api", () => {
         symbol: "が",
         romaji: "ga",
         weight: 1,
+        _id: "1",
       };
 
       mockFetch.mockResolvedValueOnce({
@@ -328,6 +359,7 @@ describe("Kana Api", () => {
         symbol: "ア",
         romaji: "a",
         weight: 1,
+        _id: "1",
       };
 
       mockFetch.mockRejectedValueOnce(new Error("Network Error"));
@@ -343,6 +375,7 @@ describe("Kana Api", () => {
         symbol: "ア",
         romaji: "a",
         weight: 1,
+        _id: "1",
       };
 
       const mockResponse: IUpdateKatakanaWeightResponse = {
@@ -382,6 +415,7 @@ describe("Kana Api", () => {
         symbol: "ア",
         romaji: "a",
         weight: 1,
+        _id: "1",
       };
 
       mockFetch.mockResolvedValueOnce({

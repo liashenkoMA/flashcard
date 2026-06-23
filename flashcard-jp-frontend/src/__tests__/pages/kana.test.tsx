@@ -1,6 +1,7 @@
 import Page, { IPageParams } from "@/app/(auth)/(jp)/kana/[slug]/page";
 import { getHiragana, getKatakana } from "@/_utils/api/server/kanaApi";
 import buildWeightedDeck from "@/_utils/buildWeightedDeck";
+import { IKana } from "@/_interface/Interface";
 
 jest.mock("@/_utils/buildWeightedDeck", () => jest.fn());
 jest.mock("@/_utils/api/server/kanaApi", () => ({
@@ -8,10 +9,10 @@ jest.mock("@/_utils/api/server/kanaApi", () => ({
   getKatakana: jest.fn(),
 }));
 
-const mockKana = [
-  { symbol: "あ", romaji: "a", learned: true },
-  { symbol: "い", romaji: "i", learned: false },
-  { symbol: "う", romaji: "u", learned: true },
+const mockKana: IKana[] = [
+  { symbol: "あ", romaji: "a", learned: true, _id: "1", weight: 1 },
+  { symbol: "い", romaji: "i", learned: false, _id: "1", weight: 1 },
+  { symbol: "う", romaji: "u", learned: true, _id: "1", weight: 1 },
 ];
 
 describe("Kana Page", () => {
@@ -52,10 +53,10 @@ describe("Kana Page", () => {
   it("При type=repeat передает изученные kana в buildWeightedDeck", async () => {
     (getHiragana as jest.Mock).mockResolvedValue(mockKana);
 
-    const weightedKana = [
-      { symbol: "あ", romaji: "a", learned: true },
-      { symbol: "う", romaji: "u", learned: true },
-      { symbol: "あ", romaji: "a", learned: true },
+    const weightedKana: IKana[] = [
+      { symbol: "あ", romaji: "a", learned: true, _id: "1", weight: 1 },
+      { symbol: "う", romaji: "u", learned: true, _id: "1", weight: 1 },
+      { symbol: "あ", romaji: "a", learned: true, _id: "1", weight: 1 },
     ];
 
     (buildWeightedDeck as jest.Mock).mockReturnValue(weightedKana);
@@ -69,8 +70,8 @@ describe("Kana Page", () => {
     } as IPageParams);
 
     expect(buildWeightedDeck).toHaveBeenCalledWith([
-      { symbol: "あ", romaji: "a", learned: true },
-      { symbol: "う", romaji: "u", learned: true },
+      { symbol: "あ", romaji: "a", learned: true, _id: "1", weight: 1 },
+      { symbol: "う", romaji: "u", learned: true, _id: "1", weight: 1 },
     ]);
     expect(result.props.children.props.kana).toEqual(weightedKana);
   });

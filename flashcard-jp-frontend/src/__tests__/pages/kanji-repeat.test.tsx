@@ -1,6 +1,7 @@
 import { getKanji } from "@/_utils/api/server/kanjiApi";
 import Page from "../../app/(auth)/(jp)/kanji/repeat/page";
 import buildWeightedDeck from "@/_utils/buildWeightedDeck";
+import { IKanji } from "@/_interface/Interface";
 
 jest.mock("@/_utils/api/server/kanjiApi", () => ({
   getKanji: jest.fn(),
@@ -22,7 +23,7 @@ describe("Kanji Repeat Page", () => {
   });
 
   it("Передает данные в buildWeightedDeck", async () => {
-    const mockKanji = [
+    const mockKanji: IKanji[] = [
       {
         _id: "1",
         kanji: "日",
