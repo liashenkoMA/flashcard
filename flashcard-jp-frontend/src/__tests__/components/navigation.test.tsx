@@ -1,11 +1,11 @@
 import Navigation from "@/_components/Navigation/Navigation";
-import { fireEvent, render, screen } from "@testing-library/react";
-
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import modalReducer from "@/_store/modalSlice";
 import authReducer from "@/_store/authSlice";
 import { RootState } from "@/_store/store";
+import { getUser } from "@/_utils/api/client/userApi";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
@@ -14,6 +14,14 @@ jest.mock("next/navigation", () => ({
 jest.mock("@/_utils/api/client/userApi", () => ({
   getUser: jest.fn().mockRejectedValue(new Error("no user")),
 }));
+
+jest.mock(
+  "@/_components/ProfileDropdown/ProfileDropdown",
+  () =>
+    function ProfileDropdown() {
+      return <div data-testid="profile-dropdown" />;
+    },
+);
 
 function renderWithStore(preloadedState?: Partial<RootState>) {
   const store = configureStore({
@@ -37,83 +45,60 @@ function renderWithStore(preloadedState?: Partial<RootState>) {
 describe("Navigation component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-
-    jest.spyOn(console, "log").mockImplementation(() => {});
   });
 
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
-  it("Рендер меню", () => {
+  it("Рендерит кнопки входа и регистрации если пользователь не авторизован", () => {
     renderWithStore({
       auth: { userName: "" },
     });
 
     expect(screen.getByText("Войти")).toBeInTheDocument();
-    expect(screen.getByText("Зарегистрироваться")).toBeInTheDocument();
+    expect(screen.getByText("Регистрация")).toBeInTheDocument();
   });
 
-  it("Открытие и закрытие меню по клику", () => {
-    renderWithStore({
-      auth: { userName: "" },
-    });
-
-    const menuButton = screen.getByTestId("menu-toggle");
-
-    expect(menuButton).toHaveClass("navigation__button_type_open");
-
-    fireEvent.click(menuButton);
-
-    expect(menuButton).toHaveClass("navigation__button_type_close");
-  });
-
-  it("Войти → меняет modal.mode = login", () => {
+  it("Войти - меняет modal.mode = login", () => {
     const { store } = renderWithStore({
       auth: { userName: "" },
     });
 
     fireEvent.click(screen.getByText("Войти"));
 
-    const state = store.getState();
-
-    expect(state.modal.mode).toBe("login");
+    expect(store.getState().modal.mode).toBe("login");
   });
 
-  it("Зарегистрироваться → modal.mode = register", () => {
+  it("Регистрация - меняет modal.mode = register", () => {
     const { store } = renderWithStore({
       auth: { userName: "" },
     });
 
-    fireEvent.click(screen.getByText("Зарегистрироваться"));
+    fireEvent.click(screen.getByText("Регистрация"));
 
-    const state = store.getState();
-
-    expect(state.modal.mode).toBe("register");
+    expect(store.getState().modal.mode).toBe("register");
   });
 
-  it("После клика меню закрывается", () => {
-    renderWithStore({
-      auth: { userName: "" },
-    });
-
-    const menuButton = screen.getByTestId("menu-toggle");
-
-    fireEvent.click(menuButton);
-    expect(menuButton).toHaveClass("navigation__button_type_close");
-
-    fireEvent.click(screen.getByText("Войти"));
-
-    expect(menuButton).toHaveClass("navigation__button_type_open");
-  });
-
-  it("Если пользователь есть — показывается личный кабинет", () => {
+  it("Если пользователь есть — отображает ProfileDropdown", () => {
     renderWithStore({
       auth: { userName: "Иван" },
     });
 
-    expect(screen.getByText("Личный кабинет")).toBeInTheDocument();
-    expect(screen.getByText("Выйти")).toBeInTheDocument();
+    expect(screen.getByTestId("profile-dropdown")).toBeInTheDocument();
+  });
+
+  it("Если имени нет — получает пользователя и сохраняет имя", async () => {
+    (getUser as jest.Mock).mockResolvedValue({
+      name: "Иван",
+    });
+
+    const { store } = renderWithStore({
+      auth: { userName: "" },
+    });
+
+    await waitFor(() => {
+      expect(getUser).toHaveBeenCalled();
+    });
+    await waitFor(() => {
+      expect(store.getState().auth.userName).toBe("Иван");
+    });
   });
 
   it("Snapshot", () => {

@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ProfileDropdown component Snapshot 1`] = `
+<div>
+  <div
+    class="profiledropdown"
+  >
+    <div
+      class="profiledropdown__profile"
+    >
+      <div
+        class="profiledropdown__user"
+      >
+        Иван
+      </div>
+      <img
+        alt="Аватарка"
+        class="profiledropdown__img"
+        data-nimg="1"
+        decoding="async"
+        height="30"
+        loading="lazy"
+        src="/_next/image?url=%2Fimg.jpg&w=64&q=75"
+        srcset="/_next/image?url=%2Fimg.jpg&w=32&q=75 1x, /_next/image?url=%2Fimg.jpg&w=64&q=75 2x"
+        style="color: transparent;"
+        width="30"
+      />
+    </div>
+    <div
+      class="profiledropdown__menu profiledropdown__menu_type_close"
+    >
+      <button
+        class="profiledropdown__menu_button profiledropdown__menu_button_type_close"
+        type="button"
+      />
+      <div
+        class="profiledropdown__menu_inner"
+      >
+        <button>
+          Главная
+        </button>
+        <div
+          class="profiledropdown__menu_navigation"
+        >
+          <div
+            class="profiledropdown__menu_navigation_section"
+          >
+            <button
+              class="profiledropdown__menu_navigation_title"
+              type="button"
+            >
+              Учить
+              <div
+                class="profiledropdown__menu_navigation_title_type_close"
+              />
+            </button>
+          </div>
+          <div
+            class="profiledropdown__menu_navigation_section"
+          >
+            <button
+              class="profiledropdown__menu_navigation_title"
+            >
+              Добавить
+              <div
+                class="profiledropdown__menu_navigation_title_type_close"
+              />
+            </button>
+          </div>
+          <div
+            class="profiledropdown__menu_navigation_section"
+          >
+            <button
+              class="profiledropdown__menu_navigation_title"
+            >
+              Библиотека
+              <div
+                class="profiledropdown__menu_navigation_title_type_close"
+              />
+            </button>
+          </div>
+        </div>
+        <button>
+          Выйти
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

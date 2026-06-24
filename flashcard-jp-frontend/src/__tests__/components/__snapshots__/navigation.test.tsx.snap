@@ -3,15 +3,10 @@
 exports[`Navigation component Snapshot 1`] = `
 <div>
   <nav
-    class="navigation false"
+    class="navigation"
   >
-    <button
-      class="navigation__button navigation__button_type_open"
-      data-testid="menu-toggle"
-      type="button"
-    />
     <div
-      class="navigation__content navigation__content_type_close"
+      class="navigation__content"
     >
       <button
         class="button  default"
@@ -23,7 +18,7 @@ exports[`Navigation component Snapshot 1`] = `
         class="button  default"
         type="button"
       >
-        Зарегистрироваться
+        Регистрация
       </button>
     </div>
   </nav>

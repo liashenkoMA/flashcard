@@ -14,13 +14,11 @@ export default function Page() {
             href="/kana/katakana?type=repeat"
             text="Повторить катакану"
           />
-
           <LinkButton href="/kana/hiragana" text="Изучить хирагану" />
           <LinkButton
             href="/kana/hiragana?type=repeat"
             text="Повторить хирагану"
           />
-
           <LinkButton href="/kanji/repeat" text="Учим кандзи" />
           <LinkButton href="/words/repeat" text="Учим слова" />
         </Accordion>

@@ -3,78 +3,20 @@
 
 .navigation {
   display: flex;
-  justify-content: flex-end;
-
-  &_type_open {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    z-index: 2;
-  }
-
-  &__button {
-    @include m.hover {
-      cursor: pointer;
-      opacity: 0.9;
-    }
-
-    width: 38px;
-    height: 38px;
-    border: none;
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-  }
-
-  &__button_type_open {
-    background-image: url(../../_images/burger.svg);
-  }
-
-  &__button_type_close {
-    background-image: url(../../_images/closedburger.svg);
-    position: fixed;
-    top: 26px;
-    right: 26px;
-    z-index: 10;
-  }
+  width: 180px;
 
   &__content {
-    width: 320px;
-    min-width: 320px;
-    height: 100vh;
-    padding: 150px 10px 0;
-    background-color: v.$color-bg-card;
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  &__content_type_close {
-    display: none;
+    justify-content: flex-end;
+    gap: 5px;
   }
 
   @include m.respond-to(desktop) {
-    &__button {
-      display: none;
-    }
+    width: 300px;
 
     &__content {
-      flex-direction: row;
       gap: 10px;
-      padding: 0;
-      background-color: transparent;
-      min-width: auto;
-      height: auto;
-    }
-
-    &__content_type_close {
-      display: flex;
-    }
-
-    &_type_open {
-      position: static;
-      background: transparent;
     }
   }
 }

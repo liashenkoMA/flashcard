@@ -1,0 +1,148 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.profiledropdown {
+  &__profile {
+    width: 140px;
+    height: 40px;
+    padding: 10px;
+    background: v.$color-bg-element;
+    border: 1px solid v.$color-border-active;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    @include m.hover {
+      cursor: pointer;
+      border: 1px solid v.$purple;
+      box-shadow: v.$shadow-default;
+    }
+    @include m.respond-to(tablet-up) {
+      width: 200px;
+      height: 50px;
+    }
+  }
+
+  &__user {
+    color: v.$color-accent-3;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-medium;
+  }
+
+  &__img {
+    width: 30px;
+    height: 30px;
+  }
+
+  &__menu {
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    position: fixed;
+    border-radius: 15px;
+    background-color: v.$color-bg-element;
+    z-index: 999;
+    @include m.respond-to(tablet-up) {
+      width: 200px;
+      height: auto;
+      right: 10px;
+      top: 70px;
+    }
+
+    &_button {
+      display: flex;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      right: 15px;
+      top: 20px;
+      z-index: 1000;
+      background: url(../../_images/closedburger.svg) no-repeat;
+      border: none;
+      @include m.hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+      @include m.respond-to(tablet-up) {
+        display: none;
+      }
+
+      &_type_close {
+        display: none;
+      }
+    }
+
+    &_type_open {
+      @include m.respond-to(tablet-up) {
+        border: 1px solid v.$color-border-active;
+      }
+    }
+
+    &_type_close {
+      display: none;
+    }
+
+    &_inner {
+      padding: 70px 20px 0px 20px;
+      @include m.respond-to(tablet-up) {
+        padding: 20px 20px 20px 20px;
+      }
+    }
+
+    &_navigation {
+      margin: 20px 0px;
+      padding: 15px 0px;
+      border-top: 1px solid v.$color-border;
+      border-bottom: 1px solid v.$color-border;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      &_title {
+        width: 100%;
+        padding: 0;
+        border: none;
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: v.$color-text-main;
+        font-size: v.$font-size-small;
+        font-weight: v.$font-weight-regular;
+        line-height: v.$line-height-small;
+
+        &_type_open {
+          background-image: url(../../_images/Chevron_Up.svg);
+          width: 30px;
+          height: 30px;
+          background-repeat: no-repeat;
+          background-position: right;
+        }
+
+        &_type_close {
+          background-image: url(../../_images/Chevron_Down.svg);
+          width: 30px;
+          height: 30px;
+          background-repeat: no-repeat;
+          background-position: right;
+        }
+      }
+
+      &_section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    &_links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+}

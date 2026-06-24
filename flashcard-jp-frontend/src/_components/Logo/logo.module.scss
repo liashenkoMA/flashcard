@@ -7,12 +7,12 @@
   gap: 5px;
 
   &__link {
-    width: 42px;
-    height: 42px;
+    width: 50px;
+    height: 50px;
   }
 
   &__image {
-    border: 1px solid v.$color-border;
+    border: none;
     border-radius: 10px;
     @include m.hover {
       border: 1px solid v.$purple;
@@ -22,8 +22,14 @@
 
   &__text {
     color: v.$color-text-main;
-    font-size: v.$font-size-medium;
+    font-size: v.$font-size-small;
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-medium;
+  }
+
+  @include m.respond-to(desktop) {
+    &__text {
+      font-size: v.$font-size-medium;
+    }
   }
 }
