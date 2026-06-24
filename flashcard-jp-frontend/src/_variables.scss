@@ -1,22 +1,30 @@
-// base colors
+// Base colors
 $white: #ffffff;
-$grey: #94a9c9;
-$red: #ff0000;
+$grey: #7f91b2;
+$red: #dc2626;
 $black: #000000;
 $green: #4ade80;
 $yellow: #facc15;
 $grey-dark: #0a1330;
 $black-dark: #081028;
-$blue-dark: #222f43;
+$blue-dark: #263452;
 $purple: #8951ff;
-$purple-dark: #ba8de412;
 $purple-light: #cb3cff;
+$indigo: #6366f1;
+$indigo-dark: #4f46e5;
+$violet: #a855f7;
 
 // Shadows
-$shadow-default: 0 0 15px rgb(94, 92, 230, 0.4);
+$shadow-default: 0 8px 25px rgba($indigo, 0.35);
+$shadow-button-up: 0 0 20px rgba(99, 102, 241, 0.35);
 
 // Gradient
-$gradient-primary: linear-gradient(90deg, #cb3cff 20%, #7f25fb 68%);
+$gradient-primary: linear-gradient(90deg, $violet, $indigo-dark);
+
+$gradient-info: linear-gradient(90deg, #38bdf8, #2563eb);
+$gradient-dark: linear-gradient(90deg, #111c38, #162542);
+$gradient-secondary: linear-gradient(90deg, #111c38, #162542);
+$gradient-success: linear-gradient(90deg, #4ade80, #22c55e);
 
 // Text colors
 $color-text-main: $white;
@@ -25,6 +33,7 @@ $color-text-error: $red;
 $color-text-secondary: $grey;
 $color-accent-1: $green;
 $color-accent-2: $yellow;
+$color-accent-3: $purple;
 
 // Background colors
 $color-bg-page: $black-dark;
@@ -32,12 +41,18 @@ $color-bg-header: $grey-dark;
 $color-bg-footer: $grey-dark;
 $color-bg-card: $grey-dark;
 $color-bg-element: $grey-dark;
+$color-bg-link: $violet;
+
+// Button
 $color-button-learn-bg: $green;
 $color-button-delete-bg: $red;
-$color-button-up: $purple-light;
+$color-button-up-bg: rgba($indigo, 0.25);
 
-//Border colors
+// Border colors
 $color-border: $blue-dark;
+$color-border-active: $indigo;
+$color-button-up-border: $indigo;
+$color-button-up-border-hover: $violet;
 
 /* Text size */
 $font-size-xx-small: 14px;

@@ -5,35 +5,34 @@ import LinkButton from "@/_components/UI/LinkButton/LinkButton";
 export default function Page() {
   return (
     <section className={styles.dashboard}>
-      <h1 className={styles.dashboard__title}>Личный кабинет</h1>
+      <h1 className={styles.dashboard__title}>Главная</h1>
+
       <div className={styles.dashboard__section}>
-        <Accordion header="Катакана">
+        <Accordion header="Учить">
           <LinkButton href="/kana/katakana" text="Изучить катакану" />
           <LinkButton
             href="/kana/katakana?type=repeat"
-            text="Повторить изученное"
+            text="Повторить катакану"
           />
-          <LinkButton href="/tables/table-kana" text="Вся катакана" />
-        </Accordion>
 
-        <Accordion header="Хирагана">
           <LinkButton href="/kana/hiragana" text="Изучить хирагану" />
           <LinkButton
             href="/kana/hiragana?type=repeat"
-            text="Повторить изученное"
+            text="Повторить хирагану"
           />
-          <LinkButton href="/tables/table-kana" text="Вся хирагана" />
-        </Accordion>
 
-        <Accordion header="Кандзи">
-          <LinkButton href="/kanji/add" text="Добавить кандзи" />
           <LinkButton href="/kanji/repeat" text="Учим кандзи" />
-          <LinkButton href="/tables/table-kanji" text="Все кандзи" />
+          <LinkButton href="/words/repeat" text="Учим слова" />
         </Accordion>
 
-        <Accordion header="Слова">
+        <Accordion header="Добавить карточки">
+          <LinkButton href="/kanji/add" text="Добавить кандзи" />
           <LinkButton href="/words/add" text="Добавить слово" />
-          <LinkButton href="/words/repeat" text="Учим слова" />
+        </Accordion>
+
+        <Accordion header="Ваша библиотека">
+          <LinkButton href="/tables/table-kana" text="Таблица азбук" />
+          <LinkButton href="/tables/table-kanji" text="Все кандзи" />
           <LinkButton href="/tables/table-words" text="Все слова" />
         </Accordion>
       </div>

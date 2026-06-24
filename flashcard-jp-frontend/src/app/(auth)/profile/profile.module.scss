@@ -1,6 +1,8 @@
 @use "../../../variables" as v;
 
 .profile {
+  width: 100%;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;

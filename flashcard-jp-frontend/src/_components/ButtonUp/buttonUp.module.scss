@@ -8,17 +8,17 @@
     position: fixed;
     right: 40px;
     bottom: 40px;
-    background: url(../../_images/arrow-up.png) no-repeat center;
+    background: url(../../_images/Arrow_Up_LG.svg) no-repeat center;
     background-size: 30px 30px;
-    background-color: v.$color-button-up;
-    border: 1px solid v.$color-border;
+    background-color: v.$color-button-up-bg;
+    border: 1px solid v.$color-button-up-border;
     border-radius: 8px;
     @include m.hover {
       transform: translateY(-2px);
       transition-duration: 0.2s;
       cursor: pointer;
-      border: 1px solid v.$purple;
-      box-shadow: v.$shadow-default;
+      border: 1px solid v.$color-button-up-border-hover;
+      box-shadow: v.$shadow-button-up;
     }
 
     &_type_hide {

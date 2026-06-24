@@ -1,8 +1,8 @@
 @use "../../../variables" as v;
 
 .accordion {
-  border: 1px solid v.$color-border;
-  border-radius: 5px;
+  border: 1px solid v.$color-border-active;
+  border-radius: 6px;
 
   &__heading {
     padding: 0px 10px;
@@ -29,7 +29,7 @@
   }
 
   &__icon_type_open {
-    background-image: url(../../../_images/arrow-down.png);
+    background-image: url(../../../_images/Chevron_Down.svg);
     width: 30px;
     height: 30px;
     background-repeat: no-repeat;
@@ -37,7 +37,7 @@
   }
 
     &__icon_type_close {
-    background-image: url(../../../_images/arrow-up.png);
+    background-image: url(../../../_images/Chevron_Up.svg);
     width: 30px;
     height: 30px;
     background-repeat: no-repeat;

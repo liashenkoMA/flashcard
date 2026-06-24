@@ -10,10 +10,20 @@
   font-size: v.$font-size-x-small;
   font-weight: v.$font-weight-medium;
   line-height: v.$line-height-small;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    filter 200ms ease;
+
   @include m.hover {
     cursor: pointer;
-    opacity: 0.9;
+    transform: translateY(-2px);
+    filter: brightness(1.08);
     box-shadow: v.$shadow-default;
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   &__disabled {

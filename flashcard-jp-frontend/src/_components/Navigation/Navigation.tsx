@@ -64,7 +64,7 @@ export default function Navigation() {
                 handleOpenMenu();
               }}
             >
-              Личный кабинет
+              Главная
             </Button>
             <Button
               type="button"
