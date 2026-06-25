@@ -117,14 +117,14 @@ export default function KanaPageComponent({
               variant="danger"
               onClick={() => updateKanaCardWeight("forgot")}
             >
-              Не знаю
+              Не помню
             </Button>
             <Button
               type="button"
               variant="success"
               onClick={() => updateKanaCardWeight("remember")}
             >
-              Знаю
+              Помню
             </Button>
           </div>
         ) : (

@@ -12,14 +12,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
     @include m.hover {
-      cursor: pointer;
-      border: 1px solid v.$purple;
+      border-color: v.$purple;
       box-shadow: v.$shadow-default;
     }
-    @include m.respond-to(tablet-up) {
+    @include m.respond-to(tablet) {
       width: 200px;
       height: 50px;
+    }
+    @include m.respond-to(desktop) {
+      padding: 20px;
+      width: 300px;
+      height: 60px;
     }
   }
 
@@ -28,11 +33,16 @@
     font-size: v.$font-size-x-small;
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-medium;
+    @include m.respond-to(desktop) {
+      font-size: v.$font-size-medium;
+    }
   }
 
   &__img {
-    width: 30px;
-    height: 30px;
+    @include m.respond-to(desktop) {
+      width: 50px;
+      height: 50px;
+    }
   }
 
   &__menu {
@@ -47,8 +57,22 @@
     @include m.respond-to(tablet-up) {
       width: 200px;
       height: auto;
-      right: 10px;
       top: 70px;
+      right: 10px;
+    }
+    @include m.respond-to(desktop) {
+      width: 300px;
+      top: 80px;
+    }
+
+    &_open {
+      @include m.respond-to(tablet-up) {
+        border: 1px solid v.$color-border-active;
+      }
+    }
+
+    &_close {
+      display: none;
     }
 
     &_button {
@@ -58,53 +82,42 @@
       position: absolute;
       right: 15px;
       top: 20px;
-      z-index: 1000;
       background: url(../../_images/closedburger.svg) no-repeat;
       border: none;
+      cursor: pointer;
       @include m.hover {
-        cursor: pointer;
         opacity: 0.8;
       }
       @include m.respond-to(tablet-up) {
         display: none;
       }
 
-      &_type_close {
+      &_hidden {
         display: none;
       }
     }
 
-    &_type_open {
-      @include m.respond-to(tablet-up) {
-        border: 1px solid v.$color-border-active;
-      }
-    }
-
-    &_type_close {
-      display: none;
-    }
-
     &_inner {
-      padding: 70px 20px 0px 20px;
+      padding: 70px 20px 0;
       @include m.respond-to(tablet-up) {
-        padding: 20px 20px 20px 20px;
+        padding: 20px;
       }
     }
 
     &_navigation {
-      margin: 20px 0px;
-      padding: 15px 0px;
+      margin: 20px 0;
+      padding: 15px 0;
       border-top: 1px solid v.$color-border;
       border-bottom: 1px solid v.$color-border;
       display: flex;
       flex-direction: column;
       gap: 10px;
-
       &_title {
         width: 100%;
-        padding: 0;
-        border: none;
-        background: transparent;
+        padding: 0 10px;
+        border: 1px solid v.$color-border-active;
+        border-radius: 10px;
+        background: v.$gradient-dark;
         text-align: left;
         cursor: pointer;
         display: flex;
@@ -114,21 +127,8 @@
         font-size: v.$font-size-small;
         font-weight: v.$font-weight-regular;
         line-height: v.$line-height-small;
-
-        &_type_open {
-          background-image: url(../../_images/Chevron_Up.svg);
-          width: 30px;
-          height: 30px;
-          background-repeat: no-repeat;
-          background-position: right;
-        }
-
-        &_type_close {
-          background-image: url(../../_images/Chevron_Down.svg);
-          width: 30px;
-          height: 30px;
-          background-repeat: no-repeat;
-          background-position: right;
+        @include m.hover {
+          border-color: v.$purple;
         }
       }
 
@@ -140,9 +140,22 @@
     }
 
     &_links {
+      list-style: none;
       display: flex;
       flex-direction: column;
       gap: 10px;
+    }
+  }
+
+  &__arrow {
+    width: 30px;
+    height: 30px;
+    background-image: url(../../_images/Chevron_Down.svg);
+    background-repeat: no-repeat;
+    background-position: right;
+
+    &_open {
+      background-image: url(../../_images/Chevron_Up.svg);
     }
   }
 }

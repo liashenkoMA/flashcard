@@ -56,7 +56,7 @@ describe("KanaPageComponent", () => {
     expect(await screen.findByText(/あ|い|う/)).toBeInTheDocument();
   });
 
-  it("В режиме repeat отображаются кнопки Знаю и Не знаю", async () => {
+  it("В режиме repeat отображаются кнопки Помню и Не помню", async () => {
     render(
       <KanaPageComponent
         kana={mockCards}
@@ -66,9 +66,9 @@ describe("KanaPageComponent", () => {
     );
 
     expect(
-      await screen.findByRole("button", { name: "Знаю" }),
+      await screen.findByRole("button", { name: "Помню" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Не знаю" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Не помню" })).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Назад" }),
     ).not.toBeInTheDocument();
@@ -94,10 +94,10 @@ describe("KanaPageComponent", () => {
       screen.getByRole("button", { name: "Запомнил" }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Знаю" }),
+      screen.queryByRole("button", { name: "Помню" }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Не знаю" }),
+      screen.queryByRole("button", { name: "Не помню" }),
     ).not.toBeInTheDocument();
   });
 
@@ -154,7 +154,7 @@ describe("KanaPageComponent", () => {
 
     await screen.findByText(/あ|い|う/);
 
-    fireEvent.click(screen.getByRole("button", { name: "Знаю" }));
+    fireEvent.click(screen.getByRole("button", { name: "Помню" }));
 
     await waitFor(() => {
       expect(updateHiraganaWeight).toHaveBeenCalledTimes(1);
@@ -164,7 +164,7 @@ describe("KanaPageComponent", () => {
     });
   });
 
-  it("Кнопка Не знаю вызывает updateHiraganaWeight со статусом forgot", async () => {
+  it("Кнопка Не помню вызывает updateHiraganaWeight со статусом forgot", async () => {
     (updateHiraganaWeight as jest.Mock).mockResolvedValue({});
 
     render(
@@ -177,7 +177,7 @@ describe("KanaPageComponent", () => {
 
     await screen.findByText(/あ|い|う/);
 
-    fireEvent.click(screen.getByRole("button", { name: "Не знаю" }));
+    fireEvent.click(screen.getByRole("button", { name: "Не помню" }));
 
     await waitFor(() => {
       expect(updateHiraganaWeight).toHaveBeenCalledTimes(1);
@@ -187,7 +187,7 @@ describe("KanaPageComponent", () => {
     });
   });
 
-  it("Кнопка Знаю вызывает updateKatakanaWeight", async () => {
+  it("Кнопка Помню вызывает updateKatakanaWeight", async () => {
     (updateKatakanaWeight as jest.Mock).mockResolvedValue({});
 
     render(
@@ -200,7 +200,7 @@ describe("KanaPageComponent", () => {
 
     await screen.findByText(/あ|い|う/);
 
-    fireEvent.click(screen.getByRole("button", { name: "Знаю" }));
+    fireEvent.click(screen.getByRole("button", { name: "Помню" }));
 
     await waitFor(() => {
       expect(updateKatakanaWeight).toHaveBeenCalledTimes(1);
@@ -210,7 +210,7 @@ describe("KanaPageComponent", () => {
     });
   });
 
-  it("Кнопка Не знаю вызывает updateKatakanaWeight со статусом forgot", async () => {
+  it("Кнопка Не помню вызывает updateKatakanaWeight со статусом forgot", async () => {
     (updateKatakanaWeight as jest.Mock).mockResolvedValue({});
 
     render(
@@ -223,7 +223,7 @@ describe("KanaPageComponent", () => {
 
     await screen.findByText(/あ|い|う/);
 
-    fireEvent.click(screen.getByRole("button", { name: "Не знаю" }));
+    fireEvent.click(screen.getByRole("button", { name: "Не помню" }));
 
     await waitFor(() => {
       expect(updateKatakanaWeight).toHaveBeenCalledTimes(1);

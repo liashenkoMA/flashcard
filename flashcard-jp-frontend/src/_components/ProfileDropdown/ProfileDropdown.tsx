@@ -18,7 +18,7 @@ export default function ProfileDropdown({ user }: { user: string }) {
   const dispatch = useDispatch();
 
   function closeMenu() {
-    setIsOpen((isOpen) => !isOpen);
+    setIsOpen(false);
   }
 
   function toggleSection(section: string) {
@@ -32,6 +32,7 @@ export default function ProfileDropdown({ user }: { user: string }) {
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className={styles.profiledropdown__user}>{user}</div>
+
         <Image
           src={avatar}
           width={30}
@@ -40,14 +41,22 @@ export default function ProfileDropdown({ user }: { user: string }) {
           className={styles.profiledropdown__img}
         />
       </div>
+
       <div
-        className={`${styles.profiledropdown__menu} ${isOpen ? styles.profiledropdown__menu_type_open : styles.profiledropdown__menu_type_close}`}
+        className={`${styles.profiledropdown__menu} ${
+          isOpen
+            ? styles.profiledropdown__menu_open
+            : styles.profiledropdown__menu_close
+        }`}
       >
         <button
           type="button"
-          className={`${styles.profiledropdown__menu_button} ${isOpen ? "" : styles.profiledropdown__menu_button_type_close}`}
-          onClick={() => setIsOpen(!isOpen)}
-        ></button>
+          className={`${styles.profiledropdown__menu_button} ${
+            !isOpen ? styles.profiledropdown__menu_button_hidden : ""
+          }`}
+          onClick={closeMenu}
+        />
+
         <div className={styles.profiledropdown__menu_inner}>
           <Button
             type="button"
@@ -68,28 +77,64 @@ export default function ProfileDropdown({ user }: { user: string }) {
               >
                 Учить
                 <div
-                  className={`${activeSection === "learn" ? styles.profiledropdown__menu_navigation_title_type_open : styles.profiledropdown__menu_navigation_title_type_close}`}
+                  className={`${styles.profiledropdown__arrow} ${
+                    activeSection === "learn"
+                      ? styles.profiledropdown__arrow_open
+                      : ""
+                  }`}
                 />
               </button>
 
               {activeSection === "learn" && (
-                <div
-                  onClick={closeMenu}
-                  className={styles.profiledropdown__menu_links}
-                >
-                  <LinkButton href="/kana/katakana" text="Изучить катакану" />
-                  <LinkButton
-                    href="/kana/katakana?type=repeat"
-                    text="Повторить катакану"
-                  />
-                  <LinkButton href="/kana/hiragana" text="Изучить хирагану" />
-                  <LinkButton
-                    href="/kana/hiragana?type=repeat"
-                    text="Повторить хирагану"
-                  />
-                  <LinkButton href="/kanji/repeat" text="Учим кандзи" />
-                  <LinkButton href="/words/repeat" text="Учим слова" />
-                </div>
+                <ul className={styles.profiledropdown__menu_links}>
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href="/kana/katakana" text="Изучить катакану" />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href="/kana/katakana?type=repeat"
+                      text="Повторить катакану"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href="/kana/hiragana" text="Изучить хирагану" />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href="/kana/hiragana?type=repeat"
+                      text="Повторить хирагану"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href="/kanji/repeat" text="Учим кандзи" />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href="/words/repeat" text="Учим слова" />
+                  </li>
+                </ul>
               )}
             </div>
 
@@ -100,18 +145,30 @@ export default function ProfileDropdown({ user }: { user: string }) {
               >
                 Добавить
                 <div
-                  className={`${activeSection === "add" ? styles.profiledropdown__menu_navigation_title_type_open : styles.profiledropdown__menu_navigation_title_type_close}`}
+                  className={`${styles.profiledropdown__arrow} ${
+                    activeSection === "add"
+                      ? styles.profiledropdown__arrow_open
+                      : ""
+                  }`}
                 />
               </button>
 
               {activeSection === "add" && (
-                <div
-                  onClick={closeMenu}
-                  className={styles.profiledropdown__menu_links}
-                >
-                  <LinkButton href="/kanji/add" text="Добавить кандзи" />
-                  <LinkButton href="/words/add" text="Добавить слово" />
-                </div>
+                <ul className={styles.profiledropdown__menu_links}>
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href="/kanji/add" text="Добавить кандзи" />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href="/words/add" text="Добавить слово" />
+                  </li>
+                </ul>
               )}
             </div>
 
@@ -122,19 +179,40 @@ export default function ProfileDropdown({ user }: { user: string }) {
               >
                 Библиотека
                 <div
-                  className={`${activeSection === "library" ? styles.profiledropdown__menu_navigation_title_type_open : styles.profiledropdown__menu_navigation_title_type_close}`}
+                  className={`${styles.profiledropdown__arrow} ${
+                    activeSection === "library"
+                      ? styles.profiledropdown__arrow_open
+                      : ""
+                  }`}
                 />
               </button>
 
               {activeSection === "library" && (
-                <div
-                  onClick={closeMenu}
-                  className={styles.profiledropdown__menu_links}
-                >
-                  <LinkButton href="/tables/table-kana" text="Таблица азбук" />
-                  <LinkButton href="/tables/table-kanji" text="Все кандзи" />
-                  <LinkButton href="/tables/table-words" text="Все слова" />
-                </div>
+                <ul className={styles.profiledropdown__menu_links}>
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href="/tables/table-kana"
+                      text="Таблица азбук"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href="/tables/table-kanji" text="Все кандзи" />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href="/tables/table-words" text="Все слова" />
+                  </li>
+                </ul>
               )}
             </div>
           </div>
