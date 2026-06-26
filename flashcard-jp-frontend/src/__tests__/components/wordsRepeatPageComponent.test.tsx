@@ -34,10 +34,10 @@ describe("WordsRepeatPageComponent", () => {
     jest.restoreAllMocks();
   });
 
-  it("Показывает Добавьте первые карточки, чтобы начать повторение. при пустом массиве", async () => {
+  it("Показывает Идет загрузка или карточки еще не созданы. при пустом массиве", async () => {
     render(<WordsRepeatPageComponent words={[]} />);
 
-    expect(screen.getByText("Добавьте первые карточки, чтобы начать повторение.")).toBeInTheDocument();
+    expect(screen.getByText("Идет загрузка или карточки еще не созданы.")).toBeInTheDocument();
   });
 
   it("Рендер первой карточки после загрузки", async () => {

@@ -2,7 +2,7 @@
 
 import styles from "./wordsRepeatPageComponent.module.scss";
 import { IWord } from "@/_interface/Interface";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FlashCard } from "../FlashCard/FlashCard";
 import Button from "../UI/Button/Button";
@@ -14,9 +14,13 @@ export default function WordsRepeatPageComponent({
 }: {
   words: IWord[];
 }) {
-  const cards = separateDuplicatesShuffleCards<IWord>(words);
+  const [cards, setCards] = useState<IWord[]>([]);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
+
+  useEffect(() => {
+    setCards(separateDuplicatesShuffleCards<IWord>(words));
+  }, [words]);
 
   function nextCard() {
     setDirection(1);
@@ -44,7 +48,7 @@ export default function WordsRepeatPageComponent({
     return (
       <div>
         <p className={styles.wordsrepeatpagecomponent__loading}>
-          Добавьте первые карточки, чтобы начать повторение.
+          Идет загрузка или карточки еще не созданы.
         </p>
       </div>
     );
