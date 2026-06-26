@@ -68,21 +68,25 @@ export default function AddKanjiForm() {
   }
 
   return (
-    <Form handleSubmit={handleSubmit}>
-      {KANJI_FORM_INPUTS.map((input) => (
-        <Input
-          key={input.name}
-          {...input}
-          value={formData[input.name]}
-          onChange={handleChange}
-          errors={errors?.fieldErrors?.[input.name]?.join(", ")}
-        />
-      ))}
-      <span className={styles.addkanjiform__success}>{serverMessage}</span>
-      <Button type="submit" disabled={loading || Boolean(errors)}>
-        {loading ? "Отправка..." : "Добавить"}
-      </Button>
-      <span className={styles.addkanjiform__errors}>{serverErrorMessage}</span>
-    </Form>
+    <div className={styles.addKanjiForm__form}>
+      <Form handleSubmit={handleSubmit}>
+        {KANJI_FORM_INPUTS.map((input) => (
+          <Input
+            key={input.name}
+            {...input}
+            value={formData[input.name]}
+            onChange={handleChange}
+            errors={errors?.fieldErrors?.[input.name]?.join(", ")}
+          />
+        ))}
+        <span className={styles.addkanjiform__success}>{serverMessage}</span>
+        <Button type="submit" disabled={loading || Boolean(errors)}>
+          {loading ? "Отправка..." : "Добавить"}
+        </Button>
+        <span className={styles.addkanjiform__errors}>
+          {serverErrorMessage}
+        </span>
+      </Form>
+    </div>
   );
 }

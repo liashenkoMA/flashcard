@@ -10,6 +10,14 @@
   font-weight: v.$font-weight-regular;
   line-height: v.$line-height-small;
   text-decoration: none;
+  @include m.respond-to(tablet) {
+    font-size: v.$font-size-small;
+    line-height: v.$line-height-small;
+  }
+  @include m.respond-to(desktop-up) {
+    font-size: v.$font-size-medium;
+    line-height: v.$line-height-medium;
+  }
 
   &::after {
     content: "";

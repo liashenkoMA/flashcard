@@ -96,60 +96,64 @@ export default function AddWordForm() {
   }
 
   return (
-    <Form handleSubmit={handleSubmit}>
-      {WORD_FORM_INPUTS.map((input) => (
-        <Input
-          key={input.name}
-          {...input}
-          value={formData[input.name]}
-          onChange={handleChange}
-          inputName={input.inputName}
-          errors={errors?.fieldErrors?.[input.name]?.join(", ")}
-        />
-      ))}
-      <label className={styles.addWordForm__form_field}>
-        <select
-          onChange={handleCategoryChange}
-          value={selectCategory}
-          className={styles.addWordForm__lists}
+    <div className={styles.addWordForm__form}>
+      <Form handleSubmit={handleSubmit}>
+        {WORD_FORM_INPUTS.map((input) => (
+          <Input
+            key={input.name}
+            {...input}
+            value={formData[input.name]}
+            onChange={handleChange}
+            inputName={input.inputName}
+            errors={errors?.fieldErrors?.[input.name]?.join(", ")}
+          />
+        ))}
+        <label className={styles.addWordForm__form_field}>
+          <select
+            onChange={handleCategoryChange}
+            value={selectCategory}
+            className={styles.addWordForm__lists}
+            id="category"
+            name="category"
+          >
+            <option value="Без категории">Без категории</option>
+            {categoryList
+              .filter((el) => el !== "Без категории")
+              .map((list) => (
+                <option key={list} value={list}>
+                  {list}
+                </option>
+              ))}
+            <option value="Новая категория?">+ новая категория</option>
+          </select>
+        </label>
+        {selectCategory === "Новая категория?" && (
+          <Input
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            inputName="Категория:"
+          ></Input>
+        )}
+        <span
+          className={`${styles.addWordForm__text} ${styles.addWordForm__success}`}
         >
-          <option value="Без категории">Без категории</option>
-          {categoryList
-            .filter((el) => el !== "Без категории")
-            .map((list) => (
-              <option key={list} value={list}>
-                {list}
-              </option>
-            ))}
-          <option value="Новая категория?">+ новая категория</option>
-        </select>
-      </label>
-      {selectCategory === "Новая категория?" && (
-        <Input
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          inputName="Категория:"
-        ></Input>
-      )}
-      <span
-        className={`${styles.addWordForm__text} ${styles.addWordForm__success}`}
-      >
-        {serverMessage}
-      </span>
-      <span
-        className={`${styles.addWordForm__text} ${styles.addWordForm__errors}`}
-      >
-        {errors && errors?.fieldErrors?.category?.join(", ")}
-      </span>
-      <Button type="submit" disabled={loading || Boolean(errors)}>
-        {loading ? "Отправка..." : "Добавить"}
-      </Button>
-      <span
-        className={`${styles.addWordForm__text} ${styles.addWordForm__errors}`}
-      >
-        {serverErrorMessage}
-      </span>
-    </Form>
+          {serverMessage}
+        </span>
+        <span
+          className={`${styles.addWordForm__text} ${styles.addWordForm__errors}`}
+        >
+          {errors && errors?.fieldErrors?.category?.join(", ")}
+        </span>
+        <Button type="submit" disabled={loading || Boolean(errors)}>
+          {loading ? "Отправка..." : "Добавить"}
+        </Button>
+        <span
+          className={`${styles.addWordForm__text} ${styles.addWordForm__errors}`}
+        >
+          {serverErrorMessage}
+        </span>
+      </Form>
+    </div>
   );
 }

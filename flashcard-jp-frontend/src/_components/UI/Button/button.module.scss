@@ -14,6 +14,12 @@
     transform 200ms ease,
     box-shadow 200ms ease,
     filter 200ms ease;
+  @include m.respond-to(tablet-up) {
+    height: 60px;
+    border-radius: 15px;
+    font-size: v.$font-size-medium;
+    line-height: v.$line-height-large;
+  }
 
   @include m.hover {
     cursor: pointer;

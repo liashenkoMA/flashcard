@@ -47,7 +47,6 @@ describe("KanjiTable", () => {
     await waitFor(() => {
       expect(deleteKanji).toHaveBeenCalledTimes(1);
     });
-
     expect(deleteKanji).toHaveBeenCalledWith(mockKanji[0]);
   });
 });

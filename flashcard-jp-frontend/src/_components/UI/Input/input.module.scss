@@ -1,9 +1,13 @@
 @use "@/_variables" as v;
+@use "@/_mixins" as m;
 
 .form__field {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  @include m.respond-to(tablet-up) {
+    gap: 15px;
+  }
 }
 
 .input {
@@ -17,6 +21,13 @@
   font-size: v.$font-size-x-small;
   font-weight: v.$font-weight-regular;
   line-height: v.$line-height-small;
+  @include m.respond-to(tablet-up) {
+    padding: 10px 20px;
+    height: 50px;
+    border-radius: 20px;
+    font-size: v.$font-size-medium;
+    line-height: v.$line-height-medium;
+  }
 
   &__placeholder {
     padding-left: 10px;
@@ -24,6 +35,11 @@
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-small;
     color: v.$purple;
+    @include m.respond-to(tablet-up) {
+      padding-left: 20px;
+      font-size: v.$font-size-small;
+      line-height: v.$line-height-small;
+    }
   }
 
   &__error {
@@ -32,6 +48,10 @@
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-small;
     color: v.$color-text-error;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-small;
+      line-height: v.$line-height-small;
+    }
   }
 
   &:focus {

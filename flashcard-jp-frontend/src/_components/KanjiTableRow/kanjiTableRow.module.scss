@@ -18,17 +18,34 @@
     box-shadow: v.$shadow-default;
     transform: translateY(-2px);
   }
+  @include m.respond-to(tablet-up) {
+    min-height: 80px;
+    display: grid;
+    grid-template-columns: 80px 300px 1fr 48px;
+    align-items: center;
+    gap: 20px;
+  }
 
   &__symbol {
     color: v.$color-text-main;
     font-size: v.$font-size-large;
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-large;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-large;
+      line-height: v.$line-height-large;
+    }
   }
 
   &__readings {
     display: flex;
     flex-direction: column;
+    @include m.respond-to(tablet-up) {
+      flex-direction: row;
+      gap: 30px;
+      padding-right: 10px;
+      border-right: 2px solid v.$color-border;
+    }
   }
 
   &__reading {
@@ -37,10 +54,18 @@
     font-size: v.$font-size-xx-small;
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-large;
+      line-height: v.$line-height-large;
+    }
   }
 
   &__reading_type_jpread {
     color: v.$color-accent-2;
+    @include m.respond-to(tablet-up) {
+      padding-right: 10px;
+      border-right: 2px solid v.$color-border;
+    }
   }
 
   &__reading_type_chread {

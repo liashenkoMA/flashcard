@@ -1,14 +1,27 @@
 @use "../../variables" as v;
+@use "../../mixins" as m;
 
 .wrapper {
   width: 100%;
   min-height: calc(100vh - 160px);
   background-color: v.$color-bg-page;
+  @include m.respond-to(tablet-up) {
+    min-height: calc(100vh - 180px);
+  }
 }
 
 .content {
-  width: 320px;
+  max-width: 320px;
   margin-left: auto;
   margin-right: auto;
   padding: 30px 10px;
+  @include m.respond-to(tablet) {
+    max-width: 720px;
+  }
+  @include m.respond-to(desktop) {
+    max-width: 960px;
+  }
+  @include m.respond-to(desktop-large) {
+    max-width: 1280px;
+  }
 }

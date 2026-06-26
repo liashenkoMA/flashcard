@@ -1,7 +1,7 @@
 @use "../../../variables" as v;
 
 .dashboard {
-  width: 300px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,10 +22,14 @@
     gap: 15px;
   }
 
-  &__subtitle {
-    color: v.$color-text-main;
-    font-size: v.$font-size-medium;
-    font-weight: v.$font-weight-regular;
-    line-height: v.$line-height-medium;
+  &__lists {
+    padding: 5px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__list {
   }
 }

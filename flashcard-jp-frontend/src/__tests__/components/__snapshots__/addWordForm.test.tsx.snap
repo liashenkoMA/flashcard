@@ -2,83 +2,89 @@
 
 exports[`Add Word Form component Snapshot 1`] = `
 <div>
-  <form
-    class="form"
-    novalidate=""
+  <div
+    class="addWordForm__form"
   >
-    <label
-      class="form__field"
+    <form
+      class="form"
+      novalidate=""
     >
-      <span
-        class="input__placeholder"
+      <label
+        class="form__field"
       >
-        Введите слово:
-      </span>
-      <input
-        class="input"
-        name="word"
-        placeholder="ありがとう"
-        required=""
-        type="text"
-        value=""
-      />
-      <span
-        class="input__error"
-      />
-    </label>
-    <label
-      class="form__field"
-    >
-      <span
-        class="input__placeholder"
-      >
-        Перевод:
-      </span>
-      <input
-        class="input"
-        name="translate"
-        placeholder="Спасибо"
-        required=""
-        type="text"
-        value=""
-      />
-      <span
-        class="input__error"
-      />
-    </label>
-    <label
-      class="addWordForm__form_field"
-    >
-      <select
-        class="addWordForm__lists"
-      >
-        <option
-          value="Без категории"
+        <span
+          class="input__placeholder"
         >
-          Без категории
-        </option>
-        <option
-          value="Новая категория?"
+          Введите слово:
+        </span>
+        <input
+          class="input"
+          name="word"
+          placeholder="ありがとう"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
         >
-          + новая категория
-        </option>
-      </select>
-    </label>
-    <span
-      class="addWordForm__text addWordForm__success"
-    />
-    <span
-      class="addWordForm__text addWordForm__errors"
-    />
-    <button
-      class="button  default"
-      type="submit"
-    >
-      Добавить
-    </button>
-    <span
-      class="addWordForm__text addWordForm__errors"
-    />
-  </form>
+          Перевод:
+        </span>
+        <input
+          class="input"
+          name="translate"
+          placeholder="Спасибо"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="addWordForm__form_field"
+      >
+        <select
+          class="addWordForm__lists"
+          id="category"
+          name="category"
+        >
+          <option
+            value="Без категории"
+          >
+            Без категории
+          </option>
+          <option
+            value="Новая категория?"
+          >
+            + новая категория
+          </option>
+        </select>
+      </label>
+      <span
+        class="addWordForm__text addWordForm__success"
+      />
+      <span
+        class="addWordForm__text addWordForm__errors"
+      />
+      <button
+        class="button  default"
+        type="submit"
+      >
+        Добавить
+      </button>
+      <span
+        class="addWordForm__text addWordForm__errors"
+      />
+    </form>
+  </div>
 </div>
 `;

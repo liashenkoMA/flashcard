@@ -2,102 +2,106 @@
 
 exports[`Add Kanji Form component Snapshot 1`] = `
 <div>
-  <form
-    class="form"
-    novalidate=""
+  <div
+    class="addKanjiForm__form"
   >
-    <label
-      class="form__field"
+    <form
+      class="form"
+      novalidate=""
     >
-      <span
-        class="input__placeholder"
+      <label
+        class="form__field"
       >
-        Введите кандзи:
-      </span>
-      <input
-        class="input"
-        name="kanji"
-        placeholder="日"
-        required=""
-        type="text"
-        value=""
-      />
-      <span
-        class="input__error"
-      />
-    </label>
-    <label
-      class="form__field"
-    >
-      <span
-        class="input__placeholder"
+        <span
+          class="input__placeholder"
+        >
+          Введите кандзи:
+        </span>
+        <input
+          class="input"
+          name="kanji"
+          placeholder="日"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
       >
-        Кунъёми:
-      </span>
-      <input
-        class="input"
-        name="jpRead"
-        placeholder="ひ"
-        required=""
-        type="text"
-        value=""
-      />
-      <span
-        class="input__error"
-      />
-    </label>
-    <label
-      class="form__field"
-    >
-      <span
-        class="input__placeholder"
+        <span
+          class="input__placeholder"
+        >
+          Кунъёми:
+        </span>
+        <input
+          class="input"
+          name="jpRead"
+          placeholder="ひ"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
       >
-        Онъёми:
-      </span>
-      <input
-        class="input"
-        name="chinaRead"
-        placeholder="ニチ"
-        required=""
-        type="text"
-        value=""
-      />
-      <span
-        class="input__error"
-      />
-    </label>
-    <label
-      class="form__field"
-    >
-      <span
-        class="input__placeholder"
+        <span
+          class="input__placeholder"
+        >
+          Онъёми:
+        </span>
+        <input
+          class="input"
+          name="chinaRead"
+          placeholder="ニチ"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
       >
-        Перевод:
-      </span>
-      <input
-        class="input"
-        name="translate"
-        placeholder="день, солнце"
-        required=""
-        type="text"
-        value=""
-      />
+        <span
+          class="input__placeholder"
+        >
+          Перевод:
+        </span>
+        <input
+          class="input"
+          name="translate"
+          placeholder="день, солнце"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
       <span
-        class="input__error"
+        class="addkanjiform__success"
       />
-    </label>
-    <span
-      class="addkanjiform__success"
-    />
-    <button
-      class="button  default"
-      type="submit"
-    >
-      Добавить
-    </button>
-    <span
-      class="addkanjiform__errors"
-    />
-  </form>
+      <button
+        class="button  default"
+        type="submit"
+      >
+        Добавить
+      </button>
+      <span
+        class="addkanjiform__errors"
+      />
+    </form>
+  </div>
 </div>
 `;

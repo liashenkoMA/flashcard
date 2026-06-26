@@ -36,10 +36,10 @@ describe("KandjiRepeatPageComponent", () => {
     jest.restoreAllMocks();
   });
 
-  it("Показывает загрузку при пустом массиве", async () => {
+  it("Показывает Добавьте первые карточки, чтобы начать повторение. при пустом массиве", async () => {
     render(<KandjiRepeatPageComponent kanji={[]} />);
 
-    expect(screen.getByText("Загрузка...")).toBeInTheDocument();
+    expect(screen.getByText("Добавьте первые карточки, чтобы начать повторение.")).toBeInTheDocument();
   });
 
   it("Рендер первой карточки после загрузки", async () => {

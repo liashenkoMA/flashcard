@@ -14,6 +14,10 @@
     }
     transition: transform 0.3s;
     transform-style: preserve-3d;
+    @include m.respond-to(tablet-up) {
+      width: 400px;
+      height: 600px;
+    }
   }
 
   &__frontside {

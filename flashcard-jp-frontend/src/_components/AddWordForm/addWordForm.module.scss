@@ -1,6 +1,15 @@
 @use "../../variables" as v;
+@use "../../mixins" as m;
 
 .addWordForm {
+  &__form {
+    padding: 10px 5px;
+    min-width: 300px;
+    @include m.respond-to(tablet-up) {
+      min-width: 460px;
+    }
+  }
+
   &__form_field {
     padding: 15px 0px;
   }
@@ -17,6 +26,13 @@
     border-radius: 10px;
     border: 1px solid v.$color-border;
     background-color: v.$grey-dark;
+    @include m.respond-to(tablet-up) {
+      height: 50px;
+      padding: 10px 20px;
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+      border-radius: 20px;
+    }
   }
 
   &__lists:focus {
@@ -31,6 +47,9 @@
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-small;
     text-align: center;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-small;
+    }
   }
 
   &__success {

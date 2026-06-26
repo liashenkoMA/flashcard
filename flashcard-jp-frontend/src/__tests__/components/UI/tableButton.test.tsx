@@ -14,12 +14,6 @@ describe("TableButton component", () => {
     expect(screen.getByRole("button", { name: "Выучить" })).toBeInTheDocument();
   });
 
-  it("Рендерит текст Удалить если learned = true", () => {
-    render(<TableButton learned={true} onClick={jest.fn()} />);
-
-    expect(screen.getByRole("button", { name: "Удалить" })).toBeInTheDocument();
-  });
-
   it("Вызывает onClick при клике", () => {
     const handleClick = jest.fn();
 

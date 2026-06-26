@@ -12,7 +12,7 @@
     gap: 5px;
   }
 
-  @include m.respond-to(desktop) {
+  @include m.respond-to(tablet-up) {
     width: 300px;
 
     &__content {

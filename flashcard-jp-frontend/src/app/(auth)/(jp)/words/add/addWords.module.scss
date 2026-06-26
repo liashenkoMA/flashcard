@@ -1,8 +1,8 @@
 @use "../../../../../variables" as v;
+@use "../../../../../mixins" as m;
 
 .addword {
   width: 100%;
-  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,8 +11,8 @@
   &__title {
     text-align: center;
     color: v.$color-text-main;
-    font-size: v.$font-size-medium;
+    font-size: v.$font-size-large;
     font-weight: v.$font-weight-regular;
-    line-height: v.$line-height-medium;
+    line-height: v.$line-height-large;
   }
 }

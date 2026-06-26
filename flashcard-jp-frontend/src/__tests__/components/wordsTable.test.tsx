@@ -44,7 +44,6 @@ describe("WordTable", () => {
     await waitFor(() => {
       expect(deleteWord).toHaveBeenCalledTimes(1);
     });
-
     expect(deleteWord).toHaveBeenCalledWith(mockWords[0]);
   });
 });

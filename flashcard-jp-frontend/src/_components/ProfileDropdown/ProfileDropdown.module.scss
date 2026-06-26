@@ -2,6 +2,8 @@
 @use "../../mixins" as m;
 
 .profiledropdown {
+  position: relative;
+
   &__profile {
     width: 140px;
     height: 40px;
@@ -17,14 +19,12 @@
       border-color: v.$purple;
       box-shadow: v.$shadow-default;
     }
-    @include m.respond-to(tablet) {
-      width: 200px;
-      height: 50px;
-    }
-    @include m.respond-to(desktop) {
-      padding: 20px;
+    @include m.respond-to(tablet-up) {
       width: 300px;
       height: 60px;
+    }
+    @include m.respond-to(desktop-up) {
+      padding: 20px;
     }
   }
 
@@ -33,13 +33,13 @@
     font-size: v.$font-size-x-small;
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-medium;
-    @include m.respond-to(desktop) {
+    @include m.respond-to(tablet-up) {
       font-size: v.$font-size-medium;
     }
   }
 
   &__img {
-    @include m.respond-to(desktop) {
+    @include m.respond-to(tablet-up) {
       width: 50px;
       height: 50px;
     }
@@ -54,25 +54,27 @@
     border-radius: 15px;
     background-color: v.$color-bg-element;
     z-index: 999;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
     @include m.respond-to(tablet-up) {
-      width: 200px;
-      height: auto;
-      top: 70px;
-      right: 10px;
-    }
-    @include m.respond-to(desktop) {
+      position: absolute;
       width: 300px;
-      top: 80px;
+      height: auto;
+      top: calc(100% + 10px);
+      transform-origin: top left;
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
     }
 
     &_open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
       @include m.respond-to(tablet-up) {
         border: 1px solid v.$color-border-active;
       }
-    }
-
-    &_close {
-      display: none;
     }
 
     &_button {
@@ -112,6 +114,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+
       &_title {
         width: 100%;
         padding: 0 10px;
@@ -130,6 +133,12 @@
         @include m.hover {
           border-color: v.$purple;
         }
+        @include m.respond-to(tablet-up) {
+          padding: 5px 10px;
+          border-radius: 15px;
+          font-size: v.$font-size-medium;
+          line-height: v.$line-height-medium;
+        }
       }
 
       &_section {
@@ -140,10 +149,14 @@
     }
 
     &_links {
+      padding-left: 10px;
       list-style: none;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      @include m.respond-to(tablet-up) {
+        gap: 15px;
+      }
     }
   }
 

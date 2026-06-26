@@ -24,6 +24,10 @@
     font-size: v.$font-size-medium;
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-medium;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-large;
+      line-height: v.$line-height-large;
+    }
   }
 
   &__reading {
@@ -32,5 +36,9 @@
     font-size: v.$font-size-xx-small;
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+    }
   }
 }

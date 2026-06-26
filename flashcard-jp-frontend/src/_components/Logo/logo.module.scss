@@ -9,6 +9,10 @@
   &__link {
     width: 50px;
     height: 50px;
+    @include m.respond-to(tablet-up) {
+      width: 80px;
+      height: 80px;
+    }
   }
 
   &__image {
@@ -17,6 +21,10 @@
     @include m.hover {
       border: 1px solid v.$purple;
       box-shadow: v.$shadow-default;
+    }
+    @include m.respond-to(tablet-up) {
+      width: 80px;
+      height: 80px;
     }
   }
 
@@ -27,9 +35,9 @@
     line-height: v.$line-height-medium;
   }
 
-  @include m.respond-to(desktop) {
+  @include m.respond-to(tablet-up) {
     &__text {
-      font-size: v.$font-size-medium;
+      font-size: v.$font-size-large;
     }
   }
 }

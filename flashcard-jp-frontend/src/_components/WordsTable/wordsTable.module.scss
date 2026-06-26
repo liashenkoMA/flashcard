@@ -1,9 +1,19 @@
 @use "../../variables" as v;
+@use "../../mixins" as m;
 
 .tableWords__lists {
+  padding: 10px 0px;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  @include m.respond-to(tablet-up) {
+    padding: 20px 0px;
+    gap: 20px;
+  }
+  @include m.respond-to(desktop-up) {
+    padding: 20px 10px;
+    gap: 30px;
+  }
 }
 
 .tableWords__text {

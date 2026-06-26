@@ -1,8 +1,12 @@
 @use "../../variables" as v;
+@use "../../mixins" as m;
 
 .profile__form {
   padding: 10px 5px;
   min-width: 300px;
+  @include m.respond-to(tablet-up) {
+    min-width: 460px;
+  }
 }
 
 .profileform__errors {
@@ -11,6 +15,10 @@
   font-weight: v.$font-weight-regular;
   line-height: v.$line-height-small;
   color: v.$color-text-error;
+  @include m.respond-to(tablet-up) {
+    font-size: v.$font-size-small;
+    line-height: v.$line-height-small;
+  }
 }
 
 .profileform__text {
@@ -18,6 +26,10 @@
   font-weight: v.$font-weight-regular;
   line-height: v.$line-height-small;
   color: v.$color-text-main;
+  @include m.respond-to(tablet-up) {
+    font-size: v.$font-size-small;
+    line-height: v.$line-height-small;
+  }
 }
 
 .profileform__btn_type_delete {

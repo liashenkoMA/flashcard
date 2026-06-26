@@ -59,6 +59,9 @@
     &_accordion {
       color: v.$color-text-main;
     }
+    @include m.respond-to(tablet-up) {
+      padding: 5px;
+    }
   }
 
   &__content {

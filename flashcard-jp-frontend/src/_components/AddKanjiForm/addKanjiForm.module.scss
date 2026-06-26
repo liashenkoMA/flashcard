@@ -1,4 +1,13 @@
 @use "@/_variables" as v;
+@use "@/_mixins" as m;
+
+.addKanjiForm__form {
+  padding: 10px 5px;
+  min-width: 300px;
+  @include m.respond-to(tablet-up) {
+    min-width: 460px;
+  }
+}
 
 .addkanjiform__success {
   width: 100%;
@@ -9,6 +18,9 @@
   line-height: v.$line-height-small;
   color: v.$color-accent-1;
   text-align: center;
+  @include m.respond-to(tablet-up) {
+    font-size: v.$font-size-small;
+  }
 }
 
 .addkanjiform__errors {
@@ -17,4 +29,7 @@
   font-weight: v.$font-weight-regular;
   line-height: v.$line-height-small;
   color: v.$color-text-error;
+  @include m.respond-to(tablet-up) {
+    font-size: v.$font-size-small;
+  }
 }

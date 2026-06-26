@@ -11,6 +11,7 @@ export default function TableButton({
     <button
       type="button"
       onClick={onClick}
+      aria-label={learned ? "Удалить" : "Выучить"}
       className={`${styles.tablebutton} ${learned === true ? styles.tablebutton__delete : styles.tablebutton__learn}`}
     >
       {learned === true ? "" : "Выучить"}

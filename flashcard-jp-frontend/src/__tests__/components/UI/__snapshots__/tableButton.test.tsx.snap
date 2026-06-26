@@ -3,6 +3,7 @@
 exports[`TableButton component Snapshot 1`] = `
 <div>
   <button
+    aria-label="Выучить"
     class="tablebutton tablebutton__learn"
     type="button"
   >
