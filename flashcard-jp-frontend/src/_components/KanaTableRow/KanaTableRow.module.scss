@@ -1,4 +1,5 @@
 @use "../../variables" as v;
+@use "../../mixins" as m;
 
 .kanatablerow {
   width: 100%;
@@ -11,6 +12,12 @@
   background-color: v.$color-bg-element;
   border: 1px solid v.$color-border;
   border-radius: 15px;
+  @include m.hover {
+    transition-duration: 0.2s;
+    border: 1px solid v.$color-border-active-2;
+    box-shadow: v.$shadow-default;
+    transform: translateY(-2px);
+  }
 
   &__symbol {
     color: v.$color-text-main;

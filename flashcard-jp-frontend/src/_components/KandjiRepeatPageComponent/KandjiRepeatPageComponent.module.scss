@@ -8,6 +8,13 @@
   gap: 16px;
   overflow: hidden;
 
+  &__loading {
+    font-size: v.$font-size-large;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-large;
+    color: v.$color-text-main;
+  }
+
   &__inner {
     display: flex;
     flex-direction: column;
@@ -24,6 +31,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 5px;
 }
 
 .flashcard__text {
@@ -35,6 +43,7 @@
 
 .flashcard__text_type_front {
   color: v.$color-text-main;
+    font-size: v.$font-size-xx-large;
 }
 
 .flashcard__text_type_jpread {

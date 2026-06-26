@@ -8,6 +8,13 @@
   gap: 16px;
   overflow: hidden;
 
+  &__loading {
+    font-size: v.$font-size-large;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-large;
+    color: v.$color-text-main;
+  }
+
   &__inner {
     display: flex;
     flex-direction: column;

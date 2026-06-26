@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./KandjiRepeatPageComponent.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FlashCard } from "../FlashCard/FlashCard";
 import Button from "../UI/Button/Button";
 import { motion } from "framer-motion";
@@ -14,13 +14,9 @@ export default function KandjiRepeatPageComponent({
 }: {
   kanji: IKanji[];
 }) {
-  const [cards, setCards] = useState<IKanji[]>([]);
+  const cards = separateDuplicatesShuffleCards<IKanji>(kanji);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
-
-  useEffect(() => {
-    setCards(separateDuplicatesShuffleCards<IKanji>(kanji));
-  }, [kanji]);
 
   function nextCard() {
     setDirection(1);
@@ -44,7 +40,14 @@ export default function KandjiRepeatPageComponent({
       });
   }
 
-  if (!cards.length) return <div>Загрузка...</div>;
+  if (!cards.length)
+    return (
+      <div>
+        <p className={styles.kandjirepeatpagecomponent__loading}>
+          Добавьте первые карточки, чтобы начать повторение.
+        </p>
+      </div>
+    );
 
   return (
     <div className={styles.kandjirepeatpagecomponent}>

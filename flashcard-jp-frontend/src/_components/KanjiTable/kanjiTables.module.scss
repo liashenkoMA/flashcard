@@ -1,5 +1,14 @@
+@use "../../variables" as v;
+
 .tableKanji__lists {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.tableKanji__text {
+  font-size: v.$font-size-medium;
+  font-weight: v.$font-weight-regular;
+  line-height: v.$line-height-medium;
+  color: v.$color-text-main;
 }

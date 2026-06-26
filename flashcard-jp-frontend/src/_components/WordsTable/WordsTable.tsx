@@ -23,13 +23,15 @@ export default function WordTable({ words }: { words: IWord[] }) {
   return (
     <Accordion header="Таблица слов">
       <ul className={styles.tableWords__lists}>
-        {wordsState.map((el) => (
+        {wordsState.length ? wordsState.map((el) => (
           <WordTableRow
             key={el._id}
             word={el}
             deleteword={() => handleDeleteWords(el)}
           />
-        ))}
+        )) : (
+          <p className={styles.tableWords__text}>Пока карточек нет</p>
+        )}
       </ul>
     </Accordion>
   );

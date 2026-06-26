@@ -23,13 +23,17 @@ export default function KanjiTable({ kanji }: { kanji: IKanji[] }) {
   return (
     <Accordion header="Таблица кандзи">
       <ul className={styles.tableKanji__lists}>
-        {kanjiState.map((el) => (
-          <KanjiTableRow
-            key={el._id}
-            kanji={el}
-            deleteKanji={() => handleDeleteKanji(el)}
-          />
-        ))}
+        {kanjiState.length ? (
+          kanjiState.map((el) => (
+            <KanjiTableRow
+              key={el._id}
+              kanji={el}
+              deleteKanji={() => handleDeleteKanji(el)}
+            />
+          ))
+        ) : (
+          <p className={styles.tableKanji__text}>Пока карточек нет</p>
+        )}
       </ul>
     </Accordion>
   );

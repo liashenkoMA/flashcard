@@ -13,7 +13,7 @@ export default function TableButton({
       onClick={onClick}
       className={`${styles.tablebutton} ${learned === true ? styles.tablebutton__delete : styles.tablebutton__learn}`}
     >
-      {learned === true ? "Удалить" : "Выучить"}
+      {learned === true ? "" : "Выучить"}
     </button>
   );
 }
