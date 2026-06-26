@@ -163,3 +163,8 @@ export interface IUpdateKanjiWeightResponse {
 export interface IUpdateWordWeightResponse {
   message: string;
 }
+
+export interface IFAQ {
+  header: string;
+  text: string;
+}

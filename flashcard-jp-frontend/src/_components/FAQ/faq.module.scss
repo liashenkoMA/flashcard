@@ -1,0 +1,73 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  @include m.respond-to(tablet-up) {
+    gap: 60px;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__span {
+    color: v.$color-accent-3;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-small;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-small;
+    }
+  }
+
+  &__title {
+    text-align: center;
+    color: v.$color-text-main;
+    font-size: v.$font-size-medium;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-medium;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-large;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-large;
+    }
+  }
+
+  &__text {
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-medium;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-medium;
+    }
+
+    &_subtitle {
+      text-align: center;
+      color: v.$color-text-secondary;
+    }
+
+    &_accordion {
+      color: v.$color-text-main;
+    }
+  }
+
+  &__content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    @include m.respond-to(tablet-up) {
+      gap: 40px;
+    }
+  }
+}

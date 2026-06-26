@@ -1,24 +1,36 @@
 @use "../../../variables" as v;
+@use "../../../mixins" as m;
 
 .accordion {
+  width: 100%;
   border: 1px solid v.$color-border-active;
   border-radius: 6px;
+  @include m.respond-to(tablet-up) {
+    border-radius: 15px;
+  }
 
   &__heading {
     padding: 0px 10px;
     width: 100%;
-    height: 40px;
+    min-height: 40px;
     background: v.$gradient-primary;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     color: v.$color-text-main;
-    font-size: v.$font-size-medium;
+    font-size: v.$font-size-small;
     font-weight: v.$font-weight-regular;
-    line-height: v.$line-height-medium;
+    line-height: v.$line-height-small;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @include m.respond-to(tablet-up) {
+      min-height: 60px;
+      border-radius: 15px;
+      font-size: v.$font-size-medium;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-medium;
+    }
   }
 
   &__content {
