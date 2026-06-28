@@ -15,6 +15,37 @@
   background-position: right top;
   background-size: 700px auto;
 
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+
+  // верхняя линия
+  &::before {
+    right: 0;
+    top: 0;
+    width: 250px;
+    height: 1px;
+    background: v.$color-accent-3;
+    opacity: 0.7;
+    mask-image: linear-gradient(to left, black, transparent);
+    -webkit-mask-image: linear-gradient(to left, black, transparent);
+  }
+
+  // правая линия
+  &::after {
+    right: 0;
+    top: 0;
+    width: 1px;
+    height: 320px;
+    background: v.$color-accent-3;
+    opacity: 0.7;
+    mask-image: linear-gradient(to bottom, black, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+  }
+
   &__head {
     display: flex;
     flex-direction: column;
@@ -68,6 +99,11 @@
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
+    @include m.hover {
+      cursor: pointer;
+      transition-duration: 0.2s;
+      transform: translateY(-2px);
+    }
   }
 
   &__icon_start {
@@ -90,35 +126,8 @@
     background-size: min(900px, 100vw) auto;
     background-position: right calc(50% + 10px);
 
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      pointer-events: none;
-    }
-
-    // верхняя линия
     &::before {
-      right: 0;
-      top: 0;
       width: 600px;
-      height: 1px;
-      background: v.$color-accent-3;
-      opacity: 0.7;
-      mask-image: linear-gradient(to left, black, transparent);
-      -webkit-mask-image: linear-gradient(to left, black, transparent);
-    }
-
-    // правая линия
-    &::after {
-      right: 0;
-      top: 0;
-      width: 1px;
-      height: 320px;
-      background: v.$color-accent-3;
-      opacity: 0.7;
-      mask-image: linear-gradient(to bottom, black, transparent);
-      -webkit-mask-image: linear-gradient(to bottom, black, transparent);
     }
 
     &__head {
