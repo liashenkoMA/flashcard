@@ -168,3 +168,9 @@ export interface IFAQ {
   header: string;
   text: string;
 }
+
+export interface IReview {
+  user: string;
+  learned: string;
+  message: string;
+}

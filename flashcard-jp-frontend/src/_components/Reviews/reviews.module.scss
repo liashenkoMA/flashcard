@@ -1,0 +1,148 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.reviews {
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  @include m.respond-to(tablet-up) {
+    gap: 60px;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__span {
+    color: v.$color-accent-3;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-small;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-small;
+    }
+  }
+
+  &__title {
+    text-align: center;
+    color: v.$color-text-main;
+    font-size: v.$font-size-medium;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-medium;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-large;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-large;
+    }
+  }
+
+  &__text {
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-medium;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-medium;
+    }
+
+    &_subtitle {
+      text-align: center;
+      color: v.$color-text-secondary;
+    }
+
+    &_accordion {
+      color: v.$color-text-main;
+    }
+    @include m.respond-to(tablet-up) {
+      padding: 5px;
+    }
+  }
+
+  &__content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    @include m.respond-to(tablet-up) {
+      gap: 40px;
+    }
+  }
+
+  &__btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid v.$color-border;
+    border-radius: 20px;
+    background: v.$gradient-dark-card;
+    @include m.hover {
+      cursor: pointer;
+      transition-duration: 0.2s;
+      border: 1px solid v.$color-border-active;
+      box-shadow: v.$shadow-default;
+      transform: translateY(-2px);
+    }
+
+    &::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      background-color: #fff;
+      mask: center / contain no-repeat;
+      -webkit-mask: center / contain no-repeat;
+    }
+  }
+
+  &__btn_left::before {
+    mask-image: url("../../_images/arrow-left.svg");
+    -webkit-mask-image: url("../../_images/arrow-left.svg");
+  }
+
+  &__btn_right::before {
+    mask-image: url("../../_images/arrow-right.svg");
+    -webkit-mask-image: url("../../_images/arrow-right.svg");
+  }
+
+  &__viewport {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 15px 16px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__track {
+    display: flex;
+    gap: 20px;
+    padding-right: 16px;
+    @include m.respond-to(tablet) {
+      gap: 30px;
+    }
+  }
+
+  &__slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    @include m.respond-to(tablet) {
+      flex-basis: 50%;
+    }
+    @include m.respond-to(desktop-up) {
+      flex-basis: 25%;
+    }
+  }
+}

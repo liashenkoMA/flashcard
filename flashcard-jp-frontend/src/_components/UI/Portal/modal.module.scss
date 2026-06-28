@@ -21,6 +21,10 @@
     border-radius: 20px;
     border: 1px solid v.$color-border;
     position: relative;
+    @include m.respond-to(tablet-up) {
+      width: 400px;
+      padding: 30px 15px;
+    }
   }
 
   &__title {
@@ -30,6 +34,10 @@
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-medium;
     text-align: center;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-large;
+      line-height: v.$line-height-large;
+    }
   }
 
   &__button {
@@ -48,6 +56,12 @@
     @include m.hover {
       cursor: pointer;
       opacity: 0.9;
+    }
+    @include m.respond-to(tablet-up) {
+      width: 30px;
+      height: 30px;
+      top: 20px;
+      right: 20px;
     }
   }
 }

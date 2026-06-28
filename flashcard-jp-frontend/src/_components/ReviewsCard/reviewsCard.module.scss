@@ -1,0 +1,73 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.reviews {
+  &__card {
+    width: 200px;
+    height: 280px;
+    padding: 20px 15px 20px;
+    background: v.$gradient-dark-card;
+    border: 1px solid v.$color-border;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    @include m.hover {
+      cursor: pointer;
+      transition-duration: 0.2s;
+      border: 1px solid v.$color-border-active;
+      transform: translateY(-2px);
+    }
+    @include m.respond-to(tablet-up) {
+      width: 250px;
+      height: 300px;
+    }
+
+    &_icon {
+      width: 30px;
+      height: 30px;
+      background-color: #6c63ff;
+      mask: url("../../_images/quote.svg") no-repeat center;
+      mask-size: contain;
+      -webkit-mask: url("../../_images/quote.svg") no-repeat center;
+      -webkit-mask-size: contain;
+      @include m.respond-to(tablet-up) {
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    &_profile {
+      border-top: 1px solid v.$color-border;
+      padding-top: 10px;
+    }
+
+    &_text {
+      font-size: v.$font-size-x-small;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-small;
+      @include m.respond-to(tablet-up) {
+        font-size: v.$font-size-small;
+        font-weight: v.$font-weight-regular;
+        line-height: v.$line-height-small;
+      }
+    }
+
+    &_message {
+      padding-top: 10px;
+      color: v.$color-text-main;
+    }
+
+    &_user {
+      color: v.$color-text-main;
+    }
+
+    &_learned {
+      color: v.$color-text-secondary;
+      font-size: v.$font-size-xx-small;
+      @include m.respond-to(tablet-up) {
+        font-size: v.$font-size-x-small;
+      }
+    }
+  }
+}

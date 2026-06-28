@@ -5,6 +5,9 @@
   width: 100%;
   min-height: calc(100vh - 160px);
   background-color: v.$color-bg-page;
+  @include m.respond-to(tablet-up) {
+    min-height: calc(100vh - 180px);
+  }
 }
 
 .content {

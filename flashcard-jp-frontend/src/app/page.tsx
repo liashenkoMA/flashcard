@@ -1,6 +1,7 @@
 import styles from "./page.module.scss";
 import AuthModal from "@/_components/AuthModal/AuthModal";
 import Faq from "@/_components/FAQ/Faq";
+import Reviews from "@/_components/Reviews/Reviews";
 
 export default function Page() {
   return (
@@ -12,6 +13,7 @@ export default function Page() {
             полноценный SPA
           </p>
         </section>
+        <Reviews />
         <Faq />
         <AuthModal />
       </main>

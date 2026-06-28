@@ -1,4 +1,4 @@
-import styles from "./KanaTableRow.module.scss";
+import styles from "./kanaTableRow.module.scss";
 import TableButton from "../UI/TableButton/TableButton";
 import { IKana } from "@/_interface/Interface";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./KanaPageComponent.module.scss";
+import styles from "./kanaPageComponent.module.scss";
 import { useEffect, useState } from "react";
 import { FlashCard } from "../FlashCard/FlashCard";
 import { IKana } from "@/_interface/Interface";

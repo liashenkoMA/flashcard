@@ -4,18 +4,25 @@
 .accordion {
   width: 100%;
   border: 1px solid v.$color-border-active;
-  border-radius: 6px;
+  border-radius: 10px;
   @include m.respond-to(tablet-up) {
     border-radius: 15px;
   }
+  @include m.hover {
+    transition-duration: 0.2s;
+    border: 1px solid v.$color-border-active-2;
+    box-shadow: v.$shadow-default;
+    transform: translateY(-2px);
+  }
 
   &__heading {
-    padding: 0px 10px;
+    padding: 5px 10px;
     width: 100%;
     min-height: 40px;
-    background: v.$gradient-primary;
+    background: v.$gradient-dark-card;
     border: none;
-    border-radius: 5px;
+    border-bottom: 1px solid v.$color-border-active;
+    border-radius: 10px;
     cursor: pointer;
     color: v.$color-text-main;
     font-size: v.$font-size-small;
@@ -24,6 +31,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @include m.hover {
+      border-bottom: 1px solid v.$color-border-active-2;
+    }
     @include m.respond-to(tablet-up) {
       min-height: 60px;
       border-radius: 15px;

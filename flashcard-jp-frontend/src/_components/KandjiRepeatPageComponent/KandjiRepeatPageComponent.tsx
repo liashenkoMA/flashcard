@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./KandjiRepeatPageComponent.module.scss";
+import styles from "./kandjiRepeatPageComponent.module.scss";
 import { useEffect, useState } from "react";
 import { FlashCard } from "../FlashCard/FlashCard";
 import Button from "../UI/Button/Button";
