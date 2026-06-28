@@ -26,7 +26,7 @@
     &_icon {
       width: 30px;
       height: 30px;
-      background-color: #6c63ff;
+      background-color: v.$color-bg-icon;
       mask: url("../../_images/quote.svg") no-repeat center;
       mask-size: contain;
       -webkit-mask: url("../../_images/quote.svg") no-repeat center;

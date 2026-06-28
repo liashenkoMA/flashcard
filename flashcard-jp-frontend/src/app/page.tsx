@@ -1,18 +1,14 @@
 import styles from "./page.module.scss";
 import AuthModal from "@/_components/AuthModal/AuthModal";
 import Faq from "@/_components/FAQ/Faq";
+import PageHeader from "@/_components/PageHeader/PageHeader";
 import Reviews from "@/_components/Reviews/Reviews";
 
 export default function Page() {
   return (
     <div className={styles.wrapper}>
       <main className={styles.content}>
-        <section className={styles.content__header}>
-          <p className={styles.text}>
-            Контент разбить по секциям, т.е. смысловым блокам. Сверстать
-            полноценный SPA
-          </p>
-        </section>
+        <PageHeader />
         <Reviews />
         <Faq />
         <AuthModal />
