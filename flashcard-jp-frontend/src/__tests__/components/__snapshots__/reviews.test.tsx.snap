@@ -1,0 +1,303 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Reviews component Snapshot 1`] = `
+<div>
+  <section
+    class="reviews"
+  >
+    <div
+      class="reviews__header"
+    >
+      <span
+        class="reviews__span"
+      >
+        Отзывы
+      </span>
+      <h2
+        class="reviews__title"
+      >
+        Что рассказывают пользователи
+      </h2>
+      <p
+        class="reviews__text reviews__text_subtitle"
+      >
+        Сотни людей уже пользуются нашим сервисом!
+      </p>
+    </div>
+    <div
+      class="reviews__content"
+    >
+      <button
+        class="reviews__btn reviews__btn_left"
+        type="button"
+      />
+      <div
+        class="reviews__viewport"
+        data-testid="reviews-viewport"
+        style="scroll-behavior: auto;"
+      >
+        <div
+          class="reviews__track"
+        >
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+          <div
+            class="reviews__slide"
+          >
+            <div>
+              Review card
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="reviews__btn reviews__btn_right"
+        type="button"
+      />
+    </div>
+  </section>
+</div>
+`;

@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./reviews.module.scss";
-import { ReviewsCard } from "../ReviewsCard/ReviewsCard";
+import ReviewsCard from "../ReviewsCard/ReviewsCard";
 import { REVIEWS } from "@/_constants/reviews.constant";
 import { useEffect, useRef } from "react";
 
@@ -89,6 +89,7 @@ export default function Reviews() {
           className={styles.reviews__viewport}
           ref={viewportRef}
           onScroll={checkScroll}
+          data-testid="reviews-viewport"
         >
           <div className={styles.reviews__track}>
             {extendedReviews.map((card, index) => (

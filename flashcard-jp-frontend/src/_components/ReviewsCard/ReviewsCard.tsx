@@ -1,7 +1,7 @@
 import styles from "./reviewsCard.module.scss";
 import { IReview } from "@/_interface/Interface";
 
-export function ReviewsCard({ card }: { card: IReview }) {
+export default function ReviewsCard({ card }: { card: IReview }) {
   return (
     <div className={styles.reviews__card}>
       <div className={styles.reviews__card_top}>

@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ReviewsCard component Snapshot 1`] = `
+<div>
+  <div
+    class="reviews__card"
+  >
+    <div
+      class="reviews__card_top"
+    >
+      <div
+        class="reviews__card_icon"
+      />
+      <p
+        class="reviews__card_text reviews__card_message"
+      >
+        Отличное приложение для изучения слов
+      </p>
+    </div>
+    <div
+      class="reviews__card_profile"
+    >
+      <p
+        class="reviews__card_text reviews__card_user"
+      >
+        Алексей
+      </p>
+      <p
+        class="reviews__card_text reviews__card_learned"
+      >
+        Японский
+      </p>
+    </div>
+  </div>
+</div>
+`;

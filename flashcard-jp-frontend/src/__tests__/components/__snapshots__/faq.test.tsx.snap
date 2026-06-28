@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Faq component Snapshot 1`] = `
+<div>
+  <section
+    class="faq"
+  >
+    <div
+      class="faq__header"
+    >
+      <span
+        class="faq__span"
+      >
+        FAQ
+      </span>
+      <h2
+        class="faq__title"
+      >
+        Часто задаваемые вопросы
+      </h2>
+      <p
+        class="faq__text faq__text_subtitle"
+      >
+        Коротко о главном — всё, что важно знать перед стартом
+      </p>
+    </div>
+    <div
+      class="faq__content"
+    >
+      <div
+        class="accordion"
+      >
+        <button
+          class="accordion__heading"
+        >
+          Флеш-карточки подходят для начинающих?
+          <div
+            class="accordion__icon_type_open"
+          />
+        </button>
+        <div
+          class="accordion__content accordion__content_type_close"
+        >
+          <p
+            class="faq__text faq__text_accordion"
+          >
+            Да. Достаточно создать карточку с вопросом и ответом или выбрать готовую колоду. Такой формат понятен даже без опыта.
+          </p>
+        </div>
+      </div>
+      <div
+        class="accordion"
+      >
+        <button
+          class="accordion__heading"
+        >
+          2
+          <div
+            class="accordion__icon_type_open"
+          />
+        </button>
+        <div
+          class="accordion__content accordion__content_type_close"
+        >
+          <p
+            class="faq__text faq__text_accordion"
+          >
+            Да. Достаточно создать карточку с вопросом и ответом или выбрать готовую колоду. Такой формат понятен даже без опыта.
+          </p>
+        </div>
+      </div>
+      <div
+        class="accordion"
+      >
+        <button
+          class="accordion__heading"
+        >
+          3
+          <div
+            class="accordion__icon_type_open"
+          />
+        </button>
+        <div
+          class="accordion__content accordion__content_type_close"
+        >
+          <p
+            class="faq__text faq__text_accordion"
+          >
+            Да. Достаточно создать карточку с вопросом и ответом или выбрать готовую колоду. Такой формат понятен даже без опыта.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
