@@ -5,6 +5,7 @@ import Introduction from "@/_components/Introduction/Introduction";
 import PageHero from "@/_components/PageHero/PageHero";
 import Reviews from "@/_components/Reviews/Reviews";
 import CTA from "@/_components/CTA/Cta";
+import ButtonUp from "@/_components/ButtonUp/ButtonUp";
 
 export default function Page() {
   return (
@@ -16,6 +17,7 @@ export default function Page() {
         <Faq />
         <CTA />
         <AuthModal />
+        <ButtonUp />
       </main>
     </div>
   );

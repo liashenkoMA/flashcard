@@ -15,6 +15,7 @@ exports[`Reviews component Snapshot 1`] = `
       </span>
       <h2
         class="reviews__title"
+        id="reviews"
       >
         Что рассказывают пользователи
       </h2>

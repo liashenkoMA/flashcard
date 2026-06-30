@@ -1,0 +1,12 @@
+@use "../../mixins" as m;
+
+.landingnav {
+  &__lists {
+    display: none;
+    list-style-type: none;
+    @include m.respond-to(desktop-up) {
+      display: flex;
+      gap: 30px;
+    }
+  }
+}

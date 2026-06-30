@@ -15,6 +15,7 @@ exports[`Faq component Snapshot 1`] = `
       </span>
       <h2
         class="faq__title"
+        id="faq"
       >
         Часто задаваемые вопросы
       </h2>
@@ -44,7 +45,7 @@ exports[`Faq component Snapshot 1`] = `
           <p
             class="faq__text faq__text_accordion"
           >
-            Да. Достаточно создать карточку с вопросом и ответом или выбрать готовую колоду. Такой формат понятен даже без опыта.
+            Да, они созданы для всех. Формат простой: вы создаете карточки и закрепляете знания через повторение.
           </p>
         </div>
       </div>
@@ -54,7 +55,7 @@ exports[`Faq component Snapshot 1`] = `
         <button
           class="accordion__heading"
         >
-          2
+          Какие языки можно изучать с помощью карточек?
           <div
             class="accordion__icon_type_open"
           />
@@ -65,7 +66,7 @@ exports[`Faq component Snapshot 1`] = `
           <p
             class="faq__text faq__text_accordion"
           >
-            Да. Достаточно создать карточку с вопросом и ответом или выбрать готовую колоду. Такой формат понятен даже без опыта.
+            Карточки подходят для изучения японского, китайского, корейского и других языков. Вы можете добавлять любые слова, фразы, переводы и заметки.
           </p>
         </div>
       </div>
@@ -75,7 +76,7 @@ exports[`Faq component Snapshot 1`] = `
         <button
           class="accordion__heading"
         >
-          3
+          Как работает запоминание слов?
           <div
             class="accordion__icon_type_open"
           />
@@ -86,7 +87,91 @@ exports[`Faq component Snapshot 1`] = `
           <p
             class="faq__text faq__text_accordion"
           >
-            Да. Достаточно создать карточку с вопросом и ответом или выбрать готовую колоду. Такой формат понятен даже без опыта.
+            Система помогает регулярно возвращаться к материалу, чтобы слова не забывались. Повторение через определённые промежутки времени помогает лучше закреплять материал.
+          </p>
+        </div>
+      </div>
+      <div
+        class="accordion"
+      >
+        <button
+          class="accordion__heading"
+        >
+          Можно создавать свои карточки?
+          <div
+            class="accordion__icon_type_open"
+          />
+        </button>
+        <div
+          class="accordion__content accordion__content_type_close"
+        >
+          <p
+            class="faq__text faq__text_accordion"
+          >
+            Да. Вы можете создавать собственные карточки под свои цели: новые слова, грамматику, выражения или любую другую информацию.
+          </p>
+        </div>
+      </div>
+      <div
+        class="accordion"
+      >
+        <button
+          class="accordion__heading"
+        >
+          Нужно ли устанавливать приложение?
+          <div
+            class="accordion__icon_type_open"
+          />
+        </button>
+        <div
+          class="accordion__content accordion__content_type_close"
+        >
+          <p
+            class="faq__text faq__text_accordion"
+          >
+            Нет. Изучать материалы можно прямо в браузере с любого устройства: компьютера, планшета или телефона.
+          </p>
+        </div>
+      </div>
+      <div
+        class="accordion"
+      >
+        <button
+          class="accordion__heading"
+        >
+          Работает ли сервис без рекламы?
+          <div
+            class="accordion__icon_type_open"
+          />
+        </button>
+        <div
+          class="accordion__content accordion__content_type_close"
+        >
+          <p
+            class="faq__text faq__text_accordion"
+          >
+            Да. Мы сделали упор на комфортное обучение без отвлекающих элементов и лишней рекламы.
+          </p>
+        </div>
+      </div>
+      <div
+        class="accordion"
+      >
+        <button
+          class="accordion__heading"
+        >
+          Подходит ли это для подготовки к экзаменам?
+          <div
+            class="accordion__icon_type_open"
+          />
+        </button>
+        <div
+          class="accordion__content accordion__content_type_close"
+        >
+          <p
+            class="faq__text faq__text_accordion"
+          >
+            Да. Карточки можно использовать для запоминания слов, терминов, правил и другой информации, которая требует повторения.
           </p>
         </div>
       </div>

@@ -5,7 +5,7 @@ export default function Introduction() {
     <section className={styles.introduction}>
       <div className={styles.introduction__header}>
         <span className={styles.introduction__span}>Наш подход</span>
-        <h2 className={styles.introduction__title}>
+        <h2 id="introduction" className={styles.introduction__title}>
           Помощник в изучении азиатских языков
         </h2>
         <p
