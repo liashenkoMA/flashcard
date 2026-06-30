@@ -16,7 +16,7 @@
   }
 
   &__heading {
-    padding: 5px 10px;
+    padding: 10px 10px;
     width: 100%;
     min-height: 40px;
     background: v.$gradient-dark-card;
@@ -26,7 +26,7 @@
     cursor: pointer;
     color: v.$color-text-main;
     font-size: v.$font-size-small;
-    font-weight: v.$font-weight-regular;
+    font-weight: v.$font-weight-medium;
     line-height: v.$line-height-small;
     display: flex;
     justify-content: space-between;
@@ -35,16 +35,16 @@
       border-bottom: 1px solid v.$color-border-active-2;
     }
     @include m.respond-to(tablet-up) {
+      padding: 10px 20px;
       min-height: 60px;
       border-radius: 15px;
       font-size: v.$font-size-medium;
-      font-weight: v.$font-weight-regular;
       line-height: v.$line-height-medium;
     }
   }
 
   &__content {
-    padding: 5px;
+    padding: 10px 15px;
     display: flex;
     flex-direction: column;
     gap: 15px;

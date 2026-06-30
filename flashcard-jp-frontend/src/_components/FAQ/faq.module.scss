@@ -43,11 +43,10 @@
 
   &__text {
     font-size: v.$font-size-x-small;
-    font-weight: v.$font-weight-regular;
+    font-weight: v.$font-weight-light;
     line-height: v.$line-height-small;
     @include m.respond-to(tablet-up) {
       font-size: v.$font-size-medium;
-      font-weight: v.$font-weight-regular;
       line-height: v.$line-height-medium;
     }
 
