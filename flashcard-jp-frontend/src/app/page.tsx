@@ -1,14 +1,16 @@
 import styles from "./page.module.scss";
 import AuthModal from "@/_components/AuthModal/AuthModal";
 import Faq from "@/_components/FAQ/Faq";
-import PageHeader from "@/_components/PageHeader/PageHeader";
+import Introduction from "@/_components/Introduction/Introduction";
+import PageHero from "@/_components/PageHero/PageHero";
 import Reviews from "@/_components/Reviews/Reviews";
 
 export default function Page() {
   return (
     <div className={styles.wrapper}>
       <main className={styles.content}>
-        <PageHeader />
+        <PageHero />
+        <Introduction />
         <Reviews />
         <Faq />
         <AuthModal />

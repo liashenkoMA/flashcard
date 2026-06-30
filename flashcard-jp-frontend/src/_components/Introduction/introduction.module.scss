@@ -1,12 +1,14 @@
 @use "../../variables" as v;
 @use "../../mixins" as m;
 
-.faq {
+.introduction {
+  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
   @include m.respond-to(tablet-up) {
+    padding-bottom: 80px;
     gap: 60px;
   }
 
@@ -42,11 +44,13 @@
   }
 
   &__text {
+    color: v.$color-text-main;
     font-size: v.$font-size-x-small;
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-small;
     @include m.respond-to(tablet-up) {
       font-size: v.$font-size-medium;
+      font-weight: v.$font-weight-regular;
       line-height: v.$line-height-medium;
     }
 
@@ -54,23 +58,19 @@
       text-align: center;
       color: v.$color-text-secondary;
     }
-
-    &_accordion {
-      color: v.$color-text-main;
-      font-weight: v.$font-weight-light;
-    }
-    @include m.respond-to(tablet-up) {
-      padding: 5px;
-    }
   }
 
   &__content {
-    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    @include m.respond-to(tablet-up) {
-      gap: 40px;
-    }
+    gap: 30px;
+  }
+
+  &__accent {
+    background: v.$gradient-primary;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: v.$font-weight-medium;
   }
 }

@@ -9,6 +9,7 @@
   align-items: center;
   @include m.respond-to(tablet-up) {
     gap: 60px;
+    padding-bottom: 80px;
   }
 
   &__header {
@@ -55,13 +56,6 @@
     &_subtitle {
       text-align: center;
       color: v.$color-text-secondary;
-    }
-
-    &_accordion {
-      color: v.$color-text-main;
-    }
-    @include m.respond-to(tablet-up) {
-      padding: 5px;
     }
   }
 

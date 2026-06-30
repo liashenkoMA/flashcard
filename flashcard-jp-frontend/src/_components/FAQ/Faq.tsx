@@ -7,7 +7,9 @@ export default function Faq() {
     <section className={styles.faq}>
       <div className={styles.faq__header}>
         <span className={styles.faq__span}>FAQ</span>
-        <h2 className={styles.faq__title}>Часто задаваемые вопросы</h2>
+        <h2 className={styles.faq__title}>
+          Ответы на самые часто возникающие вопросы
+        </h2>
         <p className={`${styles.faq__text} ${styles.faq__text_subtitle}`}>
           Коротко о главном — всё, что важно знать перед стартом
         </p>

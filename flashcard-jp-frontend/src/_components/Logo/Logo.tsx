@@ -16,7 +16,7 @@ export default function Logo() {
           className={styles.logo__image}
         />
       </Link>
-      <p className={styles.logo__text}>日本語</p>
+      <p className={styles.logo__text}>FLASHLearn</p>
     </div>
   );
 }
