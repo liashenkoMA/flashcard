@@ -99,8 +99,11 @@
   @include m.respond-to(desktop-up) {
     height: 400px;
 
+    &::after {
+      height: 400px;
+    }
     &__content {
-      max-width: 460px;
+      max-width: 360px;
       justify-content: space-between;
     }
 
@@ -112,6 +115,12 @@
     &__text {
       font-size: v.$font-size-medium;
       line-height: v.$line-height-medium;
+    }
+  }
+  @include m.respond-to(desktop-large) {
+    &__content {
+      max-width: 460px;
+      justify-content: space-between;
     }
   }
 }

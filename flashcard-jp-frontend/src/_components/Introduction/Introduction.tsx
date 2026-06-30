@@ -24,7 +24,7 @@ export default function Introduction() {
         </p>
 
         <p className={styles.introduction__text}>
-          <span className={styles.introduction__accent}>FLASHLearn</span> не
+          <span className={styles.introduction__accent}>Memora</span> не
           пытается заменить учебники, преподавателей или полноценные языковые
           курсы. Его задача гораздо проще — стать удобным инструментом, который
           всегда находится под рукой и помогает повторять уже изученный материал
@@ -47,10 +47,10 @@ export default function Introduction() {
 
         <p className={styles.introduction__text}>
           Именно поэтому{" "}
-          <span className={styles.introduction__accent}>FLASHLearn</span>{" "}
-          создаётся как максимально простой помощник. Без сложной настройки, без
-          лишних функций и с акцентом на скорость: открыл сайт, выбрал нужный
-          материал и начал{" "}
+          <span className={styles.introduction__accent}>Memora</span> создаётся
+          как максимально простой помощник. Без сложной настройки, без лишних
+          функций и с акцентом на скорость: открыл сайт, выбрал нужный материал
+          и начал{" "}
           <span className={styles.introduction__accent}>повторение</span>. В
           будущем аналогичный подход будет доступен и для китайского, а затем и
           корейского языка, сохраняя единый и привычный интерфейс.
