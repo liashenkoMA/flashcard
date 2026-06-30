@@ -4,6 +4,7 @@ import Faq from "@/_components/FAQ/Faq";
 import Introduction from "@/_components/Introduction/Introduction";
 import PageHero from "@/_components/PageHero/PageHero";
 import Reviews from "@/_components/Reviews/Reviews";
+import CTA from "@/_components/CTA/Cta";
 
 export default function Page() {
   return (
@@ -13,6 +14,7 @@ export default function Page() {
         <Introduction />
         <Reviews />
         <Faq />
+        <CTA />
         <AuthModal />
       </main>
     </div>

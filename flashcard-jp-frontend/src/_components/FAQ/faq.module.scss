@@ -2,12 +2,14 @@
 @use "../../mixins" as m;
 
 .faq {
+  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
   @include m.respond-to(tablet-up) {
     gap: 60px;
+    padding-bottom: 80px;
   }
 
   &__header {
