@@ -21,6 +21,12 @@
     gap: 16px;
   }
 
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   &__cards_navigation {
     display: flex;
     gap: 5px;

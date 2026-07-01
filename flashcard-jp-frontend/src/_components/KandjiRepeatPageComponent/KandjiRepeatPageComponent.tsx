@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { IKanji } from "@/_interface/Interface";
 import { updateKanjiWeight } from "@/_utils/api/client/kanjiApi";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
+import WritingPractice from "../WritingPractice/WritingPractice";
 
 export default function KandjiRepeatPageComponent({
   kanji,
@@ -100,6 +101,10 @@ export default function KandjiRepeatPageComponent({
               }
             />
           </motion.div>
+          <WritingPractice
+            cardId={`${cards[indexCard]._id}-${indexCard}`}
+            translate={cards[indexCard].translate}
+          />
         </div>
         <div className={styles.kandjirepeatpagecomponent__cards_navigation}>
           <Button

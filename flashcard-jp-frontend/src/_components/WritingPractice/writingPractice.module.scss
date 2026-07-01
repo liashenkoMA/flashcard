@@ -1,0 +1,95 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.writingPractice {
+  width: 260px;
+  height: 60px;
+  border-radius: 30px;
+  display: flex;
+  justify-content: space-between;
+  @include m.respond-to(tablet-up) {
+    width: 350px;
+    height: 80px;
+  }
+
+  &__input {
+    width: 200px;
+    height: 60px;
+    padding: 10px;
+    background-color: v.$color-bg-element;
+    color: v.$color-text-main;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    border: 1px solid v.$color-border-active;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    @include m.respond-to(tablet-up) {
+      width: 290px;
+      height: 80px;
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: v.$purple;
+    }
+  }
+
+  &__button {
+    width: 60px;
+    border: none;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    background: v.$gradient-primary;
+    color: v.$color-text-main;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include m.hover {
+      box-shadow: v.$shadow-default;
+    }
+
+    &::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      background-color: currentColor;
+      mask: url("../../_images/circle-check.svg") center / contain no-repeat;
+      -webkit-mask: url("../../_images/circle-check.svg") center / contain
+        no-repeat;
+      @include m.respond-to(tablet-up) {
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    &_success {
+      background: v.$gradient-success;
+
+      &::before {
+        mask-image: url("../../_images/check.svg");
+        -webkit-mask-image: url("../../_images/check.svg");
+        @include m.respond-to(tablet-up) {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+
+    &_error {
+      background: v.$red;
+
+      &::before {
+        mask-image: url("../../_images/x.svg");
+        -webkit-mask-image: url("../../_images/x.svg");
+        @include m.respond-to(tablet-up) {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+}

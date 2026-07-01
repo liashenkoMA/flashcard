@@ -8,6 +8,7 @@ import { FlashCard } from "../FlashCard/FlashCard";
 import Button from "../UI/Button/Button";
 import { updateWordWeight } from "@/_utils/api/client/wordApi";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
+import WritingPractice from "../WritingPractice/WritingPractice";
 
 export default function WordsRepeatPageComponent({
   words,
@@ -88,6 +89,10 @@ export default function WordsRepeatPageComponent({
               }
             />
           </motion.div>
+          <WritingPractice
+            cardId={`${cards[indexCard]._id}-${indexCard}`}
+            translate={cards[indexCard].translate}
+          />
         </div>
         <div className={styles.wordsrepeatpagecomponent__cards_navigation}>
           <Button

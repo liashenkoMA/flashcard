@@ -21,6 +21,12 @@
     gap: 16px;
   }
 
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   &__cards_navigation {
     display: flex;
     gap: 5px;
@@ -43,7 +49,7 @@
 
 .flashcard__text_type_front {
   color: v.$color-text-main;
-    font-size: v.$font-size-xx-large;
+  font-size: v.$font-size-xx-large;
 }
 
 .flashcard__text_type_jpread {

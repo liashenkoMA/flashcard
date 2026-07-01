@@ -4,7 +4,7 @@
 .flashcard {
   &__card {
     width: 260px;
-    height: 300px;
+    height: 250px;
     background-color: v.$color-bg-card;
     border: 1px solid v.$color-border-active;
     border-radius: 30px;
@@ -15,8 +15,8 @@
     transition: transform 0.3s;
     transform-style: preserve-3d;
     @include m.respond-to(tablet-up) {
-      width: 400px;
-      height: 600px;
+      width: 350px;
+      height: 400px;
     }
   }
 

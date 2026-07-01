@@ -45,6 +45,12 @@ function renderWithStore(preloadedState?: Partial<RootState>) {
 describe("Navigation component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(console, "log").mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it("Рендерит кнопки входа и регистрации если пользователь не авторизован", () => {

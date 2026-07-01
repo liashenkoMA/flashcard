@@ -13,6 +13,7 @@ import {
   updateKatakanaWeight,
 } from "@/_utils/api/client/kanaApi";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
+import WritingPractice from "../WritingPractice/WritingPractice";
 
 export default function KanaPageComponent({
   kana,
@@ -114,6 +115,10 @@ export default function KanaPageComponent({
               }
             />
           </motion.div>
+          <WritingPractice
+            cardId={`${cards[indexCard]._id}-${indexCard}`}
+            translate={cards[indexCard].romaji}
+          />
         </div>
         {searchParams.type === "repeat" ? (
           <div className={styles.kanaPageComponent__cards_navigation}>
