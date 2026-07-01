@@ -10,8 +10,8 @@ export default function Logo() {
       <Link href="/" className={styles.logo__link}>
         <Image
           src={logo}
-          width={50}
-          height={50}
+          width={80}
+          height={80}
           alt="Logo"
           className={styles.logo__image}
         />

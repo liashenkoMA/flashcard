@@ -1,61 +1,70 @@
 import styles from "./dashboard.module.scss";
 import Accordion from "@/_components/UI/Accordion/Accordion";
 import LinkButton from "@/_components/UI/LinkButton/LinkButton";
+import Greeting from "@/_components/Greeting/Greeting";
+import { ROUTES } from "@/_constants/routes.constant";
+import QuickActions from "@/_components/QuickActions/QuickActions";
 
 export default function Page() {
   return (
     <section className={styles.dashboard}>
-      <h1 className={styles.dashboard__title}>Главная</h1>
+      <Greeting />
+      <QuickActions />
 
       <div className={styles.dashboard__section}>
-        <Accordion header="Учить">
-          <ul className={styles.dashboard__lists}>
-            <li className={styles.dashboard__list}>
-              <LinkButton href="/kana/katakana" text="Изучить катакану" />
-            </li>
-          </ul>
+        <h2 className={styles.dashboard__section_title}>Японский язык</h2>
+        <Accordion header="Хирагана">
           <ul className={styles.dashboard__lists}>
             <li className={styles.dashboard__list}>
               <LinkButton
-                href="/kana/katakana?type=repeat"
-                text="Повторить катакану"
+                href={ROUTES.kana.hiragana.learn}
+                text="Изучить хирагану"
               />
             </li>
-          </ul>
-          <ul className={styles.dashboard__lists}>
-            <li className={styles.dashboard__list}>
-              <LinkButton href="/kana/hiragana" text="Изучить хирагану" />
-            </li>
-          </ul>
-          <ul className={styles.dashboard__lists}>
             <li className={styles.dashboard__list}>
               <LinkButton
-                href="/kana/hiragana?type=repeat"
+                href={ROUTES.kana.hiragana.repeat}
                 text="Повторить хирагану"
               />
             </li>
           </ul>
+        </Accordion>
+
+        <Accordion header="Катакана">
           <ul className={styles.dashboard__lists}>
             <li className={styles.dashboard__list}>
-              <LinkButton href="/kanji/repeat" text="Учим кандзи" />
+              <LinkButton
+                href={ROUTES.kana.katakana.learn}
+                text="Изучить катакану"
+              />
             </li>
-          </ul>
-          <ul className={styles.dashboard__lists}>
             <li className={styles.dashboard__list}>
-              <LinkButton href="/words/repeat" text="Учим слова" />
+              <LinkButton
+                href={ROUTES.kana.katakana.repeat}
+                text="Повторить катакану"
+              />
             </li>
           </ul>
         </Accordion>
 
-        <Accordion header="Добавить карточки">
+        <Accordion header="Кандзи">
           <ul className={styles.dashboard__lists}>
             <li className={styles.dashboard__list}>
-              <LinkButton href="/kanji/add" text="Добавить кандзи" />
+              <LinkButton href={ROUTES.kanji.study} text="Учить кандзи" />
+            </li>
+            <li className={styles.dashboard__list}>
+              <LinkButton href={ROUTES.kanji.add} text="Добавить кандзи" />
             </li>
           </ul>
+        </Accordion>
+
+        <Accordion header="Слова">
           <ul className={styles.dashboard__lists}>
             <li className={styles.dashboard__list}>
-              <LinkButton href="/words/add" text="Добавить слово" />
+              <LinkButton href={ROUTES.words.study} text="Учить слова" />
+            </li>
+            <li className={styles.dashboard__list}>
+              <LinkButton href={ROUTES.words.add} text="Добавить слово" />
             </li>
           </ul>
         </Accordion>
@@ -63,23 +72,25 @@ export default function Page() {
         <Accordion header="Ваша библиотека">
           <ul className={styles.dashboard__lists}>
             <li className={styles.dashboard__list}>
-              <LinkButton href="/tables/table-kana" text="Таблица азбук" />
+              <LinkButton href={ROUTES.tables.kana} text="Таблица азбук" />
             </li>
           </ul>
+
           <ul className={styles.dashboard__lists}>
             <li className={styles.dashboard__list}>
-              <LinkButton href="/tables/table-kanji" text="Все кандзи" />
+              <LinkButton href={ROUTES.tables.kanji} text="Все кандзи" />
             </li>
           </ul>
+
           <ul className={styles.dashboard__lists}>
             <li className={styles.dashboard__list}>
-              <LinkButton href="/tables/table-words" text="Все слова" />
+              <LinkButton href={ROUTES.tables.words} text="Все слова" />
             </li>
           </ul>
         </Accordion>
       </div>
 
-      <LinkButton href="/profile" text="Профиль" />
+      <LinkButton href={ROUTES.profile} text="Профиль" />
     </section>
   );
 }

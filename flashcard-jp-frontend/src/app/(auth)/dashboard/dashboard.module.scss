@@ -1,4 +1,5 @@
 @use "../../../variables" as v;
+@use "../../../mixins" as m;
 
 .dashboard {
   width: 100%;
@@ -7,19 +8,29 @@
   align-items: center;
   gap: 30px;
 
-  &__title {
-    text-align: center;
-    color: v.$color-text-main;
-    font-size: v.$font-size-large;
-    font-weight: v.$font-weight-regular;
-    line-height: v.$line-height-large;
-  }
-
   &__section {
+    padding: 10px;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    border: none;
+    border: 1px solid v.$color-border;
+    border-radius: 10px;
+
+    &_title {
+      text-align: center;
+      color: v.$color-text-main;
+      font-size: v.$font-size-medium;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-medium;
+      @include m.respond-to(tablet-up) {
+        text-align: left;
+        font-size: v.$font-size-large;
+        font-weight: v.$font-weight-regular;
+        line-height: v.$line-height-large;
+      }
+    }
   }
 
   &__lists {
@@ -28,8 +39,5 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
-
-  &__list {
   }
 }

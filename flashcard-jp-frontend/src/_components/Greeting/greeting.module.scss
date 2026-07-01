@@ -1,0 +1,47 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.greeting {
+  width: 100%;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__title {
+    text-align: center;
+    color: v.$color-text-main;
+    font-size: v.$font-size-medium;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-medium;
+    @include m.respond-to(tablet-up) {
+      text-align: left;
+      font-size: v.$font-size-large;
+      font-weight: v.$font-weight-regular;
+      line-height: v.$line-height-large;
+    }
+
+    &_colored {
+      background: v.$gradient-primary;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: v.$font-weight-medium;
+    }
+  }
+
+  &__text {
+    text-align: center;
+    color: v.$color-text-secondary;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      text-align: left;
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+    }
+  }
+}
