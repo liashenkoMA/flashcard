@@ -49,6 +49,7 @@ export default function WritingPractice({
         className={styles.writingPractice__input}
         value={value}
         name="Вариант"
+        placeholder="Перевод"
         onChange={handleChange}
       />
 
