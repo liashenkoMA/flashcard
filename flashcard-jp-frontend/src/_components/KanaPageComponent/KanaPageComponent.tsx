@@ -14,6 +14,7 @@ import {
 } from "@/_utils/api/client/kanaApi";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
 import WritingPractice from "../WritingPractice/WritingPractice";
+import SessionProgress from "../SessionProgress/SessionProgress";
 
 export default function KanaPageComponent({
   kana,
@@ -29,6 +30,7 @@ export default function KanaPageComponent({
   const [cards, setCards] = useState<IKana[]>([]);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [answered, setAnswered] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setCards(separateDuplicatesShuffleCards<IKana>(kana));
@@ -44,6 +46,14 @@ export default function KanaPageComponent({
     setIndexCard((prev) => (prev === 0 ? cards.length - 1 : prev - 1));
   }
 
+  function markProgress(cardId: string) {
+    setAnswered((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(cardId);
+      return newSet;
+    });
+  }
+
   function handleUpdateKana() {
     const currentCard = cards[indexCard];
 
@@ -53,6 +63,7 @@ export default function KanaPageComponent({
 
     updateKana(currentCard)
       .then(() => {
+        markProgress(`${currentCard._id}-${indexCard}`);
         setCards((prev) => prev.filter((_, index) => index !== indexCard));
       })
       .catch((err) => {
@@ -69,7 +80,10 @@ export default function KanaPageComponent({
       params === "hiragana" ? updateHiraganaWeight : updateKatakanaWeight;
 
     updateKanaWeight(currentCard, { status: status })
-      .then(() => nextCard())
+      .then(() => {
+        markProgress(`${currentCard._id}-${indexCard}`);
+        nextCard();
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -86,6 +100,10 @@ export default function KanaPageComponent({
     <div className={styles.kanaPageComponent}>
       <div className={styles.kanaPageComponent__inner}>
         <div className={styles.kanaPageComponent__cards}>
+          <SessionProgress
+            length={cards.length}
+            answeredCount={answered.size}
+          />
           <motion.div
             key={indexCard}
             drag="x"

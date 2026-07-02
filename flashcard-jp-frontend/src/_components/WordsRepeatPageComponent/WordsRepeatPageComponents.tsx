@@ -9,6 +9,7 @@ import Button from "../UI/Button/Button";
 import { updateWordWeight } from "@/_utils/api/client/wordApi";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
 import WritingPractice from "../WritingPractice/WritingPractice";
+import SessionProgress from "../SessionProgress/SessionProgress";
 
 export default function WordsRepeatPageComponent({
   words,
@@ -18,6 +19,7 @@ export default function WordsRepeatPageComponent({
   const [cards, setCards] = useState<IWord[]>([]);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [answered, setAnswered] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setCards(separateDuplicatesShuffleCards<IWord>(words));
@@ -33,13 +35,24 @@ export default function WordsRepeatPageComponent({
     setIndexCard((prev) => (prev === 0 ? cards.length - 1 : prev - 1));
   }
 
+  function markProgress(cardId: string) {
+    setAnswered((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(cardId);
+      return newSet;
+    });
+  }
+
   function updateWordCardWeight(status: "remember" | "forgot") {
     const currentCard = cards[indexCard];
 
     if (!currentCard) return;
 
     updateWordWeight(currentCard, { status: status })
-      .then(() => nextCard())
+      .then(() => {
+        markProgress(`${currentCard._id}-${indexCard}`);
+        nextCard();
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -58,6 +71,10 @@ export default function WordsRepeatPageComponent({
     <div className={styles.wordsrepeatpagecomponent}>
       <div className={styles.wordsrepeatpagecomponent__inner}>
         <div className={styles.wordsrepeatpagecomponent__cards}>
+          <SessionProgress
+            length={cards.length}
+            answeredCount={answered.size}
+          />
           <motion.div
             key={indexCard}
             drag="x"

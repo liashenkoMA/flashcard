@@ -1,0 +1,32 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.sessionProgress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__bar {
+    flex: 1;
+    height: 8px;
+    background: v.$blue-dark;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__fill {
+    height: 100%;
+    width: 0%;
+    background: v.$gradient-success;
+    border-radius: 4px;
+    transition: width 0.25s ease;
+  }
+
+  &__cards {
+    font-size: v.$font-size-xx-small;
+    color: v.$color-text-secondary;
+    min-width: 60px;
+    text-align: right;
+  }
+}

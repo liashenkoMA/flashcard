@@ -9,6 +9,7 @@ import { IKanji } from "@/_interface/Interface";
 import { updateKanjiWeight } from "@/_utils/api/client/kanjiApi";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
 import WritingPractice from "../WritingPractice/WritingPractice";
+import SessionProgress from "../SessionProgress/SessionProgress";
 
 export default function KandjiRepeatPageComponent({
   kanji,
@@ -18,6 +19,7 @@ export default function KandjiRepeatPageComponent({
   const [cards, setCards] = useState<IKanji[]>([]);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [answered, setAnswered] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setCards(separateDuplicatesShuffleCards<IKanji>(kanji));
@@ -33,13 +35,24 @@ export default function KandjiRepeatPageComponent({
     setIndexCard((prev) => (prev === 0 ? cards.length - 1 : prev - 1));
   }
 
+  function markProgress(cardId: string) {
+    setAnswered((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(cardId);
+      return newSet;
+    });
+  }
+
   function updateKanjiCardWeight(status: "remember" | "forgot") {
     const currentCard = cards[indexCard];
 
     if (!currentCard) return;
 
     updateKanjiWeight(currentCard, { status: status })
-      .then(() => nextCard())
+      .then(() => {
+        markProgress(`${currentCard._id}-${indexCard}`);
+        nextCard();
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -58,6 +71,10 @@ export default function KandjiRepeatPageComponent({
     <div className={styles.kandjirepeatpagecomponent}>
       <div className={styles.kandjirepeatpagecomponent__inner}>
         <div className={styles.kandjirepeatpagecomponent__cards}>
+          <SessionProgress
+            length={cards.length}
+            answeredCount={answered.size}
+          />
           <motion.div
             key={indexCard}
             drag="x"
