@@ -3,7 +3,7 @@
 import styles from "./ProfileDropdown.module.scss";
 import Image from "next/image";
 import avatar from "../../_images/avatar.png";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../UI/Button/Button";
 import { useRouter } from "next/navigation";
 import { logout } from "@/_utils/api/server/authApi";
@@ -16,20 +16,46 @@ export default function ProfileDropdown({ user }: { user: string }) {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const router = useRouter();
   const dispatch = useDispatch();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   function closeMenu() {
     setIsOpen(false);
   }
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        closeMenu();
+      }
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        closeMenu();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   function toggleSection(section: string) {
     setActiveSection((prev) => (prev === section ? null : section));
   }
 
   return (
-    <div className={styles.profiledropdown}>
+    <div className={styles.profiledropdown} ref={dropdownRef}>
       <div
         className={styles.profiledropdown__profile}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className={styles.profiledropdown__user}>{user}</div>
 
