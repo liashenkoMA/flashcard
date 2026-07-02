@@ -113,6 +113,32 @@ describe("ProfileDropdown component", () => {
     expect(screen.getByText("Все слова")).toBeInTheDocument();
   });
 
+  it("Закрывает меню по Escape", () => {
+    renderWithStore();
+
+    fireEvent.click(screen.getByText("Иван"));
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(screen.getByTestId("profile-menu")).toHaveAttribute(
+      "data-open",
+      "false",
+    );
+  });
+
+  it("Закрывает меню по клику вне", () => {
+    renderWithStore();
+
+    fireEvent.click(screen.getByText("Иван"));
+
+    fireEvent.mouseDown(document.body);
+
+    expect(screen.getByTestId("profile-menu")).toHaveAttribute(
+      "data-open",
+      "false",
+    );
+  });
+
   it("Snapshot", () => {
     const { container } = renderWithStore();
 

@@ -74,6 +74,8 @@ export default function ProfileDropdown({ user }: { user: string }) {
             ? styles.profiledropdown__menu_open
             : styles.profiledropdown__menu_close
         }`}
+        data-testid="profile-menu"
+        data-open={isOpen}
       >
         <button
           type="button"

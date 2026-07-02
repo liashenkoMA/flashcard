@@ -28,6 +28,8 @@ exports[`ProfileDropdown component Snapshot 1`] = `
     </div>
     <div
       class="profiledropdown__menu profiledropdown__menu_close"
+      data-open="false"
+      data-testid="profile-menu"
     >
       <button
         class="profiledropdown__menu_button profiledropdown__menu_button_hidden"
