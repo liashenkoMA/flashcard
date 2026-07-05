@@ -107,7 +107,7 @@ export default function WordsRepeatPageComponent({
             />
           </motion.div>
           <WritingPractice
-            cardId={`${cards[indexCard]._id}-${indexCard}`}
+            key={`${cards[indexCard]._id}-${indexCard}`}
             translate={cards[indexCard].translate}
           />
         </div>

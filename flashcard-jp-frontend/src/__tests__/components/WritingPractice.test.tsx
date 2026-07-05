@@ -3,13 +3,13 @@ import WritingPractice from "@/_components/WritingPractice/WritingPractice";
 
 describe("WritingPractice component", () => {
   it("Рендерит пустой компонент", () => {
-    render(<WritingPractice cardId="1" translate="Hello" />);
+    render(<WritingPractice key="1" translate="Hello" />);
 
     expect(screen.getByRole("textbox")).toHaveValue("");
   });
 
   it("Ввод обновляет значение", () => {
-    render(<WritingPractice cardId="1" translate="Hello" />);
+    render(<WritingPractice key="1" translate="Hello" />);
 
     const input = screen.getByRole("textbox");
 
@@ -21,7 +21,7 @@ describe("WritingPractice component", () => {
   });
 
   it("Успех при правильном ответе", () => {
-    render(<WritingPractice cardId="1" translate="Hello" />);
+    render(<WritingPractice key="1" translate="Hello" />);
 
     fireEvent.change(screen.getByRole("textbox"), {
       target: { value: "hello" },
@@ -35,7 +35,7 @@ describe("WritingPractice component", () => {
   });
 
   it("Ошибка при неправильном ответе", () => {
-    render(<WritingPractice cardId="1" translate="Hello" />);
+    render(<WritingPractice key="1" translate="Hello" />);
 
     fireEvent.change(screen.getByRole("textbox"), {
       target: { value: "World" },
@@ -49,15 +49,13 @@ describe("WritingPractice component", () => {
   });
 
   it("Очищает поля при смене карточки", () => {
-    const { rerender } = render(
-      <WritingPractice cardId="1" translate="Hello" />,
-    );
+    const { rerender } = render(<WritingPractice key="1" translate="Hello" />);
 
     fireEvent.change(screen.getByRole("textbox"), {
       target: { value: "Hello" },
     });
 
-    rerender(<WritingPractice cardId="2" translate="World" />);
+    rerender(<WritingPractice key="2" translate="World" />);
 
     expect(screen.getByRole("textbox")).toHaveValue("");
 

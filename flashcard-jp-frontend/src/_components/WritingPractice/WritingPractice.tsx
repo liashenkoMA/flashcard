@@ -5,41 +5,23 @@ import styles from "./writingPractice.module.scss";
 
 type Status = "default" | "success" | "error";
 
-export default function WritingPractice({
-  cardId,
-  translate,
-}: {
-  cardId: string;
-  translate: string;
-}) {
-  const [answer, setAnswer] = useState<{
-    cardId: string;
-    value: string;
-    status: Status;
-  }>({
-    cardId,
-    value: "",
-    status: "default",
-  });
-
-  const value = answer.cardId === cardId ? answer.value : "";
-  const status = answer.cardId === cardId ? answer.status : "default";
+export default function WritingPractice({ translate }: { translate: string }) {
+  const [text, setText] = useState("");
+  const [status, setStatus] = useState<Status>("default");
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setAnswer({
-      cardId,
-      value: e.target.value.trim(),
-      status: "default",
-    });
+    const value = e.target.value.trim();
+
+    setStatus("default");
+    setText(value);
   }
 
   function checkResult() {
-    const isCorrect = value.toLowerCase() === translate.trim().toLowerCase();
-
-    setAnswer((prev) => ({
-      ...prev,
-      status: isCorrect ? "success" : "error",
-    }));
+    if (text.toLowerCase() === translate.trim().toLowerCase()) {
+      setStatus("success");
+    } else {
+      setStatus("error");
+    }
   }
 
   return (
@@ -47,7 +29,7 @@ export default function WritingPractice({
       <input
         type="text"
         className={styles.writingPractice__input}
-        value={value}
+        value={text}
         name="Вариант"
         placeholder="Перевод"
         onChange={handleChange}

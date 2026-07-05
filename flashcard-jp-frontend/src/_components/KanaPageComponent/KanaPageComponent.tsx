@@ -134,7 +134,7 @@ export default function KanaPageComponent({
             />
           </motion.div>
           <WritingPractice
-            cardId={`${cards[indexCard]._id}-${indexCard}`}
+            key={`${cards[indexCard]._id}-${indexCard}`}
             translate={cards[indexCard].romaji}
           />
         </div>
