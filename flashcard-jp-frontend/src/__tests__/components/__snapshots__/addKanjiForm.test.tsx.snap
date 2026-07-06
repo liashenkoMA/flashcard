@@ -10,6 +10,49 @@ exports[`Add Kanji Form component Snapshot 1`] = `
       novalidate=""
     >
       <label
+        class="addKanjiForm__form_field"
+      >
+        <span
+          class="addKanjiForm__placeholder"
+        >
+          Выберите уровень:
+        </span>
+        <select
+          class="addKanjiForm__lists"
+          id="level"
+          name="level"
+        >
+          <option
+            value="N5"
+          >
+            N5
+          </option>
+          <option
+            value="N4"
+          >
+            N4
+          </option>
+          <option
+            value="N3"
+          >
+            N3
+          </option>
+          <option
+            value="N2"
+          >
+            N2
+          </option>
+          <option
+            value="N1"
+          >
+            N1
+          </option>
+        </select>
+      </label>
+      <span
+        class="addKanjiForm__errors"
+      />
+      <label
         class="form__field"
       >
         <span
@@ -90,7 +133,7 @@ exports[`Add Kanji Form component Snapshot 1`] = `
         />
       </label>
       <span
-        class="addkanjiform__success"
+        class="addKanjiForm__success"
       />
       <button
         class="button  default"
@@ -99,7 +142,7 @@ exports[`Add Kanji Form component Snapshot 1`] = `
         Добавить
       </button>
       <span
-        class="addkanjiform__errors"
+        class="addKanjiForm__errors"
       />
     </form>
   </div>

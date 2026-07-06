@@ -3,19 +3,19 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Word } from './words.schema';
+import { WordJp } from './words.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../../user/user.schema';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UpdateWordWeightDto, WordDto } from './words.schema.dto';
+import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
 
 @Injectable()
 export class WordsService {
   constructor(
-    @InjectModel(Word.name) private wordModel: Model<Word>,
+    @InjectModel(WordJp.name) private wordModel: Model<WordJp>,
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
   ) {}
@@ -36,7 +36,7 @@ export class WordsService {
     }
   }
 
-  async addWord(word: WordDto, request: Request): Promise<{ data: string }> {
+  async addWord(word: WordJpDto, request: Request): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
@@ -105,7 +105,7 @@ export class WordsService {
     });
   }
 
-  async updateWordWeight(word: UpdateWordWeightDto, request: Request) {
+  async updateWordWeight(word: UpdateWordJpWeightDto, request: Request) {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();

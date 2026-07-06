@@ -97,6 +97,7 @@ export interface IUpdateKatakanaResponse {
 
 export interface IKanji {
   kanji: string;
+  level: "N5" | "N4" | "N3" | "N2" | "N1";
   translate: string;
   jpRead: string;
   chinaRead: string;
@@ -107,6 +108,7 @@ export interface IKanji {
 
 export interface IKanjiFormData {
   kanji: string;
+  level: "N5" | "N4" | "N3" | "N2" | "N1";
   jpRead: string;
   chinaRead: string;
   translate: string;

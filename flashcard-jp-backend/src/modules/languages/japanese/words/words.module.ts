@@ -3,13 +3,13 @@ import { WordsController } from './words.controller';
 import { WordsService } from './words.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '@/src/modules/user/user.schema';
-import { Word, WordsSchema } from './words.schema';
+import { WordJp, WordsSchema } from './words.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
-      { name: Word.name, schema: WordsSchema },
+      { name: WordJp.name, schema: WordsSchema },
     ]),
   ],
   controllers: [WordsController],

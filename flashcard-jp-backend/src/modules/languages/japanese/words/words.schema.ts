@@ -2,8 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 
 @Schema({ timestamps: true })
-export class Word {
-  @Prop({ type: Types.ObjectId, required: true, ref: 'User', index: true })
+export class WordJp {
+  @Prop({ type: Types.ObjectId, required: true, ref: 'User' })
   userId: Types.ObjectId;
 
   @Prop({ required: true })
@@ -22,4 +22,8 @@ export class Word {
   srs: Record<string, any>;
 }
 
-export const WordsSchema = SchemaFactory.createForClass(Word);
+export const WordsSchema = SchemaFactory.createForClass(WordJp);
+
+// Индексы
+WordsSchema.index({ userId: 1 });
+WordsSchema.index({ userId: 1, 'srs.nextReviewAt': 1 });

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { WordsController } from './words.controller';
 import { WordsService } from './words.service';
-import { UpdateWordWeightDto, WordDto } from './words.schema.dto';
+import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
 
 describe('WordsController', () => {
   let controller: WordsController;
@@ -37,7 +37,7 @@ describe('WordsController', () => {
         cookies: { session_flashcard: 'token' },
       } as any;
 
-      const dto: WordDto = {
+      const dto: WordJpDto = {
         _id: '1',
         word: 'hello',
         translate: 'привет',
@@ -130,7 +130,7 @@ describe('WordsController', () => {
         cookies: { session_flashcard: 'token' },
       } as any;
 
-      const dto: UpdateWordWeightDto = {
+      const dto: UpdateWordJpWeightDto = {
         wordId: '1',
         status: 'remember',
       };

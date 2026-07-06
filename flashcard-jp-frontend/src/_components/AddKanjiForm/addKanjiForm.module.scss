@@ -1,35 +1,83 @@
 @use "@/_variables" as v;
 @use "@/_mixins" as m;
 
-.addKanjiForm__form {
-  padding: 10px 5px;
-  min-width: 300px;
-  @include m.respond-to(tablet-up) {
-    min-width: 460px;
+.addKanjiForm {
+  &__form {
+    padding: 10px 5px;
+    min-width: 300px;
+    @include m.respond-to(tablet-up) {
+      min-width: 460px;
+    }
   }
-}
 
-.addkanjiform__success {
-  width: 100%;
-  display: block;
-  padding: 7px 0px 15px 0px;
-  font-size: v.$font-size-x-small;
-  font-weight: v.$font-weight-regular;
-  line-height: v.$line-height-small;
-  color: v.$color-accent-1;
-  text-align: center;
-  @include m.respond-to(tablet-up) {
-    font-size: v.$font-size-small;
+  &__success {
+    width: 100%;
+    display: block;
+    padding: 7px 0px 15px 0px;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    color: v.$color-accent-1;
+    text-align: center;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-small;
+    }
   }
-}
 
-.addkanjiform__errors {
-  padding: 7px 0px 15px 0px;
-  font-size: v.$font-size-x-small;
-  font-weight: v.$font-weight-regular;
-  line-height: v.$line-height-small;
-  color: v.$color-text-error;
-  @include m.respond-to(tablet-up) {
-    font-size: v.$font-size-small;
+  &__errors {
+    padding: 7px 0px 15px 0px;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    color: v.$color-text-error;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-small;
+    }
+  }
+
+  &__form_field {
+    padding: 15px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__lists {
+    padding: 5px;
+    width: 100%;
+    height: 30px;
+    background-color: transparent;
+    color: v.$color-text-secondary;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    border-radius: 10px;
+    border: 1px solid v.$color-border;
+    background-color: v.$grey-dark;
+    @include m.respond-to(tablet-up) {
+      height: 50px;
+      padding: 10px 20px;
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+      border-radius: 20px;
+    }
+  }
+
+  &__lists:focus {
+    outline: none;
+    border-color: v.$purple;
+  }
+
+  &__placeholder {
+    padding-left: 10px;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    color: v.$purple;
+    @include m.respond-to(tablet-up) {
+      padding-left: 20px;
+      font-size: v.$font-size-small;
+      line-height: v.$line-height-small;
+    }
   }
 }

@@ -97,6 +97,7 @@ describe('KanjiService', () => {
         service.addKanji(
           {
             kanji: '日',
+            level: 'N5',
             translate: 'sun',
             jpRead: 'にち',
             chinaRead: 'ri',
@@ -120,6 +121,7 @@ describe('KanjiService', () => {
       const result = await service.addKanji(
         {
           kanji: '日',
+          level: 'N5',
           translate: 'sun',
           jpRead: 'にち',
           chinaRead: 'ri',
@@ -129,6 +131,7 @@ describe('KanjiService', () => {
 
       expect(mockKanjiModel.create).toHaveBeenCalledWith({
         userId: 'user_id',
+        level: 'N5',
         kanji: '日',
         translate: 'sun',
         jpRead: 'にち',

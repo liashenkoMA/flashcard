@@ -10,7 +10,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { WordsService } from './words.service';
-import { UpdateWordWeightDto, WordDto } from './words.schema.dto';
+import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
 import { Request } from 'express';
 
 @Controller(ROUTES.WORDS)
@@ -18,7 +18,7 @@ export class WordsController {
   constructor(private readonly wordsService: WordsService) {}
 
   @Post(ROUTES.WORDS_ADD)
-  addWord(@Req() request: Request, @Body() word: WordDto) {
+  addWord(@Req() request: Request, @Body() word: WordJpDto) {
     return this.wordsService.addWord(word, request);
   }
 
@@ -38,7 +38,10 @@ export class WordsController {
   }
 
   @Patch(ROUTES.WORDS_WEIGHT_UPDATE)
-  updateWordWeight(@Body() word: UpdateWordWeightDto, @Req() request: Request) {
+  updateWordWeight(
+    @Body() word: UpdateWordJpWeightDto,
+    @Req() request: Request,
+  ) {
     return this.wordsService.updateWordWeight(word, request);
   }
 }

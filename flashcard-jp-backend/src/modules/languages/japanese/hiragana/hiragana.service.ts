@@ -110,8 +110,6 @@ export class HiraganaService implements OnModuleInit {
         language: 'jp',
         hiragana: [],
         katakana: [],
-        kanji: [],
-        words: [],
       };
 
       user.learningProgress.push(progress);

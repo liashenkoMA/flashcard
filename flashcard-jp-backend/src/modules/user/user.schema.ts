@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { isEmail } from 'validator';
 
-export type LanguageCode = 'jp' | 'cn' | 'kr';
+export type LanguageCode = 'jp' | 'kr';
 
 @Schema({ _id: false })
 export class LearningProgressItem {
@@ -20,21 +20,18 @@ export const LearningProgressItemSchema =
 export class LearningProgress {
   @Prop({
     required: true,
-    enum: ['jp', 'cn', 'kr'],
+    enum: ['jp', 'kr'],
   })
   language: LanguageCode;
 
-  @Prop({ type: [LearningProgressItemSchema], default: [] })
-  hiragana: LearningProgressItem[];
+  @Prop({ type: [LearningProgressItemSchema], default: undefined })
+  hiragana?: LearningProgressItem[];
 
-  @Prop({ type: [LearningProgressItemSchema], default: [] })
-  katakana: LearningProgressItem[];
+  @Prop({ type: [LearningProgressItemSchema], default: undefined })
+  katakana?: LearningProgressItem[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Kanji' }], default: [] })
-  kanji: Types.ObjectId[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Words' }], default: [] })
-  words: Types.ObjectId[];
+  @Prop({ type: [LearningProgressItemSchema], default: undefined })
+  hangul?: LearningProgressItem[];
 }
 
 export const LearningProgressSchema =

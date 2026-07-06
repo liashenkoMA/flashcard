@@ -1,7 +1,7 @@
 import AddKanjiForm from "@/_components/AddKanjiForm/AddKanjiForm";
 import { KANJI_FORM_INPUTS } from "@/_constants/kanjiAddFrom.constant";
 import { addKanji } from "@/_utils/api/client/kanjiApi";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 jest.mock("@/_utils/api/client/kanjiApi", () => ({
   addKanji: jest.fn(),
@@ -25,6 +25,18 @@ describe("Add Kanji Form component", () => {
 
       expect(field).toBeInTheDocument();
     }
+
+    expect(screen.getByLabelText(/Выберите уровень/i)).toBeInTheDocument();
+  });
+
+  it("Изменение уровня (select)", () => {
+    render(<AddKanjiForm />);
+
+    const select = screen.getByRole("combobox");
+
+    fireEvent.change(select, { target: { value: "N3" } });
+
+    expect(select).toHaveValue("N3");
   });
 
   it("Вводим данные, handleChange", () => {
@@ -80,17 +92,19 @@ describe("Add Kanji Form component", () => {
 
     fireEvent.click(screen.getByText("Добавить"));
 
-    const errorText = await screen.findByText(errorMessage);
-
-    expect(errorText).toBeInTheDocument();
+    expect(await screen.findByText(errorMessage)).toBeInTheDocument();
   });
 
-  it("Успешная отправка формы", async () => {
+  it("Успешная отправка формы + проверка level в payload", async () => {
     (addKanji as jest.Mock).mockResolvedValueOnce({
       data: "Успешно добавлено",
     });
 
     render(<AddKanjiForm />);
+
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: "N2" },
+    });
 
     fireEvent.change(
       screen.getByPlaceholderText(KANJI_FORM_INPUTS[0].placeholder as string),
@@ -114,9 +128,52 @@ describe("Add Kanji Form component", () => {
 
     fireEvent.click(screen.getByText("Добавить"));
 
-    const success = await screen.findByText("Успешно добавлено");
+    await screen.findByText("Успешно добавлено");
 
-    expect(success).toBeInTheDocument();
+    expect(addKanji).toHaveBeenCalledWith(
+      expect.objectContaining({
+        level: "N2",
+        kanji: "日",
+      }),
+    );
+  });
+
+  it("После успешной отправки форма сбрасывается (level = N5)", async () => {
+    (addKanji as jest.Mock).mockResolvedValueOnce({
+      data: "Успешно добавлено",
+    });
+
+    render(<AddKanjiForm />);
+
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: "N1" },
+    });
+
+    fireEvent.change(
+      screen.getByPlaceholderText(KANJI_FORM_INPUTS[0].placeholder as string),
+      { target: { value: "日" } },
+    );
+
+    fireEvent.change(
+      screen.getByPlaceholderText(KANJI_FORM_INPUTS[1].placeholder as string),
+      { target: { value: "ひ" } },
+    );
+
+    fireEvent.change(
+      screen.getByPlaceholderText(KANJI_FORM_INPUTS[2].placeholder as string),
+      { target: { value: "ニチ" } },
+    );
+
+    fireEvent.change(
+      screen.getByPlaceholderText(KANJI_FORM_INPUTS[3].placeholder as string),
+      { target: { value: "день" } },
+    );
+
+    fireEvent.click(screen.getByText("Добавить"));
+
+    await screen.findByText("Успешно добавлено");
+
+    expect(screen.getByRole("combobox")).toHaveValue("N5");
   });
 
   it("Snapshot", () => {

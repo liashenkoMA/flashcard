@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { WordsService } from './words.service';
 import { JwtService } from '@nestjs/jwt';
 import { getModelToken } from '@nestjs/mongoose';
-import { Word } from './words.schema';
+import { WordJp } from './words.schema';
 import { User } from '../../../user/user.schema';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 
@@ -39,7 +39,7 @@ describe('WordsService', () => {
           useValue: mockJwtService,
         },
         {
-          provide: getModelToken(Word.name),
+          provide: getModelToken(WordJp.name),
           useValue: mockWordModel,
         },
         {

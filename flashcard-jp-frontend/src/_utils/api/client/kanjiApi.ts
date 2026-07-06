@@ -30,6 +30,7 @@ export async function addKanji(
       },
       body: JSON.stringify({
         kanji: formData.kanji,
+        level: formData.level,
         jpRead: formData.jpRead,
         chinaRead: formData.chinaRead,
         translate: formData.translate,

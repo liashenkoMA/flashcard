@@ -38,6 +38,7 @@ describe('KanjiController', () => {
 
       const dto: KanjiDto = {
         _id: '1',
+        level: 'N5',
         kanji: '日',
         translate: 'солнце',
         jpRead: 'にち',
@@ -68,6 +69,7 @@ describe('KanjiController', () => {
         {
           _id: '1',
           kanji: '日',
+          level: 'N5',
           translate: 'солнце',
           jpRead: 'にち',
           chinaRead: 'ri',

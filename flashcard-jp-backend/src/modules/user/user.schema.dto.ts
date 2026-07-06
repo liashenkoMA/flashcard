@@ -1,9 +1,5 @@
-import { KanjiDto } from '../languages/japanese/kanji/kanji.schema.dto';
-import { WordDto } from '../languages/japanese/words/words.schema.dto';
-
 export enum LanguageCode {
   JP = 'jp',
-  CN = 'cn',
   KR = 'kr',
 }
 
@@ -14,10 +10,9 @@ export class LearningProgressItemDto {
 
 export class LearningProgressDto {
   language: LanguageCode;
-  kanji: KanjiDto[];
-  words: WordDto[];
-  hiragana: LearningProgressItemDto[];
-  katakana: LearningProgressItemDto[];
+  hiragana?: LearningProgressItemDto[];
+  katakana?: LearningProgressItemDto[];
+  hangul?: LearningProgressItemDto[];
 }
 
 export class UserDto {

@@ -34,6 +34,7 @@ describe("Kanji API", () => {
         {
           _id: "1",
           kanji: "日",
+          level: "N1",
           translate: "день, солнце",
           jpRead: "ひ、び、か",
           chinaRead: "ニチ、ジツ",
@@ -43,6 +44,7 @@ describe("Kanji API", () => {
         {
           _id: "2",
           kanji: "月",
+          level: "N1",
           translate: "месяц, луна",
           jpRead: "つき",
           chinaRead: "ゲツ、ガツ",
@@ -88,6 +90,7 @@ describe("Kanji API", () => {
   describe("addKanji", () => {
     const mockFormData: IKanjiFormData = {
       kanji: "日",
+      level: "N1",
       jpRead: "ひ、び、か",
       chinaRead: "ニチ、ジツ",
       translate: "день, солнце",
@@ -124,6 +127,7 @@ describe("Kanji API", () => {
           },
           body: JSON.stringify({
             kanji: mockFormData.kanji,
+            level: mockFormData.level,
             jpRead: mockFormData.jpRead,
             chinaRead: mockFormData.chinaRead,
             translate: mockFormData.translate,
@@ -152,6 +156,7 @@ describe("Kanji API", () => {
     const mockKanji: IKanji = {
       _id: "1",
       kanji: "日",
+      level: "N1",
       translate: "день, солнце",
       jpRead: "ひ、び、か",
       chinaRead: "ニチ、ジツ",
@@ -212,6 +217,7 @@ describe("Kanji API", () => {
   describe("updateKanjiWeight", () => {
     const mockKanjiData: IKanji = {
       kanji: "日",
+      level: "N1",
       jpRead: "ひ、び、か",
       chinaRead: "ニチ、ジツ",
       translate: "день, солнце",

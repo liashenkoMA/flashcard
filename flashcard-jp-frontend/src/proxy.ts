@@ -5,9 +5,21 @@ const protectedRoutes = [
   "/dashboard",
   "/profile",
   "/kana",
+  "/kana/hiragana?type=repeat",
+  "/kana/hiragana",
+  "/kana/katakana?type=repeat",
+  "/kana/katakana",
   "/kanji",
+  "/kanji/add",
+  "/kanji/repeat",
   "/tables",
   "/words",
+  "/words/add",
+  "/words/repeat",
+  "/tables",
+  "/tables/table-words",
+  "/tables/table-kanji",
+  "/tables/table-kana",
 ];
 
 export default async function proxy(request: NextRequest) {

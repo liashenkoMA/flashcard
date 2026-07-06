@@ -11,15 +11,18 @@ import { addKanji } from "@/_utils/api/client/kanjiApi";
 
 const formSchema = z.object({
   kanji: z.string().min(1, "Введите кандзи"),
+  level: z.enum(["N5", "N4", "N3", "N2", "N1"]),
   jpRead: z.string().min(1, "Введите японское чтение `Кунъёми`"),
   chinaRead: z.string().min(1, "Введите китайское чтение `Онъёми`"),
   translate: z.string().min(1, "Введите перевод"),
 });
 
 type KanjiFormType = z.infer<typeof formSchema>;
+type Level = "N5" | "N4" | "N3" | "N2" | "N1";
 
 const InitialFormState: KanjiFormType = {
   kanji: "",
+  level: "N5",
   jpRead: "",
   chinaRead: "",
   translate: "",
@@ -38,6 +41,14 @@ export default function AddKanjiForm() {
     const value = e.target.value.trim();
 
     setFormData({ ...formData, [name]: value });
+    setErrors(undefined);
+    setServerMessage("");
+  }
+
+  function handleLevelChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const value = e.target.value as Level;
+
+    setFormData({ ...formData, level: value });
     setErrors(undefined);
     setServerMessage("");
   }
@@ -70,6 +81,27 @@ export default function AddKanjiForm() {
   return (
     <div className={styles.addKanjiForm__form}>
       <Form handleSubmit={handleSubmit}>
+        <label className={styles.addKanjiForm__form_field}>
+          <span className={styles.addKanjiForm__placeholder}>
+            Выберите уровень:
+          </span>
+          <select
+            className={styles.addKanjiForm__lists}
+            name="level"
+            id="level"
+            value={formData.level}
+            onChange={handleLevelChange}
+          >
+            <option value="N5">N5</option>
+            <option value="N4">N4</option>
+            <option value="N3">N3</option>
+            <option value="N2">N2</option>
+            <option value="N1">N1</option>
+          </select>
+        </label>
+        <span className={styles.addKanjiForm__errors}>
+          {errors?.fieldErrors?.level?.join(", ")}
+        </span>
         {KANJI_FORM_INPUTS.map((input) => (
           <Input
             key={input.name}
@@ -79,11 +111,11 @@ export default function AddKanjiForm() {
             errors={errors?.fieldErrors?.[input.name]?.join(", ")}
           />
         ))}
-        <span className={styles.addkanjiform__success}>{serverMessage}</span>
+        <span className={styles.addKanjiForm__success}>{serverMessage}</span>
         <Button type="submit" disabled={loading || Boolean(errors)}>
           {loading ? "Отправка..." : "Добавить"}
         </Button>
-        <span className={styles.addkanjiform__errors}>
+        <span className={styles.addKanjiForm__errors}>
           {serverErrorMessage}
         </span>
       </Form>

@@ -47,6 +47,7 @@ export class KanjiService {
 
     await this.kanjiModel.create({
       userId: payload.sub,
+      level: kanji.level,
       kanji: kanji.kanji,
       translate: kanji.translate,
       jpRead: kanji.jpRead,

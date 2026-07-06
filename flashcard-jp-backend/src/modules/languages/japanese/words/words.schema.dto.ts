@@ -1,4 +1,4 @@
-export class WordDto {
+export class WordJpDto {
   _id: string;
   word: string;
   translate: string;
@@ -7,7 +7,7 @@ export class WordDto {
   srs?: any;
 }
 
-export class UpdateWordWeightDto {
+export class UpdateWordJpWeightDto {
   wordId: string;
   status: 'remember' | 'forgot';
 }
