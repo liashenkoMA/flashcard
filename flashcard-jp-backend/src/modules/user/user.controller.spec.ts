@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { Request } from 'express';
+import { CreateUserDto, UpdateUserDto } from './user.schema.dto';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -28,7 +30,7 @@ describe('UserController', () => {
   });
 
   it('createUser', async () => {
-    const dto = {
+    const dto: CreateUserDto = {
       name: 'Иван',
       email: 'test@mail.ru',
       password: '123',
@@ -49,7 +51,7 @@ describe('UserController', () => {
   it('getUser', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
-    } as any;
+    } as Request;
 
     const user = {
       name: 'Иван',
@@ -67,9 +69,9 @@ describe('UserController', () => {
   it('updateUser', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
-    } as any;
+    } as Request;
 
-    const dto = {
+    const dto: UpdateUserDto = {
       name: 'Максим',
       email: 'new@mail.ru',
       currentPassword: '123',
@@ -91,7 +93,7 @@ describe('UserController', () => {
   it('deleteUser', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
-    } as any;
+    } as Request;
 
     mockUserService.deleteUser.mockResolvedValue(undefined);
 

@@ -5,6 +5,7 @@ import {
   UpdateHiraganaDto,
   UpdateHiraganaWeightDto,
 } from './hiragana.schema.dto';
+import { Request } from 'express';
 
 describe('HiraganaController', () => {
   let controller: HiraganaController;
@@ -33,7 +34,7 @@ describe('HiraganaController', () => {
   it('getHiragana', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
-    } as any;
+    } as Request;
 
     const response = [
       { _id: '1', symbol: 'あ', learned: true },
@@ -51,7 +52,7 @@ describe('HiraganaController', () => {
   it('updateHiragana', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
-    } as any;
+    } as Request;
 
     const dto: UpdateHiraganaDto = {
       symbol: 'あ',
@@ -76,7 +77,7 @@ describe('HiraganaController', () => {
   it('updateHiraganaWeight', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
-    } as any;
+    } as Request;
 
     const dto: UpdateHiraganaWeightDto = {
       symbol: 'あ',

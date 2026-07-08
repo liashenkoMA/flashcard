@@ -1,13 +1,11 @@
 import {
   Injectable,
   NotFoundException,
-  OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Katakana } from './katakana.schema';
 import { Model } from 'mongoose';
-import { KATAKANA_SEED } from './katakana.seed';
 import { User } from '../../../user/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
@@ -18,15 +16,7 @@ import {
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
 
 @Injectable()
-export class KatakanaService implements OnModuleInit {
-  async onModuleInit() {
-    const count = await this.katakanaModel.countDocuments();
-
-    if (count === 0) {
-      await this.katakanaModel.insertMany(KATAKANA_SEED);
-    }
-  }
-
+export class KatakanaService {
   constructor(
     @InjectModel(Katakana.name) private katakanaModel: Model<Katakana>,
     @InjectModel(User.name) private userModel: Model<User>,
@@ -92,6 +82,7 @@ export class KatakanaService implements OnModuleInit {
     if (!user) {
       throw new NotFoundException('Такого пользователя не существует');
     }
+
     // ищем кану
     const kana = await this.katakanaModel
       .findOne({ symbol: katakana.symbol })

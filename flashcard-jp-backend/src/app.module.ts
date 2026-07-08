@@ -14,6 +14,7 @@ import {
 } from './modules/languages/japanese/katakana/katakana.schema';
 import { KanjiModule } from './modules/languages/japanese/kanji/kanji.module';
 import { WordsModule } from './modules/languages/japanese/words/words.module';
+import { HangeulModule } from './modules/languages/korea/hangeul/hangeul.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { WordsModule } from './modules/languages/japanese/words/words.module';
     KatakanaModule,
     KanjiModule,
     WordsModule,
+    HangeulModule,
   ],
 })
 export class AppModule {}

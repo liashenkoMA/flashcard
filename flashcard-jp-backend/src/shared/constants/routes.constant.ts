@@ -27,6 +27,17 @@ const WORDS_ADD = 'add';
 const WORDS_GET_CATEGORY = 'category';
 const WORDS_WEIGHT_UPDATE = 'updateweight';
 
+// === HANGEUL ===
+const HANGEUL = 'hangeul';
+const HANGEUL_UPDATE = 'update';
+const HANGEUL_WEIGHT_UPDATE = 'updateweight';
+
+//=== WORDS_KO ===
+const WORDS_KO = 'words-ko';
+const WORDS_KO_ADD = 'add';
+const WORDS_KO_GET_CATEGORY = 'category';
+const WORDS_KO_WEIGHT_UPDATE = 'updateweight';
+
 export const ROUTES = {
   AUTH,
   SIGN_IN,
@@ -45,4 +56,11 @@ export const ROUTES = {
   WORDS_ADD,
   WORDS_GET_CATEGORY,
   WORDS_WEIGHT_UPDATE,
+  HANGEUL,
+  HANGEUL_UPDATE,
+  HANGEUL_WEIGHT_UPDATE,
+  WORDS_KO,
+  WORDS_KO_ADD,
+  WORDS_KO_GET_CATEGORY,
+  WORDS_KO_WEIGHT_UPDATE,
 } as const;

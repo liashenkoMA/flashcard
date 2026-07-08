@@ -5,6 +5,7 @@ import {
   UpdateKatakanaDto,
   UpdateKatakanaWeightDto,
 } from './katakana.schema.dto';
+import { Request } from 'express';
 
 describe('KatakanaController', () => {
   let controller: KatakanaController;
@@ -33,7 +34,7 @@ describe('KatakanaController', () => {
   it('getKatakana', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
-    } as any;
+    } as Request;
 
     const response = [
       { _id: '1', symbol: 'ア', learned: true },
@@ -51,7 +52,7 @@ describe('KatakanaController', () => {
   it('updateKatakana', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
-    } as any;
+    } as Request;
 
     const dto: UpdateKatakanaDto = {
       symbol: 'ア',
@@ -77,7 +78,7 @@ describe('KatakanaController', () => {
   it('updateKatakanaWeight', async () => {
     const request = {
       cookies: { session_flashcard: 'token' },
-    } as any;
+    } as Request;
 
     const dto: UpdateKatakanaWeightDto = {
       symbol: 'ア',

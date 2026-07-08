@@ -1,4 +1,4 @@
-import { ROUTES } from '@/src/shared/constants/routes.constant';
+import { ROUTES } from '../../../../shared/constants/routes.constant';
 import { Body, Controller, Get, Patch, Req } from '@nestjs/common';
 import { KatakanaService } from './katakana.service';
 import { Request } from 'express';

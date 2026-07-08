@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { WordsController } from './words.controller';
 import { WordsService } from './words.service';
 import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
+import { Request } from 'express';
 
 describe('WordsController', () => {
   let controller: WordsController;
@@ -35,7 +36,7 @@ describe('WordsController', () => {
     it('Добавление слова', async () => {
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const dto: WordJpDto = {
         _id: '1',
@@ -63,7 +64,7 @@ describe('WordsController', () => {
     it('Получение слов пользователя', async () => {
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const response = [
         {
@@ -89,7 +90,7 @@ describe('WordsController', () => {
     it('Удаление слова по id', async () => {
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const wordId = 'abc123';
 
@@ -110,7 +111,7 @@ describe('WordsController', () => {
     it('Получение категорий слов пользователя', async () => {
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const response = ['Машины', 'Пища'];
 
@@ -128,7 +129,7 @@ describe('WordsController', () => {
     it('Изменение веса слова', async () => {
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const dto: UpdateWordJpWeightDto = {
         wordId: '1',

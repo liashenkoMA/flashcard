@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { KanjiController } from './kanji.controller';
 import { KanjiService } from './kanji.service';
 import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
+import { Request } from 'express';
 
 describe('KanjiController', () => {
   let controller: KanjiController;
@@ -34,7 +35,7 @@ describe('KanjiController', () => {
     it('Добавление кандзи', async () => {
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const dto: KanjiDto = {
         _id: '1',
@@ -63,7 +64,7 @@ describe('KanjiController', () => {
     it('Получение кандзи пользователя', async () => {
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const response = [
         {
@@ -89,7 +90,7 @@ describe('KanjiController', () => {
     it('Удаление кандзи по id', async () => {
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const kanjiId = 'abc123';
 
@@ -114,7 +115,7 @@ describe('KanjiController', () => {
     it('Изменение веса кандзи', async () => {
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const dto: UpdateKanjiWeightDto = {
         kanjiId: '123',
