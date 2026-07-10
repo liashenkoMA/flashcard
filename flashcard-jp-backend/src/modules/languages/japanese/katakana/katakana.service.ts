@@ -58,9 +58,9 @@ export class KatakanaService {
     // Получаем весь прогресс пользователя
     const progress = user.learningProgress?.find((p) => p.language === 'jp');
 
-    // Создаем коллекцию Set с выученной каной
+    // Создаем коллекцию с выученной каной
     const learnedMap = new Map(
-      (progress?.katakana || []).map((k: any) => [k.id.toString(), k.weight]),
+      (progress?.katakana || []).map((k) => [k.id.toString(), k.weight]),
     );
 
     // Получаем весь список катаканы
@@ -107,7 +107,7 @@ export class KatakanaService {
 
     // проверяем есть ли уже элемент
     const index = progress.katakana.findIndex(
-      (k: any) => k.id.toString() === kana._id.toString(),
+      (k) => k.id.toString() === kana._id.toString(),
     );
 
     let learned: boolean;
@@ -121,7 +121,7 @@ export class KatakanaService {
       progress.katakana.push({
         id: kana._id,
         weight: 1,
-      } as any);
+      });
 
       learned = true;
     }

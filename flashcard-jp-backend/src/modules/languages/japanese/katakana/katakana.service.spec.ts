@@ -5,12 +5,14 @@ import { User } from '../../../user/user.schema';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { KatakanaService } from './katakana.service';
 import { Katakana } from './katakana.schema';
+import { Request } from 'express';
+import { UpdateKatakanaWeightDto } from './katakana.schema.dto';
 
 describe('KatakanaService', () => {
-  let mockJwtService: any;
-  let mockKatakanaModel: any;
+  let mockJwtService;
+  let mockKatakanaModel;
   let service: KatakanaService;
-  let mockUserModel: any;
+  let mockUserModel;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -52,7 +54,7 @@ describe('KatakanaService', () => {
 
   describe('validateAndGetPayload', () => {
     it('Ошибка пользователь не авторизован', async () => {
-      const request = { cookies: {} };
+      const request = { cookies: {} } as Request;
 
       await expect(
         (service as any).validateAndGetPayload(request),
@@ -60,7 +62,7 @@ describe('KatakanaService', () => {
     });
 
     it('Ошибка невалидный токен', async () => {
-      const request = { cookies: { session_flashcard: '1234' } };
+      const request = { cookies: { session_flashcard: '1234' } } as Request;
 
       mockJwtService.verifyAsync.mockRejectedValue(new Error());
 
@@ -76,7 +78,7 @@ describe('KatakanaService', () => {
 
       const request = {
         cookies: { session_flashcard: 'valid_token' },
-      } as any;
+      } as Request;
 
       const result = await (service as any).validateAndGetPayload(request);
 
@@ -86,7 +88,9 @@ describe('KatakanaService', () => {
 
   describe('getKatakana', () => {
     it('Ошибка пользователя не существует', async () => {
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
+      const request = {
+        cookies: { session_flashcard: 'valid_token' },
+      } as Request;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
         sub: 'user_id',
@@ -104,7 +108,7 @@ describe('KatakanaService', () => {
     });
 
     it('Успешное получение катаканы', async () => {
-      const request = {} as any;
+      const request = {} as Request;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
         sub: 'user_id',
@@ -145,7 +149,9 @@ describe('KatakanaService', () => {
 
   describe('updateKatakana', () => {
     it('Ошибка пользователь не существует', async () => {
-      const request = { cookies: { session_flashcard: 'valid_token' } } as any;
+      const request = {
+        cookies: { session_flashcard: 'valid_token' },
+      } as Request;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
         sub: 'user_id',
@@ -161,7 +167,7 @@ describe('KatakanaService', () => {
     });
 
     it('Ошибка катакана не найдена', async () => {
-      const request = {} as any;
+      const request = {} as Request;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
         sub: 'user_id',
@@ -208,7 +214,10 @@ describe('KatakanaService', () => {
         }),
       });
 
-      const result = await service.updateKatakana({ symbol: 'イ' }, {} as any);
+      const result = await service.updateKatakana(
+        { symbol: 'イ' },
+        {} as Request,
+      );
 
       expect(user.save).toHaveBeenCalled();
       expect(result).toHaveProperty('learned');
@@ -220,7 +229,7 @@ describe('KatakanaService', () => {
     it('Ошибка пользователь не существует', async () => {
       const request = {
         cookies: { session_flashcard: 'valid_token' },
-      } as any;
+      } as Request;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
         sub: 'user_id',
@@ -235,14 +244,14 @@ describe('KatakanaService', () => {
           {
             symbol: 'イ',
             status: 'remember',
-          },
+          } as UpdateKatakanaWeightDto,
           request,
         ),
       ).rejects.toThrow(NotFoundException);
     });
 
     it('Ошибка катакана не найдена', async () => {
-      const request = {} as any;
+      const request = {} as Request;
 
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
         sub: 'user_id',
@@ -273,7 +282,7 @@ describe('KatakanaService', () => {
           {
             symbol: 'イ',
             status: 'remember',
-          },
+          } as UpdateKatakanaWeightDto,
           request,
         ),
       ).rejects.toThrow(NotFoundException);
@@ -314,8 +323,8 @@ describe('KatakanaService', () => {
         {
           symbol: 'イ',
           status: 'remember',
-        },
-        {} as any,
+        } as UpdateKatakanaWeightDto,
+        {} as Request,
       );
 
       expect(user.learningProgress[0].katakana[0].weight).toBe(2);
@@ -361,8 +370,8 @@ describe('KatakanaService', () => {
         {
           symbol: 'イ',
           status: 'forgot',
-        },
-        {} as any,
+        } as UpdateKatakanaWeightDto,
+        {} as Request,
       );
 
       expect(user.learningProgress[0].katakana[0].weight).toBe(3);

@@ -6,7 +6,7 @@ import { Request } from 'express';
 
 describe('WordsController', () => {
   let controller: WordsController;
-  let mockWordsService: any;
+  let mockWordsService;
 
   beforeEach(async () => {
     jest.resetAllMocks();

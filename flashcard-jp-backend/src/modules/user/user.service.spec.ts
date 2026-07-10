@@ -10,11 +10,17 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { Request } from 'express';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UserResponseDto,
+} from './user.schema.dto';
 
 describe('UserService', () => {
   let service: UserService;
-  let mockJwtService: any;
-  let mockUserModel: any;
+  let mockJwtService;
+  let mockUserModel;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -73,7 +79,7 @@ describe('UserService', () => {
 
       const request = {
         cookies: { session_flashcard: 'valid_token' },
-      } as any;
+      } as Request;
 
       const result = await (service as any).validateAndGetPayload(request);
 
@@ -92,7 +98,7 @@ describe('UserService', () => {
           name: 'Иван',
           email: 'test@mail.com',
           password: '123',
-        }),
+        } as CreateUserDto),
       ).rejects.toThrow(ConflictException);
     });
 
@@ -101,8 +107,8 @@ describe('UserService', () => {
         exec: jest.fn().mockResolvedValue(null),
       });
 
-      jest.spyOn(bcrypt, 'genSalt').mockResolvedValue('salt' as any);
-      jest.spyOn(bcrypt, 'hash').mockResolvedValue('hash' as any);
+      jest.spyOn(bcrypt, 'genSalt').mockResolvedValue('salt');
+      jest.spyOn(bcrypt, 'hash').mockResolvedValue('hash');
 
       const saveMock = jest.fn().mockResolvedValue({
         _id: 'user_id',
@@ -116,7 +122,7 @@ describe('UserService', () => {
         name: 'Иван',
         email: 'test@mail.com',
         password: '123',
-      });
+      } as CreateUserDto);
 
       expect(result).toEqual({
         data: 'Спасибо за регистрацию, пользователь успешно создан!',
@@ -137,7 +143,7 @@ describe('UserService', () => {
         exec: jest.fn().mockResolvedValue(null),
       });
 
-      await expect(service.getUser({ cookies: {} } as any)).rejects.toThrow(
+      await expect(service.getUser({ cookies: {} } as Request)).rejects.toThrow(
         NotFoundException,
       );
     });
@@ -151,15 +157,15 @@ describe('UserService', () => {
         exec: jest.fn().mockResolvedValue({
           name: 'Иван',
           email: 'test@mail.ru',
-        }),
+        } as UserResponseDto),
       });
 
-      const result = await service.getUser({ cookies: {} } as any);
+      const result = await service.getUser({ cookies: {} } as Request);
 
       expect(result).toEqual({
         name: 'Иван',
         email: 'test@mail.ru',
-      });
+      } as UserResponseDto);
     });
   });
 
@@ -174,7 +180,7 @@ describe('UserService', () => {
       });
 
       await expect(
-        service.updateUser({} as any, { cookies: {} } as any),
+        service.updateUser({} as any, { cookies: {} } as Request),
       ).rejects.toThrow(NotFoundException);
     });
 
@@ -189,14 +195,14 @@ describe('UserService', () => {
         }),
       });
 
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as any);
+      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false);
 
       await expect(
         service.updateUser(
           {
             currentPassword: 'wrong',
-          } as any,
-          { cookies: {} } as any,
+          } as UpdateUserDto,
+          { cookies: {} } as Request,
         ),
       ).rejects.toThrow(BadRequestException);
     });
@@ -215,16 +221,16 @@ describe('UserService', () => {
 
       jest
         .spyOn(bcrypt, 'compare')
-        .mockResolvedValueOnce(true as any)
-        .mockResolvedValueOnce(true as any);
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(true);
 
       await expect(
         service.updateUser(
           {
             currentPassword: '123',
             newPassword: '123',
-          } as any,
-          { cookies: {} } as any,
+          } as UpdateUserDto,
+          { cookies: {} } as Request,
         ),
       ).rejects.toThrow(BadRequestException);
     });
@@ -241,7 +247,7 @@ describe('UserService', () => {
         }),
       });
 
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as any);
+      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
 
       mockUserModel.findOneAndUpdate.mockReturnValue({
         select: jest.fn().mockReturnValue({
@@ -257,8 +263,8 @@ describe('UserService', () => {
           name: 'Максим',
           email: 'new@mail.ru',
           currentPassword: '123',
-        } as any,
-        { cookies: {} } as any,
+        } as UpdateUserDto,
+        { cookies: {} } as Request,
       );
 
       expect(result).toEqual({
@@ -281,11 +287,11 @@ describe('UserService', () => {
 
       jest
         .spyOn(bcrypt, 'compare')
-        .mockResolvedValueOnce(true as any)
-        .mockResolvedValueOnce(false as any);
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(false);
 
-      jest.spyOn(bcrypt, 'genSalt').mockResolvedValue('salt' as any);
-      jest.spyOn(bcrypt, 'hash').mockResolvedValue('new_hash' as any);
+      jest.spyOn(bcrypt, 'genSalt').mockResolvedValue('salt');
+      jest.spyOn(bcrypt, 'hash').mockResolvedValue('new_hash');
 
       mockUserModel.findOneAndUpdate.mockReturnValue({
         select: jest.fn().mockReturnValue({
@@ -302,8 +308,8 @@ describe('UserService', () => {
           email: 'new@mail.ru',
           currentPassword: '123',
           newPassword: '456',
-        } as any,
-        { cookies: {} } as any,
+        } as UpdateUserDto,
+        { cookies: {} } as Request,
       );
 
       expect(result).toEqual({
@@ -323,7 +329,7 @@ describe('UserService', () => {
         exec: jest.fn().mockResolvedValue(undefined),
       });
 
-      const result = await service.deleteUser({ cookies: {} } as any);
+      const result = await service.deleteUser({ cookies: {} } as Request);
 
       expect(mockUserModel.findByIdAndDelete).toHaveBeenCalledWith('user_id');
       expect(result).toBeUndefined();

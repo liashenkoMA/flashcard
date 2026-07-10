@@ -5,12 +5,14 @@ import { getModelToken } from '@nestjs/mongoose';
 import { WordJp } from './words.schema';
 import { User } from '../../../user/user.schema';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Request } from 'express';
+import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
 
 describe('WordsService', () => {
   let service: WordsService;
-  let mockJwtService: any;
-  let mockWordModel: any;
-  let mockUserModel: any;
+  let mockJwtService;
+  let mockWordModel;
+  let mockUserModel;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -76,7 +78,7 @@ describe('WordsService', () => {
 
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const result = await (service as any).validateAndGetPayload(request);
 
@@ -100,8 +102,8 @@ describe('WordsService', () => {
             word: 'hello',
             translate: 'привет',
             category: 'greeting',
-          } as any,
-          { cookies: {} } as any,
+          } as WordJpDto,
+          { cookies: {} } as Request,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -122,8 +124,8 @@ describe('WordsService', () => {
           word: 'hello',
           translate: 'привет',
           category: 'greeting',
-        } as any,
-        { cookies: {} } as any,
+        } as WordJpDto,
+        { cookies: {} } as Request,
       );
 
       expect(mockWordModel.create).toHaveBeenCalledWith({
@@ -151,7 +153,7 @@ describe('WordsService', () => {
         exec: jest.fn().mockResolvedValue(null),
       });
 
-      await expect(service.getWord({ cookies: {} } as any)).rejects.toThrow(
+      await expect(service.getWord({ cookies: {} } as Request)).rejects.toThrow(
         NotFoundException,
       );
     });
@@ -195,7 +197,7 @@ describe('WordsService', () => {
       });
 
       await expect(
-        service.deleteWord('word_id', { cookies: {} } as any),
+        service.deleteWord('word_id', { cookies: {} } as Request),
       ).rejects.toThrow(NotFoundException);
     });
 
@@ -210,7 +212,7 @@ describe('WordsService', () => {
 
       const result = await service.deleteWord('word_id', {
         cookies: {},
-      } as any);
+      } as Request);
 
       expect(mockWordModel.deleteOne).toHaveBeenCalledWith({
         _id: 'word_id',
@@ -234,7 +236,7 @@ describe('WordsService', () => {
       });
 
       await expect(
-        service.getWordsCategory({ cookies: {} } as any),
+        service.getWordsCategory({ cookies: {} } as Request),
       ).rejects.toThrow(NotFoundException);
     });
 
@@ -251,7 +253,7 @@ describe('WordsService', () => {
 
       mockWordModel.distinct = jest.fn().mockResolvedValue(wordsCategoryList);
 
-      const result = await service.getWordsCategory({ cookies: {} } as any);
+      const result = await service.getWordsCategory({ cookies: {} } as Request);
 
       expect(mockWordModel.distinct).toHaveBeenCalledWith('category', {
         userId: 'user_id',
@@ -276,8 +278,8 @@ describe('WordsService', () => {
           {
             wordId: '1',
             status: 'remember',
-          } as any,
-          { cookies: {} } as any,
+          } as UpdateWordJpWeightDto,
+          { cookies: {} } as Request,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -300,8 +302,8 @@ describe('WordsService', () => {
           {
             wordId: 'word_id',
             status: 'remember',
-          } as any,
-          { cookies: {} } as any,
+          } as UpdateWordJpWeightDto,
+          { cookies: {} } as Request,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -330,8 +332,8 @@ describe('WordsService', () => {
         {
           wordId: '1',
           status: 'remember',
-        } as any,
-        { cookies: {} } as any,
+        } as UpdateWordJpWeightDto,
+        { cookies: {} } as Request,
       );
 
       expect(word.weight).toBe(2);
@@ -365,8 +367,8 @@ describe('WordsService', () => {
         {
           wordId: '1',
           status: 'forgot',
-        } as any,
-        { cookies: {} } as any,
+        } as UpdateWordJpWeightDto,
+        { cookies: {} } as Request,
       );
 
       expect(word.weight).toBe(3);

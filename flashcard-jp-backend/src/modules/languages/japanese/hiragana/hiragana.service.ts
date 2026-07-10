@@ -59,7 +59,7 @@ export class HiraganaService {
     const progress = user.learningProgress?.find((p) => p.language === 'jp');
 
     const learnedMap = new Map(
-      (progress?.hiragana || []).map((h: any) => [h.id.toString(), h.weight]),
+      (progress?.hiragana || []).map((h) => [h.id.toString(), h.weight]),
     );
 
     // Получаем весь список хироганы
@@ -107,7 +107,7 @@ export class HiraganaService {
 
     // Проверяем, выучена ли кана или нет
     const index = progress.hiragana.findIndex(
-      (h: any) => h.id.toString() === kana._id.toString(),
+      (h) => h.id.toString() === kana._id.toString(),
     );
 
     let learned: boolean;
@@ -124,7 +124,7 @@ export class HiraganaService {
 
         // Стартовый вес каны
         weight: 1,
-      } as any);
+      });
 
       learned = true;
     }

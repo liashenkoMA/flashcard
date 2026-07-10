@@ -6,7 +6,7 @@ import { Request } from 'express';
 
 describe('KanjiController', () => {
   let controller: KanjiController;
-  let mockKanjiService: any;
+  let mockKanjiService;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -66,7 +66,7 @@ describe('KanjiController', () => {
         cookies: { session_flashcard: 'token' },
       } as Request;
 
-      const response = [
+      const response: KanjiDto[] = [
         {
           _id: '1',
           kanji: '日',
@@ -74,6 +74,7 @@ describe('KanjiController', () => {
           translate: 'солнце',
           jpRead: 'にち',
           chinaRead: 'ri',
+          weight: 1,
         },
       ];
 

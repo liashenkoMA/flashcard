@@ -5,12 +5,14 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Kanji } from './kanji.schema';
 import { User } from '../../../user/user.schema';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Request } from 'express';
+import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
 
 describe('KanjiService', () => {
   let service: KanjiService;
-  let mockJwtService: any;
-  let mockKanjiModel: any;
-  let mockUserModel: any;
+  let mockJwtService;
+  let mockKanjiModel;
+  let mockUserModel;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -61,7 +63,7 @@ describe('KanjiService', () => {
     });
 
     it('Ошибка невалидный токен', async () => {
-      const request = { cookies: { session_flashcard: 'token' } };
+      const request = { cookies: { session_flashcard: 'token' } } as Request;
 
       mockJwtService.verifyAsync.mockRejectedValue(new Error());
 
@@ -75,7 +77,7 @@ describe('KanjiService', () => {
 
       const request = {
         cookies: { session_flashcard: 'token' },
-      } as any;
+      } as Request;
 
       const result = await (service as any).validateAndGetPayload(request);
 
@@ -101,8 +103,8 @@ describe('KanjiService', () => {
             translate: 'sun',
             jpRead: 'にち',
             chinaRead: 'ri',
-          } as any,
-          { cookies: {} } as any,
+          } as KanjiDto,
+          { cookies: {} } as Request,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -125,8 +127,8 @@ describe('KanjiService', () => {
           translate: 'sun',
           jpRead: 'にち',
           chinaRead: 'ri',
-        } as any,
-        { cookies: {} } as any,
+        } as KanjiDto,
+        { cookies: {} } as Request,
       );
 
       expect(mockKanjiModel.create).toHaveBeenCalledWith({
@@ -139,7 +141,6 @@ describe('KanjiService', () => {
         weight: 1,
         srs: null,
       });
-
       expect(result).toEqual({
         data: '日 - добавлено',
       });
@@ -243,8 +244,8 @@ describe('KanjiService', () => {
           {
             kanjiId: '123',
             status: 'remember',
-          },
-          { cookies: {} } as any,
+          } as UpdateKanjiWeightDto,
+          { cookies: {} } as Request,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -267,8 +268,8 @@ describe('KanjiService', () => {
           {
             kanjiId: '123',
             status: 'remember',
-          },
-          { cookies: {} } as any,
+          } as UpdateKanjiWeightDto,
+          { cookies: {} } as Request,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -297,8 +298,8 @@ describe('KanjiService', () => {
         {
           kanjiId: '123',
           status: 'remember',
-        },
-        { cookies: {} } as any,
+        } as UpdateKanjiWeightDto,
+        { cookies: {} } as Request,
       );
 
       expect(kanji.weight).toBe(2);
@@ -332,8 +333,8 @@ describe('KanjiService', () => {
         {
           kanjiId: '123',
           status: 'forgot',
-        },
-        { cookies: {} } as any,
+        } as UpdateKanjiWeightDto,
+        { cookies: {} } as Request,
       );
 
       expect(kanji.weight).toBe(3);
