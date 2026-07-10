@@ -3,19 +3,19 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { WordJp } from './words.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '../../../user/user.schema';
+import { WordKr } from './krWords.schema';
 import { Model } from 'mongoose';
+import { User } from '../../../user/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
+import { UpdateWordKrWeightDto, WordKrDto } from './krWords.schema.dto';
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
 
 @Injectable()
-export class WordsService {
+export class WordsKrService {
   constructor(
-    @InjectModel(WordJp.name) private wordModel: Model<WordJp>,
+    @InjectModel(WordKr.name) private wordModel: Model<WordKr>,
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
   ) {}
@@ -36,7 +36,7 @@ export class WordsService {
     }
   }
 
-  async addWord(word: WordJpDto, request: Request): Promise<{ data: string }> {
+  async addWord(request: Request, word: WordKrDto): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
@@ -72,8 +72,8 @@ export class WordsService {
   }
 
   async deleteWord(
-    wordId: string,
     request: Request,
+    wordId: string,
   ): Promise<{ message: string }> {
     const payload = await this.validateAndGetPayload(request);
 
@@ -105,7 +105,7 @@ export class WordsService {
     });
   }
 
-  async updateWordWeight(word: UpdateWordJpWeightDto, request: Request) {
+  async updateWordWeight(request: Request, word: UpdateWordKrWeightDto) {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();

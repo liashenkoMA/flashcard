@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WordsService } from './words.service';
+import { WordsKrService } from './krWords.service';
 import { JwtService } from '@nestjs/jwt';
 import { getModelToken } from '@nestjs/mongoose';
-import { WordJp } from './words.schema';
+import { WordKr } from './krWords.schema';
 import { User } from '../../../user/user.schema';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
-import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
+import { UpdateWordKrWeightDto, WordKrDto } from './krWords.schema.dto';
 
-describe('WordsService', () => {
-  let service: WordsService;
+describe('WordsKrService', () => {
+  let service: WordsKrService;
   let mockJwtService;
   let mockWordModel;
   let mockUserModel;
@@ -35,13 +35,13 @@ describe('WordsService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        WordsService,
+        WordsKrService,
         {
           provide: JwtService,
           useValue: mockJwtService,
         },
         {
-          provide: getModelToken(WordJp.name),
+          provide: getModelToken(WordKr.name),
           useValue: mockWordModel,
         },
         {
@@ -51,7 +51,7 @@ describe('WordsService', () => {
       ],
     }).compile();
 
-    service = module.get<WordsService>(WordsService);
+    service = module.get<WordsKrService>(WordsKrService);
   });
 
   describe('validateAndGetPayload', () => {
@@ -98,12 +98,12 @@ describe('WordsService', () => {
 
       await expect(
         service.addWord(
+          { cookies: {} } as Request,
           {
             word: 'hello',
             translate: 'привет',
             category: 'greeting',
-          } as WordJpDto,
-          { cookies: {} } as Request,
+          } as WordKrDto,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -120,12 +120,12 @@ describe('WordsService', () => {
       mockWordModel.create.mockResolvedValue({});
 
       const result = await service.addWord(
+        { cookies: {} } as Request,
         {
           word: 'hello',
           translate: 'привет',
           category: 'greeting',
-        } as WordJpDto,
-        { cookies: {} } as Request,
+        } as WordKrDto,
       );
 
       expect(mockWordModel.create).toHaveBeenCalledWith({
@@ -197,7 +197,7 @@ describe('WordsService', () => {
       });
 
       await expect(
-        service.deleteWord('word_id', { cookies: {} } as Request),
+        service.deleteWord({ cookies: {} } as Request, 'word_id'),
       ).rejects.toThrow(NotFoundException);
     });
 
@@ -210,9 +210,10 @@ describe('WordsService', () => {
         deletedCount: 1,
       });
 
-      const result = await service.deleteWord('word_id', {
-        cookies: {},
-      } as Request);
+      const result = await service.deleteWord(
+        { cookies: {} } as Request,
+        'word_id',
+      );
 
       expect(mockWordModel.deleteOne).toHaveBeenCalledWith({
         _id: 'word_id',
@@ -275,11 +276,11 @@ describe('WordsService', () => {
 
       await expect(
         service.updateWordWeight(
+          { cookies: {} } as Request,
           {
             wordId: '1',
             status: 'remember',
-          } as UpdateWordJpWeightDto,
-          { cookies: {} } as Request,
+          } as UpdateWordKrWeightDto,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -299,11 +300,11 @@ describe('WordsService', () => {
 
       await expect(
         service.updateWordWeight(
+          { cookies: {} } as Request,
           {
             wordId: 'word_id',
             status: 'remember',
-          } as UpdateWordJpWeightDto,
-          { cookies: {} } as Request,
+          } as UpdateWordKrWeightDto,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -329,11 +330,11 @@ describe('WordsService', () => {
       mockWordModel.findOne.mockResolvedValue(word);
 
       const result = await service.updateWordWeight(
+        { cookies: {} } as Request,
         {
           wordId: '1',
           status: 'remember',
-        } as UpdateWordJpWeightDto,
-        { cookies: {} } as Request,
+        } as UpdateWordKrWeightDto,
       );
 
       expect(word.weight).toBe(2);
@@ -364,11 +365,11 @@ describe('WordsService', () => {
       mockWordModel.findOne.mockResolvedValue(word);
 
       await service.updateWordWeight(
+        { cookies: {} } as Request,
         {
           wordId: '1',
           status: 'forgot',
-        } as UpdateWordJpWeightDto,
-        { cookies: {} } as Request,
+        } as UpdateWordKrWeightDto,
       );
 
       expect(word.weight).toBe(3);
