@@ -43,7 +43,7 @@ export class KatakanaService {
     }
   }
 
-  async getKatakana(request: Request) {
+  async getKatakana(request: Request): Promise<Katakana[]> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel

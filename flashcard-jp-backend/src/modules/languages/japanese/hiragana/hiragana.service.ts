@@ -43,7 +43,7 @@ export class HiraganaService {
     }
   }
 
-  async getHiragana(request: Request) {
+  async getHiragana(request: Request): Promise<Hiragana[]> {
     const payload = await this.validateAndGetPayload(request);
     // Проверка пользователя
     const user = await this.userModel

@@ -61,7 +61,7 @@ export class KanjiService {
     };
   }
 
-  async getKanji(request: Request) {
+  async getKanji(request: Request): Promise<Kanji[]> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
@@ -93,7 +93,10 @@ export class KanjiService {
     };
   }
 
-  async updateKanjiWeight(kanji: UpdateKanjiWeightDto, request: Request) {
+  async updateKanjiWeight(
+    kanji: UpdateKanjiWeightDto,
+    request: Request,
+  ): Promise<{ message: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();

@@ -59,7 +59,7 @@ export class WordsService {
     };
   }
 
-  async getWord(request: Request) {
+  async getWord(request: Request): Promise<WordJp[]> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
@@ -105,7 +105,10 @@ export class WordsService {
     });
   }
 
-  async updateWordWeight(word: UpdateWordJpWeightDto, request: Request) {
+  async updateWordWeight(
+    word: UpdateWordJpWeightDto,
+    request: Request,
+  ): Promise<{ message: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
