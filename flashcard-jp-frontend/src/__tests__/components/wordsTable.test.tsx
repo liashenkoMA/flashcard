@@ -24,7 +24,7 @@ describe("WordTable", () => {
   it("Рендерит список слов", () => {
     render(<WordTable words={mockWords} />);
 
-    expect(screen.getByText("Таблица слов")).toBeInTheDocument();
+    expect(screen.getByText("Таблица японских слов")).toBeInTheDocument();
     expect(screen.getByText("こんにちは")).toBeInTheDocument();
   });
 

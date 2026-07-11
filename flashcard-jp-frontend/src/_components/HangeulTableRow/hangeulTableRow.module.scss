@@ -1,0 +1,36 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.hangeultablerow {
+  width: 100%;
+  min-height: 60px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  background-color: v.$color-bg-element;
+  border: 1px solid v.$color-border;
+  border-radius: 15px;
+  @include m.hover {
+    transition-duration: 0.2s;
+    border: 1px solid v.$color-border-active-2;
+    box-shadow: v.$shadow-default;
+    transform: translateY(-2px);
+  }
+
+  &__symbol {
+    color: v.$color-text-main;
+    font-size: v.$font-size-large;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-large;
+  }
+
+  &__reading {
+    max-width: 100%;
+    color: v.$color-text-secondary;
+    font-size: v.$font-size-medium;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-medium;
+  }
+}

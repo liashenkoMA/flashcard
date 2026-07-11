@@ -10,6 +10,7 @@ import { logout } from "@/_utils/api/server/authApi";
 import { logout as logoutAction } from "@/_store/authSlice";
 import { useDispatch } from "react-redux";
 import LinkButton from "../UI/LinkButton/LinkButton";
+import { ROUTES } from "@/_constants/routes.constant";
 
 export default function ProfileDropdown({ user }: { user: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -119,7 +120,10 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     onClick={closeMenu}
                     className={styles.profiledropdown__menu_link}
                   >
-                    <LinkButton href="/kana/katakana" text="Изучить катакану" />
+                    <LinkButton
+                      href={ROUTES.kana.katakana.learn}
+                      text="Изучить катакану"
+                    />
                   </li>
 
                   <li
@@ -127,7 +131,7 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     className={styles.profiledropdown__menu_link}
                   >
                     <LinkButton
-                      href="/kana/katakana?type=repeat"
+                      href={ROUTES.kana.katakana.repeat}
                       text="Повторить катакану"
                     />
                   </li>
@@ -136,7 +140,10 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     onClick={closeMenu}
                     className={styles.profiledropdown__menu_link}
                   >
-                    <LinkButton href="/kana/hiragana" text="Изучить хирагану" />
+                    <LinkButton
+                      href={ROUTES.kana.hiragana.learn}
+                      text="Изучить хирагану"
+                    />
                   </li>
 
                   <li
@@ -144,7 +151,7 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     className={styles.profiledropdown__menu_link}
                   >
                     <LinkButton
-                      href="/kana/hiragana?type=repeat"
+                      href={ROUTES.kana.hiragana.repeat}
                       text="Повторить хирагану"
                     />
                   </li>
@@ -153,14 +160,46 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     onClick={closeMenu}
                     className={styles.profiledropdown__menu_link}
                   >
-                    <LinkButton href="/kanji/repeat" text="Учим кандзи" />
+                    <LinkButton href={ROUTES.kanji.study} text="Учим кандзи" />
                   </li>
 
                   <li
                     onClick={closeMenu}
                     className={styles.profiledropdown__menu_link}
                   >
-                    <LinkButton href="/words/repeat" text="Учим слова" />
+                    <LinkButton
+                      href={ROUTES.words.study}
+                      text="Учим японские слова"
+                    />
+                  </li>
+
+                  <li
+                    className={styles.profiledropdown__list}
+                    onClick={closeMenu}
+                  >
+                    <LinkButton
+                      href={ROUTES.hangeul.learn}
+                      text="Изучить хангуел"
+                    />
+                  </li>
+                  <li
+                    className={styles.profiledropdown__list}
+                    onClick={closeMenu}
+                  >
+                    <LinkButton
+                      href={ROUTES.hangeul.repeat}
+                      text="Повторить хангуел"
+                    />
+                  </li>
+
+                  <li
+                    className={styles.profiledropdown__list}
+                    onClick={closeMenu}
+                  >
+                    <LinkButton
+                      href={ROUTES.kr_words.study}
+                      text="Учим корейские слова"
+                    />
                   </li>
                 </ul>
               )}
@@ -187,14 +226,30 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     onClick={closeMenu}
                     className={styles.profiledropdown__menu_link}
                   >
-                    <LinkButton href="/kanji/add" text="Добавить кандзи" />
+                    <LinkButton
+                      href={ROUTES.kanji.add}
+                      text="Добавить кандзи"
+                    />
                   </li>
 
                   <li
                     onClick={closeMenu}
                     className={styles.profiledropdown__menu_link}
                   >
-                    <LinkButton href="/words/add" text="Добавить слово" />
+                    <LinkButton
+                      href={ROUTES.words.add}
+                      text="Добавить японское слово"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.kr_words.add}
+                      text="Добавить корейское слово"
+                    />
                   </li>
                 </ul>
               )}
@@ -222,7 +277,7 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     className={styles.profiledropdown__menu_link}
                   >
                     <LinkButton
-                      href="/tables/table-kana"
+                      href={ROUTES.tables.kana}
                       text="Таблица азбук"
                     />
                   </li>
@@ -231,14 +286,27 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     onClick={closeMenu}
                     className={styles.profiledropdown__menu_link}
                   >
-                    <LinkButton href="/tables/table-kanji" text="Все кандзи" />
+                    <LinkButton href={ROUTES.tables.kanji} text="Все кандзи" />
                   </li>
 
                   <li
                     onClick={closeMenu}
                     className={styles.profiledropdown__menu_link}
                   >
-                    <LinkButton href="/tables/table-words" text="Все слова" />
+                    <LinkButton
+                      href={ROUTES.tables.words}
+                      text="Все японские слова"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.kr_tables.words}
+                      text="Все корейские слова"
+                    />
                   </li>
                 </ul>
               )}

@@ -108,6 +108,7 @@ describe("Kana Api", () => {
       const mockResponse: IUpdateHirakanaResponse = {
         message: "Выучена",
         hiraganaId: "123",
+        learned: true,
       };
 
       mockFetch.mockResolvedValueOnce({
@@ -232,6 +233,7 @@ describe("Kana Api", () => {
       const mockResponse: IUpdateKatakanaResponse = {
         message: "Выучена",
         katakanaId: "123",
+        learned: true,
       };
 
       mockFetch.mockResolvedValueOnce({

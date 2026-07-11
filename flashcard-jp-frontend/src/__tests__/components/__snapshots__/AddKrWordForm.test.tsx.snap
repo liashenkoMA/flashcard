@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Add Kr Word Form component Snapshot 1`] = `
+<div>
+  <div
+    class="addKrWordForm__form"
+  >
+    <form
+      class="form"
+      novalidate=""
+    >
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Введите слово:
+        </span>
+        <input
+          class="input"
+          name="word"
+          placeholder="안녕"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Перевод:
+        </span>
+        <input
+          class="input"
+          name="translate"
+          placeholder="Привет"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="addKrWordForm__form_field"
+      >
+        <select
+          class="addKrWordForm__lists"
+          id="category"
+          name="category"
+        >
+          <option
+            value="Без категории"
+          >
+            Без категории
+          </option>
+          <option
+            value="Новая категория?"
+          >
+            + новая категория
+          </option>
+        </select>
+      </label>
+      <span
+        class="addKrWordForm__text addKrWordForm__success"
+      />
+      <span
+        class="addKrWordForm__text addKrWordForm__errors"
+      />
+      <button
+        class="button  default"
+        type="submit"
+      >
+        Добавить
+      </button>
+      <span
+        class="addKrWordForm__text addKrWordForm__errors"
+      />
+    </form>
+  </div>
+</div>
+`;

@@ -1,0 +1,62 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.addKrWordForm {
+  &__form {
+    padding: 10px 5px;
+    min-width: 300px;
+    @include m.respond-to(tablet-up) {
+      min-width: 460px;
+    }
+  }
+
+  &__form_field {
+    padding: 15px 0px;
+  }
+
+  &__lists {
+    padding: 5px;
+    width: 100%;
+    height: 30px;
+    background-color: transparent;
+    color: v.$color-text-secondary;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    border-radius: 10px;
+    border: 1px solid v.$color-border;
+    background-color: v.$grey-dark;
+    @include m.respond-to(tablet-up) {
+      height: 50px;
+      padding: 10px 20px;
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+      border-radius: 20px;
+    }
+  }
+
+  &__lists:focus {
+    outline: none;
+    border-color: v.$purple;
+  }
+
+  &__text {
+    width: 100%;
+    display: block;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    text-align: center;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-small;
+    }
+  }
+
+  &__success {
+    color: v.$color-accent-1;
+  }
+
+  &__errors {
+    color: v.$color-text-error;
+  }
+}

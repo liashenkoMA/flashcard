@@ -34,4 +34,19 @@ export const ROUTES = {
     login: "/login",
     register: "/register",
   },
+
+  hangeul: {
+    learn: "/hangeul",
+    repeat: "/hangeul?type=repeat",
+  },
+
+  kr_words: {
+    study: "/kr-words/repeat",
+    add: "/kr-words/add",
+  },
+
+  kr_tables: {
+    hangeul: "/kr-tables/table-hangeul",
+    words: "/kr-tables/table-words",
+  },
 };

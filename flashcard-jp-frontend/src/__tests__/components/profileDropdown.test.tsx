@@ -88,7 +88,7 @@ describe("ProfileDropdown component", () => {
     fireEvent.click(screen.getByText("Учить"));
 
     expect(screen.getByText("Изучить катакану")).toBeInTheDocument();
-    expect(screen.getByText("Учим слова")).toBeInTheDocument();
+    expect(screen.getByText("Учим японские слова")).toBeInTheDocument();
   });
 
   it("Открывает раздел Добавить", () => {
@@ -99,7 +99,7 @@ describe("ProfileDropdown component", () => {
     fireEvent.click(screen.getByText("Добавить"));
 
     expect(screen.getByText("Добавить кандзи")).toBeInTheDocument();
-    expect(screen.getByText("Добавить слово")).toBeInTheDocument();
+    expect(screen.getByText("Добавить японское слово")).toBeInTheDocument();
   });
 
   it("Открывает раздел Библиотека", () => {
@@ -110,7 +110,7 @@ describe("ProfileDropdown component", () => {
     fireEvent.click(screen.getByText("Библиотека"));
 
     expect(screen.getByText("Таблица азбук")).toBeInTheDocument();
-    expect(screen.getByText("Все слова")).toBeInTheDocument();
+    expect(screen.getByText("Все японские слова")).toBeInTheDocument();
   });
 
   it("Закрывает меню по Escape", () => {

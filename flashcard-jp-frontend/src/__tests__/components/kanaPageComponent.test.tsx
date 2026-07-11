@@ -41,7 +41,7 @@ describe("KanaPageComponent", () => {
       />,
     );
 
-    expect(screen.getByText("Загрузка...")).toBeInTheDocument();
+    expect(screen.getByText("Идет загрузка или каны еще не выучены.")).toBeInTheDocument();
   });
 
   it("Рендер первой карточки после загрузки", async () => {

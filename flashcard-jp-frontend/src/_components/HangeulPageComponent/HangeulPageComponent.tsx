@@ -1,40 +1,34 @@
 "use client";
 
-import styles from "./kanaPageComponent.module.scss";
-import { useEffect, useState } from "react";
-import { FlashCard } from "../FlashCard/FlashCard";
-import { IKana } from "@/_interface/Interface";
-import Button from "../UI/Button/Button";
-import { motion } from "framer-motion";
+import styles from "./hangeulPageComponent.module.scss";
+import { IHangeul } from "@/_interface/Interface";
 import {
-  updateHiragana,
-  updateHiraganaWeight,
-  updateKatakana,
-  updateKatakanaWeight,
-} from "@/_utils/api/client/kanaApi";
+  updateHangeul,
+  updateHangeulWeight,
+} from "@/_utils/api/client/hangeulApi";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
-import WritingPractice from "../WritingPractice/WritingPractice";
+import { useEffect, useState } from "react";
 import SessionProgress from "../SessionProgress/SessionProgress";
+import { motion } from "framer-motion";
+import { FlashCard } from "../FlashCard/FlashCard";
+import WritingPractice from "../WritingPractice/WritingPractice";
+import Button from "../UI/Button/Button";
 
-export default function KanaPageComponent({
-  kana,
-  params,
+export default function HangeulPageComponent({
+  hangeul,
   searchParams,
 }: {
-  kana: IKana[];
-  params: string;
-  searchParams: {
-    type?: string;
-  };
+  hangeul: IHangeul[];
+  searchParams: { type?: string };
 }) {
-  const [cards, setCards] = useState<IKana[]>([]);
+  const [cards, setCards] = useState<IHangeul[]>([]);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
   const [answered, setAnswered] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    setCards(separateDuplicatesShuffleCards<IKana>(kana));
-  }, [kana]);
+    setCards(separateDuplicatesShuffleCards<IHangeul>(hangeul));
+  }, [hangeul]);
 
   function nextCard() {
     setDirection(1);
@@ -54,14 +48,12 @@ export default function KanaPageComponent({
     });
   }
 
-  function handleUpdateKana() {
+  function handleUpdateHangeul() {
     const currentCard = cards[indexCard];
 
     if (!currentCard) return;
 
-    const updateKana = params === "hiragana" ? updateHiragana : updateKatakana;
-
-    updateKana(currentCard)
+    updateHangeul(currentCard)
       .then(() => {
         markProgress(`${currentCard._id}-${indexCard}`);
         setCards((prev) => prev.filter((_, index) => index !== indexCard));
@@ -71,15 +63,12 @@ export default function KanaPageComponent({
       });
   }
 
-  function updateKanaCardWeight(status: "remember" | "forgot") {
+  function updateHangeulCardWeight(status: "remember" | "forgot") {
     const currentCard = cards[indexCard];
 
     if (!currentCard) return;
 
-    const updateKanaWeight =
-      params === "hiragana" ? updateHiraganaWeight : updateKatakanaWeight;
-
-    updateKanaWeight(currentCard, { status: status })
+    updateHangeulWeight(currentCard, { status: status })
       .then(() => {
         markProgress(`${currentCard._id}-${indexCard}`);
         nextCard();
@@ -92,14 +81,14 @@ export default function KanaPageComponent({
   if (!cards.length)
     return (
       <div>
-        <p className={styles.kanaPageComponent__loading}>Идет загрузка или каны еще не выучены.</p>
+        <p className={styles.hangeulPageComponent__loading}>Загрузка...</p>
       </div>
     );
 
   return (
-    <div className={styles.kanaPageComponent}>
-      <div className={styles.kanaPageComponent__inner}>
-        <div className={styles.kanaPageComponent__cards}>
+    <div className={styles.hangeulPageComponent}>
+      <div className={styles.hangeulPageComponent__inner}>
+        <div className={styles.hangeulPageComponent__cards}>
           <SessionProgress
             length={cards.length}
             answeredCount={answered.size}
@@ -139,25 +128,25 @@ export default function KanaPageComponent({
           />
         </div>
         {searchParams.type === "repeat" ? (
-          <div className={styles.kanaPageComponent__cards_navigation}>
+          <div className={styles.hangeulPageComponent__cards_navigation}>
             <Button
               type="button"
               variant="danger"
-              onClick={() => updateKanaCardWeight("forgot")}
+              onClick={() => updateHangeulCardWeight("forgot")}
             >
               Не помню
             </Button>
             <Button
               type="button"
               variant="success"
-              onClick={() => updateKanaCardWeight("remember")}
+              onClick={() => updateHangeulCardWeight("remember")}
             >
               Помню
             </Button>
           </div>
         ) : (
           <>
-            <div className={styles.kanaPageComponent__cards_navigation}>
+            <div className={styles.hangeulPageComponent__cards_navigation}>
               <Button type="button" onClick={previousCard}>
                 Назад
               </Button>
@@ -165,7 +154,11 @@ export default function KanaPageComponent({
                 Вперед
               </Button>
             </div>
-            <Button type="button" variant="success" onClick={handleUpdateKana}>
+            <Button
+              type="button"
+              variant="success"
+              onClick={handleUpdateHangeul}
+            >
               Запомнил
             </Button>
           </>

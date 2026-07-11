@@ -88,11 +88,13 @@ export interface IKana {
 export interface IUpdateHirakanaResponse {
   message: string;
   hiraganaId: string;
+  learned: boolean;
 }
 
 export interface IUpdateKatakanaResponse {
   message: string;
   katakanaId: string;
+  learned: boolean;
 }
 
 export interface IKanji {
@@ -175,4 +177,28 @@ export interface IReview {
   user: string;
   learned: string;
   message: string;
+}
+
+export interface IHangeul {
+  _id: string;
+  symbol: string;
+  romaji: string;
+  group?:
+    | "basic-consonant"
+    | "double-consonant"
+    | "basic-vowel"
+    | "compound-vowel";
+  learned?: boolean;
+  weight: number;
+}
+
+export interface IUpdateHangeulResponse {
+  message: string;
+  hangeulId: string;
+  learned: boolean;
+}
+
+export interface IUpdateHangeulWeightResponse {
+  message: string;
+  hangeulId: string;
 }

@@ -11,7 +11,13 @@ export default function QuickActions() {
           <LinkButton href={ROUTES.kanji.study} text="Учить кандзи" />
         </li>
         <li className={styles.quickActions__list}>
-          <LinkButton href={ROUTES.words.study} text="Учить слова" />
+          <LinkButton href={ROUTES.words.study} text="Учить японские слова" />
+        </li>
+        <li className={styles.quickActions__list}>
+          <LinkButton
+            href={ROUTES.kr_words.study}
+            text="Учить корейские слова"
+          />
         </li>
       </ul>
     </section>
