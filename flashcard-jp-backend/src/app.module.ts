@@ -16,6 +16,7 @@ import { KanjiModule } from './modules/languages/japanese/kanji/kanji.module';
 import { WordsModule } from './modules/languages/japanese/words/words.module';
 import { HangeulModule } from './modules/languages/korea/hangeul/hangeul.module';
 import { WordsKrModule } from './modules/languages/korea/krWords/krWords.module';
+import { WordCnModule } from './modules/languages/chinese/wordsCn/wordsCn.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { WordsKrModule } from './modules/languages/korea/krWords/krWords.module'
     WordsModule,
     HangeulModule,
     WordsKrModule,
+    WordCnModule,
   ],
 })
 export class AppModule {}

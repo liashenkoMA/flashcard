@@ -38,6 +38,17 @@ const WORDS_KO_ADD = 'add';
 const WORDS_KO_GET_CATEGORY = 'category';
 const WORDS_KO_WEIGHT_UPDATE = 'updateweight';
 
+// === HANZI ===
+const HANZI = 'hanzi';
+const HANZI_UPDATE = 'update';
+const HANZI_WEIGHT_UPDATE = 'updateweight';
+
+//=== WORDS_KO ===
+const WORDS_ZH = 'words-zh';
+const WORDS_ZH_ADD = 'add';
+const WORDS_ZH_GET_CATEGORY = 'category';
+const WORDS_ZH_WEIGHT_UPDATE = 'updateweight';
+
 export const ROUTES = {
   AUTH,
   SIGN_IN,
@@ -63,4 +74,11 @@ export const ROUTES = {
   WORDS_KO_ADD,
   WORDS_KO_GET_CATEGORY,
   WORDS_KO_WEIGHT_UPDATE,
+  HANZI,
+  HANZI_UPDATE,
+  HANZI_WEIGHT_UPDATE,
+  WORDS_ZH,
+  WORDS_ZH_ADD,
+  WORDS_ZH_GET_CATEGORY,
+  WORDS_ZH_WEIGHT_UPDATE,
 } as const;
