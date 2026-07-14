@@ -107,7 +107,6 @@ describe('KanjiController', () => {
         kanjiId,
         request,
       );
-
       expect(result).toEqual(response);
     });
   });

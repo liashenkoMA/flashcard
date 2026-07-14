@@ -17,6 +17,7 @@ import { WordsModule } from './modules/languages/japanese/words/words.module';
 import { HangeulModule } from './modules/languages/korea/hangeul/hangeul.module';
 import { WordsKrModule } from './modules/languages/korea/krWords/krWords.module';
 import { WordCnModule } from './modules/languages/chinese/wordsCn/wordsCn.module';
+import { HanziModule } from './modules/languages/chinese/hanzi/hanzi.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { WordCnModule } from './modules/languages/chinese/wordsCn/wordsCn.module
     HangeulModule,
     WordsKrModule,
     WordCnModule,
+    HanziModule,
   ],
 })
 export class AppModule {}
