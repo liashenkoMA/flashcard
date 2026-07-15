@@ -41,7 +41,7 @@ export default function AddKrWordForm() {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const name = e.target.name;
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
     setFormData({ ...formData, [name]: value });
     setErrors(undefined);

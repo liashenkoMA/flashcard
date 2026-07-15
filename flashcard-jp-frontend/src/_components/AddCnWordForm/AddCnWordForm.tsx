@@ -1,17 +1,18 @@
 "use client";
 
-import styles from "./addWordForm.module.scss";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import styles from "./addCnWordForm.module.scss";
+import { z } from "zod";
 import Form from "../UI/Form/Form";
 import Input from "../UI/Input/Input";
-import { WORD_FORM_INPUTS } from "@/_constants/wordAddForm.constant";
 import Button from "../UI/Button/Button";
-import { z } from "zod";
-import { addWord, getWordsCategory } from "@/_utils/api/client/wordApi";
+import { CN_WORD_FORM_INPUTS } from "@/_constants/cnWordAddForm.constant";
+import { addCnWord, getCnWordsCategory } from "@/_utils/api/client/cnWordsApi";
 
 const formSchema = z.object({
   word: z.string().min(1, "Введите слово"),
   translate: z.string().min(1, "Введите перевод"),
+  pinyin: z.string().min(1, "Введите транскрипцию (pinyin)"),
   category: z.string().min(1, "Укажите категорию"),
 });
 
@@ -20,10 +21,11 @@ type WordFormType = z.infer<typeof formSchema>;
 const InitialWordState = {
   word: "",
   translate: "",
+  pinyin: "",
   category: "Без категории",
 };
 
-export default function AddWordForm() {
+export default function AddCnWordForm() {
   const [formData, setFormData] = useState<WordFormType>(InitialWordState);
   const [categoryList, setCategoryList] = useState<string[]>([]);
   const [selectCategory, setSelectCategory] = useState("Без категории");
@@ -34,7 +36,7 @@ export default function AddWordForm() {
   const [serverMessage, setServerMessage] = useState("");
 
   useEffect(() => {
-    getWordsCategory()
+    getCnWordsCategory()
       .then((res) => setCategoryList(res))
       .catch((err) => console.log(err));
   }, []);
@@ -78,7 +80,7 @@ export default function AddWordForm() {
     setIsLoading(true);
     setServerErrorMessage("");
 
-    addWord(formData)
+    addCnWord(formData)
       .then((res) => {
         setFormData(InitialWordState);
         setSelectCategory("Без категории");
@@ -96,9 +98,9 @@ export default function AddWordForm() {
   }
 
   return (
-    <div className={styles.addWordForm__form}>
+    <div className={styles.addCnWordForm__form}>
       <Form handleSubmit={handleSubmit}>
-        {WORD_FORM_INPUTS.map((input) => (
+        {CN_WORD_FORM_INPUTS.map((input) => (
           <Input
             key={input.name}
             {...input}
@@ -108,11 +110,11 @@ export default function AddWordForm() {
             errors={errors?.fieldErrors?.[input.name]?.join(", ")}
           />
         ))}
-        <label className={styles.addWordForm__form_field}>
+        <label className={styles.addCnWordForm__form_field}>
           <select
             onChange={handleCategoryChange}
             value={selectCategory}
-            className={styles.addWordForm__lists}
+            className={styles.addCnWordForm__lists}
             id="category"
             name="category"
           >
@@ -136,12 +138,12 @@ export default function AddWordForm() {
           ></Input>
         )}
         <span
-          className={`${styles.addWordForm__text} ${styles.addWordForm__success}`}
+          className={`${styles.addCnWordForm__text} ${styles.addCnWordForm__success}`}
         >
           {serverMessage}
         </span>
         <span
-          className={`${styles.addWordForm__text} ${styles.addWordForm__errors}`}
+          className={`${styles.addCnWordForm__text} ${styles.addCnWordForm__errors}`}
         >
           {errors && errors?.fieldErrors?.category?.join(", ")}
         </span>
@@ -149,7 +151,7 @@ export default function AddWordForm() {
           {loading ? "Отправка..." : "Добавить"}
         </Button>
         <span
-          className={`${styles.addWordForm__text} ${styles.addWordForm__errors}`}
+          className={`${styles.addCnWordForm__text} ${styles.addCnWordForm__errors}`}
         >
           {serverErrorMessage}
         </span>

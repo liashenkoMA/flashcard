@@ -202,3 +202,25 @@ export interface IUpdateHangeulWeightResponse {
   message: string;
   hangeulId: string;
 }
+
+export interface ICnWordFormInput {
+  word: string;
+  translate: string;
+  pinyin: string;
+}
+
+export interface ICnWordFormData {
+  word: string;
+  translate: string;
+  pinyin: string;
+  category: string;
+}
+
+export interface ICnWord {
+  _id: string;
+  word: string;
+  translate: string;
+  category: string;
+  pinyin: string;
+  weight: number;
+}

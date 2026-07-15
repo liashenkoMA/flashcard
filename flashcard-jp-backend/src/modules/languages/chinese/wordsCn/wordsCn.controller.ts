@@ -13,7 +13,7 @@ import { WordCnService } from './wordsCn.service';
 import { UpdateWordCnWeightDto, WordCnDto } from './wordsCn.schema.dto';
 import { Request } from 'express';
 
-@Controller(ROUTES.HANZI)
+@Controller(ROUTES.WORDS_ZH)
 export class WordCnController {
   constructor(private readonly wordsCnService: WordCnService) {}
 

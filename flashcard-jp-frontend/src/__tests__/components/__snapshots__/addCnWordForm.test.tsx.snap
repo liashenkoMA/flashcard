@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Add Cn Word Form component Snapshot 1`] = `
+<div>
+  <div
+    class="addCnWordForm__form"
+  >
+    <form
+      class="form"
+      novalidate=""
+    >
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Введите слово:
+        </span>
+        <input
+          class="input"
+          name="word"
+          placeholder="你好"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Перевод:
+        </span>
+        <input
+          class="input"
+          name="translate"
+          placeholder="Привет"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Транскрипция:
+        </span>
+        <input
+          class="input"
+          name="pinyin"
+          placeholder="nǐ hǎo"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="addCnWordForm__form_field"
+      >
+        <select
+          class="addCnWordForm__lists"
+          id="category"
+          name="category"
+        >
+          <option
+            value="Без категории"
+          >
+            Без категории
+          </option>
+          <option
+            value="Новая категория?"
+          >
+            + новая категория
+          </option>
+        </select>
+      </label>
+      <span
+        class="addCnWordForm__text addCnWordForm__success"
+      />
+      <span
+        class="addCnWordForm__text addCnWordForm__errors"
+      />
+      <button
+        class="button  default"
+        type="submit"
+      >
+        Добавить
+      </button>
+      <span
+        class="addCnWordForm__text addCnWordForm__errors"
+      />
+    </form>
+  </div>
+</div>
+`;
