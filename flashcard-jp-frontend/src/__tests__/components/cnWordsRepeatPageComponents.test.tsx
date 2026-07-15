@@ -1,8 +1,8 @@
-import KrWordsRepeatPageComponent from "@/_components/KrWordsRepeatPageComponent/KrWordsRepeatPageComponent";
-import { IWord } from "@/_interface/Interface";
-import { updateKrWordWeight } from "@/_utils/api/client/krWordsApi";
+import CnWordsRepeatPageComponent from "@_components/CnWordsRepeatPageComponent/CnWordsRepeanPageComponent";
+import { updateCnWordWeight } from "@/_utils/api/client/cnWordsApi";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { ReactNode } from "react";
+import { ICnWord } from "@/_interface/Interface";
 
 jest.mock("framer-motion", () => ({
   motion: {
@@ -10,21 +10,22 @@ jest.mock("framer-motion", () => ({
   },
 }));
 
-jest.mock("@/_utils/api/client/krWordsApi", () => ({
-  updateKrWordWeight: jest.fn(),
+jest.mock("@/_utils/api/client/cnWordsApi", () => ({
+  updateCnWordWeight: jest.fn(),
 }));
 
-const mockWordsCards: IWord[] = [
+const mockWordsCards: ICnWord[] = [
   {
     _id: "1",
-    word: "안녕",
+    word: "你好",
+    pinyin: "nǐ hǎo",
     translate: "привет",
     category: "приветствие",
     weight: 3,
   },
 ];
 
-describe("KrWordsRepeatPageComponent", () => {
+describe("CnWordsRepeatPageComponent", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
@@ -36,7 +37,7 @@ describe("KrWordsRepeatPageComponent", () => {
   });
 
   it("Показывает Идет загрузка или карточки еще не созданы. при пустом массиве", async () => {
-    render(<KrWordsRepeatPageComponent words={[]} />);
+    render(<CnWordsRepeatPageComponent words={[]} />);
 
     expect(
       screen.getByText("Идет загрузка или карточки еще не созданы."),
@@ -44,21 +45,21 @@ describe("KrWordsRepeatPageComponent", () => {
   });
 
   it("Рендер первой карточки после загрузки", async () => {
-    render(<KrWordsRepeatPageComponent words={mockWordsCards} />);
+    render(<CnWordsRepeatPageComponent words={mockWordsCards} />);
 
-    expect(await screen.findByText(/안녕/)).toBeInTheDocument();
+    expect(await screen.findByText(/你好/)).toBeInTheDocument();
   });
 
   it("Кнопка Помню вызывает updateWordWeight c remember", async () => {
-    (updateKrWordWeight as jest.Mock).mockResolvedValue({});
+    (updateCnWordWeight as jest.Mock).mockResolvedValue({});
 
-    render(<KrWordsRepeatPageComponent words={mockWordsCards} />);
+    render(<CnWordsRepeatPageComponent words={mockWordsCards} />);
 
-    await screen.findByText(/안녕/);
+    await screen.findByText(/你好/);
 
     fireEvent.click(screen.getByRole("button", { name: "Помню" }));
 
-    expect(updateKrWordWeight).toHaveBeenCalledWith(
+    expect(updateCnWordWeight).toHaveBeenCalledWith(
       expect.objectContaining({
         word: mockWordsCards[0].word,
       }),
@@ -69,15 +70,15 @@ describe("KrWordsRepeatPageComponent", () => {
   });
 
   it("Кнопка Не помню вызывает updateWordWeight c forgot", async () => {
-    (updateKrWordWeight as jest.Mock).mockResolvedValue({});
+    (updateCnWordWeight as jest.Mock).mockResolvedValue({});
 
-    render(<KrWordsRepeatPageComponent words={mockWordsCards} />);
+    render(<CnWordsRepeatPageComponent words={mockWordsCards} />);
 
-    await screen.findByText(/안녕/);
+    await screen.findByText(/你好/);
 
     fireEvent.click(screen.getByRole("button", { name: "Не помню" }));
 
-    expect(updateKrWordWeight).toHaveBeenCalledWith(
+    expect(updateCnWordWeight).toHaveBeenCalledWith(
       expect.objectContaining({
         word: mockWordsCards[0].word,
       }),

@@ -10,14 +10,14 @@ export default function WritingPractice({ translate }: { translate: string }) {
   const [status, setStatus] = useState<Status>("default");
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
     setStatus("default");
     setText(value);
   }
 
   function checkResult() {
-    if (text.toLowerCase() === translate.trim().toLowerCase()) {
+    if (text.toLowerCase().trim() === translate.toLowerCase().trim()) {
       setStatus("success");
     } else {
       setStatus("error");
