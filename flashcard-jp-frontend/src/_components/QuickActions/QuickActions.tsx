@@ -19,6 +19,18 @@ export default function QuickActions() {
             text="Учить корейские слова"
           />
         </li>
+        <li className={styles.quickActions__list}>
+          <LinkButton
+            href={ROUTES.cn_words.study}
+            text="Учить китайские слова"
+          />
+        </li>
+        <li className={styles.quickActions__list}>
+          <LinkButton
+            href={ROUTES.hanzi.study}
+            text="Учить ханзи"
+          />
+        </li>
       </ul>
     </section>
   );

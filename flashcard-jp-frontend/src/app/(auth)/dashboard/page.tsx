@@ -132,6 +132,45 @@ export default function Page() {
         </Accordion>
       </div>
 
+      <div className={styles.dashboard__section}>
+        <h2 className={styles.dashboard__section_title}>Китайский язык</h2>
+        <Accordion header="Ханзи">
+          <ul className={styles.dashboard__lists}>
+            <li className={styles.dashboard__list}>
+              <LinkButton href={ROUTES.hanzi.add} text="Добавить ханзи" />
+            </li>
+            <li className={styles.dashboard__list}>
+              <LinkButton href={ROUTES.hanzi.study} text="Учить ханзи" />
+            </li>
+          </ul>
+        </Accordion>
+
+        <Accordion header="Слова">
+          <ul className={styles.dashboard__lists}>
+            <li className={styles.dashboard__list}>
+              <LinkButton href={ROUTES.cn_words.study} text="Учить слова" />
+            </li>
+            <li className={styles.dashboard__list}>
+              <LinkButton href={ROUTES.cn_words.add} text="Добавить слово" />
+            </li>
+          </ul>
+        </Accordion>
+
+        <Accordion header="Ваша библиотека">
+          <ul className={styles.dashboard__lists}>
+            <li className={styles.dashboard__list}>
+              <LinkButton href={ROUTES.cn_tables.hanzi} text="Все ханзи" />
+            </li>
+          </ul>
+
+          <ul className={styles.dashboard__lists}>
+            <li className={styles.dashboard__list}>
+              <LinkButton href={ROUTES.cn_tables.words} text="Все слова" />
+            </li>
+          </ul>
+        </Accordion>
+      </div>
+
       <LinkButton href={ROUTES.profile} text="Профиль" />
     </section>
   );

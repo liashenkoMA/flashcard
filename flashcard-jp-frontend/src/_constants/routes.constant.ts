@@ -49,4 +49,19 @@ export const ROUTES = {
     hangeul: "/kr-tables/table-hangeul",
     words: "/kr-tables/table-words",
   },
+
+  hanzi: {
+    add: "/hanzi/add",
+    study: "/hanzi/repeat",
+  },
+
+  cn_words: {
+    study: "/cn-words/repeat",
+    add: "/cn-words/add",
+  },
+
+  cn_tables: {
+    hanzi: "/cn-tables/table-hanzi",
+    words: "/cn-tables/table-words",
+  },
 };
