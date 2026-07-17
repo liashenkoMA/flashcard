@@ -2,6 +2,7 @@ import KandjiRepeatPageComponent from "@/_components/KandjiRepeatPageComponent/K
 import { fireEvent, render, screen } from "@testing-library/react";
 import { ReactNode } from "react";
 import { updateKanjiWeight } from "@/_utils/api/client/kanjiApi";
+import { IKanji } from "@/_interface/Interface";
 
 jest.mock("framer-motion", () => ({
   motion: {
@@ -13,7 +14,7 @@ jest.mock("@/_utils/api/client/kanjiApi", () => ({
   updateKanjiWeight: jest.fn(),
 }));
 
-const mockKanjiCards = [
+const mockKanjiCards: IKanji[] = [
   {
     _id: "1",
     kanji: "日",
@@ -21,6 +22,7 @@ const mockKanjiCards = [
     jpRead: "ひ、び、か",
     chinaRead: "ニチ、ジツ",
     learned: false,
+    level: "N5",
     weight: 1,
   },
 ];
@@ -39,7 +41,9 @@ describe("KandjiRepeatPageComponent", () => {
   it("Показывает Идет загрузка или карточки еще не созданы. при пустом массиве", async () => {
     render(<KandjiRepeatPageComponent kanji={[]} />);
 
-    expect(screen.getByText("Идет загрузка или карточки еще не созданы.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Идет загрузка или карточки еще не созданы."),
+    ).toBeInTheDocument();
   });
 
   it("Рендер первой карточки после загрузки", async () => {

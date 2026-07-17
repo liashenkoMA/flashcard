@@ -224,3 +224,29 @@ export interface ICnWord {
   pinyin: string;
   weight: number;
 }
+
+export interface IHanzi {
+  _id: string;
+  category: string;
+  hanzi: string;
+  translate: string;
+  pinyin: string;
+  weight: number;
+}
+
+export interface IHanziFormData {
+  hanzi: string;
+  pinyin: string;
+  category: string;
+  translate: string;
+}
+
+export interface IHanziFormInput {
+  hanzi: string;
+  pinyin: string;
+  translate: string;
+}
+
+export interface IUpdateHanziWeightResponse {
+  message: string;
+}

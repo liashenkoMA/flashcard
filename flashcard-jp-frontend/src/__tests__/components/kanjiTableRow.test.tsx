@@ -1,4 +1,5 @@
 import KanjiTableRow from "@/_components/KanjiTableRow/KanjiTableRow";
+import { IKanji } from "@/_interface/Interface";
 import { render, screen } from "@testing-library/react";
 
 jest.mock("@/_components/UI/TableButton/TableButton", () => {
@@ -7,13 +8,14 @@ jest.mock("@/_components/UI/TableButton/TableButton", () => {
   };
 });
 
-const mockKanji = {
+const mockKanji: IKanji = {
   _id: "1",
   kanji: "日",
   translate: "день, солнце",
   jpRead: "ひ、び、か",
   chinaRead: "ニチ、ジツ",
   learned: false,
+  level: "N5",
   weight: 1,
 };
 

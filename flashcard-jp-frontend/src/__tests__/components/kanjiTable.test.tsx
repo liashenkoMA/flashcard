@@ -1,4 +1,5 @@
 import KanjiTable from "@/_components/KanjiTable/KanjiTable";
+import { IKanji } from "@/_interface/Interface";
 import { deleteKanji } from "@/_utils/api/client/kanjiApi";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
@@ -11,7 +12,7 @@ describe("KanjiTable", () => {
     jest.clearAllMocks();
   });
 
-  const mockKanji = [
+  const mockKanji: IKanji[] = [
     {
       _id: "1",
       kanji: "日",
@@ -19,6 +20,7 @@ describe("KanjiTable", () => {
       jpRead: "ひ、び、か",
       chinaRead: "ニチ、ジツ",
       learned: false,
+      level: "N5",
       weight: 1,
     },
   ];

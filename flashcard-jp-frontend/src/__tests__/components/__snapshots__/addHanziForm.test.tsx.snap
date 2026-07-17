@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Add Hanzi Form component Snapshot 1`] = `
+<div>
+  <div
+    class="addHanziForm__form"
+  >
+    <form
+      class="form"
+      novalidate=""
+    >
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Введите ханзи:
+        </span>
+        <input
+          class="input"
+          name="hanzi"
+          placeholder="日"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Перевод:
+        </span>
+        <input
+          class="input"
+          name="translate"
+          placeholder="день, солнце"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Транскрипция:
+        </span>
+        <input
+          class="input"
+          name="pinyin"
+          placeholder="rì"
+          required=""
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="addHanziForm__form_field"
+      >
+        <select
+          class="addHanziForm__lists"
+          id="category"
+          name="category"
+        >
+          <option
+            value="Без категории"
+          >
+            Без категории
+          </option>
+          <option
+            value="Новая категория?"
+          >
+            + новая категория
+          </option>
+        </select>
+      </label>
+      <span
+        class="addHanziForm__text addHanziForm__success"
+      />
+      <span
+        class="addHanziForm__text addHanziForm__errors"
+      />
+      <button
+        class="button  default"
+        type="submit"
+      >
+        Добавить
+      </button>
+      <span
+        class="addHanziForm__text addHanziForm__errors"
+      />
+    </form>
+  </div>
+</div>
+`;

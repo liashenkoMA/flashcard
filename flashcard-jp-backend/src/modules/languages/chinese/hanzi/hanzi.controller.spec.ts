@@ -15,6 +15,7 @@ describe('HanziController', () => {
       addHanzi: jest.fn(),
       getHanzi: jest.fn(),
       deleteHanzi: jest.fn(),
+      getHanziCategory: jest.fn(),
       updateHanziWeight: jest.fn(),
     };
 
@@ -108,6 +109,24 @@ describe('HanziController', () => {
         request,
       );
       expect(result).toEqual(response);
+    });
+  });
+
+  describe('getHanziCategory', () => {
+    it('Получение категорий ханзи пользователя', async () => {
+      const request = {
+        cookies: { session_flashcard: 'token' },
+      } as Request;
+
+      const response = ['Машины', 'Пища'];
+
+      mockHanziService.getHanziCategory.mockResolvedValue(response);
+
+      const result = await controller.getHanziCategory(request);
+
+      expect(mockHanziService.getHanziCategory).toHaveBeenCalledWith(request);
+      expect(result).toEqual(response);
+      expect(mockHanziService.getHanziCategory).toHaveBeenCalledTimes(1);
     });
   });
 

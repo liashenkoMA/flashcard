@@ -261,7 +261,6 @@ describe('WordsCnService', () => {
       expect(mockWordModel.distinct).toHaveBeenCalledWith('category', {
         userId: 'user_id',
       });
-
       expect(result).toEqual(wordsCategoryList);
     });
   });

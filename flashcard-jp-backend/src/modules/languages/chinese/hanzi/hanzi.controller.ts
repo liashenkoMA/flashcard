@@ -32,6 +32,11 @@ export class HanziController {
     return this.hanziService.deleteHanzi(hanziId, request);
   }
 
+  @Get(ROUTES.HANZI_GET_CATEGORY)
+  getHanziCategory(@Req() request: Request) {
+    return this.hanziService.getHanziCategory(request);
+  }
+
   @Patch(ROUTES.HANZI_WEIGHT_UPDATE)
   updateHanziWeight(
     @Body() hanzi: UpdateHanziWeightDto,

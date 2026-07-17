@@ -92,6 +92,20 @@ export class HanziService {
     };
   }
 
+  async getHanziCategory(request: Request): Promise<string[]> {
+    const payload = await this.validateAndGetPayload(request);
+
+    const user = await this.userModel.findById(payload.sub).exec();
+
+    if (!user) {
+      throw new NotFoundException('Такого пользователя не существует');
+    }
+
+    return this.hanziModel.distinct('category', {
+      userId: payload.sub,
+    });
+  }
+
   async updateHanziWeight(
     hanzi: UpdateHanziWeightDto,
     request: Request,

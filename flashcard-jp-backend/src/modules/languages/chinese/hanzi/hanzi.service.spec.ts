@@ -226,6 +226,43 @@ describe('HanziService', () => {
     });
   });
 
+  describe('getHanziCategory', () => {
+    it('Ошибка если пользователь не найден', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(
+        service.getHanziCategory({ cookies: {} } as Request),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Успешное получение категорий', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({ _id: 'user_id' }),
+      });
+
+      const hanziCategoryList = ['Машины', 'Еда'];
+
+      mockHanziModel.distinct = jest.fn().mockResolvedValue(hanziCategoryList);
+
+      const result = await service.getHanziCategory({ cookies: {} } as Request);
+
+      expect(mockHanziModel.distinct).toHaveBeenCalledWith('category', {
+        userId: 'user_id',
+      });
+      expect(result).toEqual(hanziCategoryList);
+    });
+  });
+
   describe('updateHanziWeight', () => {
     it('Ошибка если пользователь не найден', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({

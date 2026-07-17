@@ -41,6 +41,7 @@ const WORDS_KO_WEIGHT_UPDATE = 'updateweight';
 // === HANZI ===
 const HANZI = 'hanzi';
 const HANZI_ADD = 'add';
+const HANZI_GET_CATEGORY = 'category';
 const HANZI_WEIGHT_UPDATE = 'updateweight';
 
 //=== WORDS_KO ===
@@ -76,6 +77,7 @@ export const ROUTES = {
   WORDS_KO_WEIGHT_UPDATE,
   HANZI,
   HANZI_ADD,
+  HANZI_GET_CATEGORY,
   HANZI_WEIGHT_UPDATE,
   WORDS_ZH,
   WORDS_ZH_ADD,

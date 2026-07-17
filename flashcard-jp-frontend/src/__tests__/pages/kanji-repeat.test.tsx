@@ -31,6 +31,7 @@ describe("Kanji Repeat Page", () => {
         jpRead: "ひ",
         chinaRead: "ニチ",
         learned: true,
+        level: "N5",
         weight: 2,
       },
     ];

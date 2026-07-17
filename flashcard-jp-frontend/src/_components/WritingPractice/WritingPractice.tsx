@@ -17,7 +17,7 @@ export default function WritingPractice({ translate }: { translate: string }) {
   }
 
   function checkResult() {
-    if (text.toLowerCase().trim() === translate.toLowerCase().trim()) {
+    if (translate.toLowerCase().trim().includes(text.toLowerCase().trim())) {
       setStatus("success");
     } else {
       setStatus("error");

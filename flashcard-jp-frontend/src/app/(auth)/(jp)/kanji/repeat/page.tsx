@@ -10,7 +10,7 @@ export default async function KandziRepeat() {
   const preparedKanji = buildWeightedDeck(data);
 
   return (
-    <section className={styles.kandjirepeat}>
+    <section className={styles.kanjirepeat}>
       <KandjiRepeatPageComponent kanji={preparedKanji} />
     </section>
   );
