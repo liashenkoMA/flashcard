@@ -29,7 +29,6 @@ describe("KanjiTable", () => {
     render(<KanjiTable kanji={mockKanji} />);
 
     expect(screen.getByText("Таблица кандзи")).toBeInTheDocument();
-
     expect(screen.getByText("日")).toBeInTheDocument();
   });
 

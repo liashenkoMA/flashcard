@@ -1,0 +1,78 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.hanzitablerow {
+  width: 100%;
+  min-height: 60px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  background-color: v.$color-bg-element;
+  border: 1px solid v.$color-border;
+  border-radius: 15px;
+  @include m.hover {
+    transition-duration: 0.2s;
+    border: 1px solid v.$color-border-active-2;
+    box-shadow: v.$shadow-default;
+    transform: translateY(-2px);
+  }
+  @include m.respond-to(tablet-up) {
+    min-height: 80px;
+    display: grid;
+    grid-template-columns: 80px 300px 1fr 48px;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__symbol {
+    color: v.$color-text-main;
+    font-size: v.$font-size-large;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-large;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-large;
+      line-height: v.$line-height-large;
+    }
+  }
+
+  &__readings {
+    display: flex;
+    flex-direction: column;
+    @include m.respond-to(tablet-up) {
+      flex-direction: row;
+      gap: 30px;
+      padding-right: 10px;
+      border-right: 2px solid v.$color-border;
+    }
+  }
+
+  &__reading {
+    max-width: 100%;
+    color: v.$color-text-secondary;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-large;
+      line-height: v.$line-height-large;
+    }
+  }
+
+  &__reading_type_category {
+    color: v.$color-accent-2;
+    @include m.respond-to(tablet-up) {
+      padding-right: 10px;
+      border-right: 2px solid v.$color-border;
+    }
+  }
+
+  &__reading_type_chread {
+    color: v.$color-accent-1;
+  }
+
+  &__reading_type_translate {
+    color: v.$color-text-secondary;
+  }
+}

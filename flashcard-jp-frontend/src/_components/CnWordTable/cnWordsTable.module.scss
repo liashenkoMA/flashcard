@@ -1,0 +1,24 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.tablecnwords__lists {
+  padding: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  @include m.respond-to(tablet-up) {
+    padding: 20px 0px;
+    gap: 20px;
+  }
+  @include m.respond-to(desktop-up) {
+    padding: 20px 10px;
+    gap: 30px;
+  }
+}
+
+.tablecnwords__text {
+  font-size: v.$font-size-medium;
+  font-weight: v.$font-weight-regular;
+  line-height: v.$line-height-medium;
+  color: v.$color-text-main;
+}
