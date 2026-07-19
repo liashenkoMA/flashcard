@@ -1,0 +1,85 @@
+@use "../variables" as v;
+@use "../mixins" as m;
+
+.wrapper {
+  width: 100%;
+  min-height: calc(100vh - 160px);
+  background-color: v.$color-bg-page;
+  @include m.respond-to(tablet-up) {
+    min-height: calc(100vh - 180px);
+  }
+}
+
+.content {
+  padding: 60px 0px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  @include m.respond-to(tablet-up) {
+    max-width: 720px;
+    padding: 80px 0px;
+  }
+}
+
+.notfound {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  @include m.respond-to(tablet-up) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__image {
+    height: 300px;
+    width: 300px;
+    background-image: url("../_images/404.png");
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 300px auto;
+    @include m.respond-to(tablet-up) {
+      background-size: 500px auto;
+      height: 300px;
+      width: 400px;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    max-width: 300px;
+  }
+
+  &__text {
+    color: v.$color-text-secondary;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-small;
+    }
+  }
+
+  &__errorcode {
+    font-size: v.$font-size-xx-large;
+    line-height: v.$line-height-xx-large;
+    font-weight: v.$font-weight-medium;
+    background: v.$gradient-primary;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  &__header {
+    color: v.$color-text-main;
+    font-size: v.$font-size-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+    }
+  }
+}
