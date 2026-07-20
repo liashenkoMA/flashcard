@@ -56,11 +56,11 @@
 
   &:focus {
     outline: none;
-    border-color: v.$purple;
+    border-color: v.$color-border-active-2;
   }
 
   &::placeholder {
-    color: v.$grey;
+    color: v.$color-text-secondary;
     opacity: 0.4;
   }
 }

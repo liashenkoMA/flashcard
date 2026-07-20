@@ -2,6 +2,12 @@ export const ROUTES = {
   home: "/",
   dashboard: "/dashboard",
   profile: "/profile",
+  contacts: "/contacts",
+
+  auth: {
+    login: "/login",
+    register: "/register",
+  },
 
   kana: {
     hiragana: {
@@ -28,11 +34,6 @@ export const ROUTES = {
     kana: "/tables/table-kana",
     kanji: "/tables/table-kanji",
     words: "/tables/table-words",
-  },
-
-  auth: {
-    login: "/login",
-    register: "/register",
   },
 
   hangeul: {

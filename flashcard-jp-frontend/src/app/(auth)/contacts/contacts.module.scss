@@ -1,0 +1,45 @@
+@use "../../../variables" as v;
+@use "../../../mixins" as m;
+
+.contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__content {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    @include m.respond-to(tablet-up) {
+      gap: 30px;
+      max-width: 700px;
+    }
+  }
+
+  &__title {
+    font-size: v.$font-size-large;
+    line-height: v.$line-height-large;
+    font-weight: v.$font-weight-medium;
+    background: v.$gradient-primary;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-x-large;
+      line-height: v.$line-height-large;
+    }
+  }
+
+  &__text {
+    color: v.$color-text-main;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+    }
+  }
+}

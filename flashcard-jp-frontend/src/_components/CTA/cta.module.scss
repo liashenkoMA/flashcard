@@ -2,12 +2,12 @@
 @use "../../mixins" as m;
 
 .cta {
-  height: 540px;
+  height: 580px;
   position: relative;
   background-image: url("../../_images/1.png");
   background-repeat: no-repeat;
   background-position: left bottom;
-  background-size: 700px auto;
+  background-size: 600px auto;
 
   &::before,
   &::after {
@@ -71,13 +71,13 @@
   @include m.respond-to(tablet-up) {
     display: flex;
     justify-content: flex-end;
-    height: 360px;
+    height: 400px;
     padding-top: 0px;
-    background-size: min(900px, 100vw) auto;
+    background-size: min(800px, 80vw) auto;
     background-position: left bottom;
 
     &::before {
-      width: 600px;
+      width: 500px;
     }
 
     &__content {
@@ -97,14 +97,15 @@
   }
 
   @include m.respond-to(desktop-up) {
-    height: 400px;
+    height: 500px;
 
     &::after {
-      height: 400px;
+      height: 550px;
     }
+
     &__content {
       max-width: 360px;
-      justify-content: space-between;
+
     }
 
     &__title {
@@ -120,7 +121,7 @@
   @include m.respond-to(desktop-large) {
     &__content {
       max-width: 460px;
-      justify-content: space-between;
+
     }
   }
 }

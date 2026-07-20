@@ -1,0 +1,76 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.contactform {
+  min-width: 300px;
+  padding: 32px 0px;
+  @include m.respond-to(tablet-up) {
+    gap: 30px;
+    min-width: 600px;
+  }
+
+  &__form_field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    @include m.respond-to(tablet-up) {
+      gap: 15px;
+    }
+  }
+
+  &__text {
+    padding-left: 10px;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    color: v.$purple;
+    @include m.respond-to(tablet-up) {
+      padding-left: 20px;
+      font-size: v.$font-size-small;
+      line-height: v.$line-height-small;
+    }
+  }
+
+  &__input_textarea {
+    padding: 10px;
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    background-color: v.$color-bg-element;
+    border: 1px solid v.$color-border;
+    border-radius: 10px;
+    color: v.$color-text-main;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      padding: 10px 20px;
+      min-height: 250px;
+      border-radius: 20px;
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: v.$color-border-active-2;
+    }
+
+    &::placeholder {
+      color: v.$color-text-secondary;
+      opacity: 0.4;
+    }
+  }
+
+  &__error {
+    padding-top: 7px;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    color: v.$color-text-error;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-small;
+      line-height: v.$line-height-small;
+    }
+  }
+}

@@ -1,4 +1,9 @@
-import { IUpdateWordWeightResponse, IWeightStatus, IWord, IWordFormData } from "@/_interface/Interface";
+import {
+  IUpdateWordWeightResponse,
+  IWeightStatus,
+  IWord,
+  IWordFormData,
+} from "@/_interface/Interface";
 
 const address = {
   baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,

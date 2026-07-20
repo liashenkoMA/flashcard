@@ -250,3 +250,8 @@ export interface IHanziFormInput {
 export interface IUpdateHanziWeightResponse {
   message: string;
 }
+
+export interface ITelegramFormData {
+  name: string;
+  text: string;
+}

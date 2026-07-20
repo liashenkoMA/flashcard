@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Contact Form component Snapshot 1`] = `
+<div>
+  <div
+    class="contactform"
+  >
+    <form
+      class="form"
+      novalidate=""
+    >
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Ваше имя:
+        </span>
+        <input
+          class="input"
+          name="name"
+          placeholder="Иван"
+          type="text"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="contactform__form_field"
+      >
+        <span
+          class="contactform__text"
+        >
+          Ваше сообщение:
+        </span>
+        <textarea
+          class="contactform__input_textarea"
+          name="text"
+          placeholder="Введите ваше сообщение"
+        />
+        <span
+          class="contactform__error"
+        />
+      </label>
+      <button
+        class="button  default"
+        type="submit"
+      >
+        Отправить сообщение
+      </button>
+      <span
+        class="contactform__error"
+      />
+    </form>
+  </div>
+</div>
+`;
