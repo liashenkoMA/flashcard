@@ -1,0 +1,120 @@
+@use "../../variables" as v;
+@use "../../mixins" as m;
+
+.pricecards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  @include m.respond-to(tablet-up) {
+    flex-direction: row;
+    gap: 30px;
+    justify-content: space-between;
+  }
+
+  &__card {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 24px 20px;
+    background: v.$gradient-dark-card;
+    border: 1px solid v.$color-border;
+    border-radius: 20px;
+    transition: 0.2s ease;
+    @include m.hover {
+      transform: translateY(-6px);
+      border-color: v.$color-border-active;
+      box-shadow: v.$shadow-default;
+    }
+    @include m.respond-to(tablet-up) {
+      max-width: 350px;
+    }
+
+    &_popular {
+      border-color: v.$color-border-2;
+    }
+
+    &_best {
+      border-color: v.$color-border-1;
+    }
+  }
+
+  &__badge {
+    align-self: flex-end;
+    height: 30px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    background: v.$gradient-primary;
+    color: v.$color-text-main;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-medium;
+    line-height: v.$line-height-small;
+  }
+
+  &__title {
+    padding: 10px 0px;
+    color: v.$white;
+    font-size: v.$font-size-medium;
+    font-weight: v.$font-weight-bold;
+    line-height: v.$line-height-medium;
+    @include m.respond-to(desktop-up) {
+      font-size: v.$font-size-large;
+      line-height: v.$line-height-large;
+    }
+  }
+
+  &__subtitle {
+    padding-bottom: 20px;
+    color: v.$color-accent-2;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-medium;
+    line-height: v.$line-height-small;
+    @include m.respond-to(desktop-up) {
+      font-size: v.$font-size-small;
+    }
+  }
+
+  &__price {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding-bottom: 10px;
+    color: v.$color-text-main;
+    font-size: v.$font-size-large;
+    font-weight: v.$font-weight-bold;
+    line-height: v.$line-height-large;
+    @include m.respond-to(desktop-up) {
+      font-size: v.$font-size-large-plus;
+      line-height: v.$line-height-xx-large;
+    }
+  }
+
+  &__oldPrice {
+    color: v.$color-text-secondary;
+    font-size: v.$font-size-xx-small;
+    text-decoration: line-through;
+    @include m.respond-to(desktop) {
+      font-size: v.$font-size-small;
+    }
+  }
+
+  &__discount {
+    height: 30px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    background: rgba(v.$green, 0.15);
+    color: v.$green;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-semibold;
+    line-height: v.$line-height-small;
+  }
+
+  &__description {
+    padding: 20px 0px;
+    color: v.$color-text-secondary;
+    font-size: v.$font-size-xx-small;
+    font-weight: v.$font-weight-medium;
+    line-height: v.$line-height-small;
+  }
+}

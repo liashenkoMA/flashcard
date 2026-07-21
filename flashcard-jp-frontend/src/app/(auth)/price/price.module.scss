@@ -1,0 +1,67 @@
+@use "../../../variables" as v;
+@use "../../../mixins" as m;
+
+.price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+
+  &__title {
+    font-size: v.$font-size-large;
+    line-height: v.$line-height-large;
+    font-weight: v.$font-weight-medium;
+    text-align: center;
+    background: v.$gradient-primary;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-x-large;
+      line-height: v.$line-height-x-large;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  &__text {
+    color: v.$color-text-main;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+    }
+  }
+
+  &__text_accent {
+    background: v.$gradient-primary;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: v.$font-weight-medium;
+  }
+
+  &__lists {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__list {
+    color: v.$color-text-main;
+    font-size: v.$font-size-x-small;
+    font-weight: v.$font-weight-regular;
+    line-height: v.$line-height-small;
+    @include m.respond-to(tablet-up) {
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
+    }
+  }
+}

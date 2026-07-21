@@ -20,11 +20,11 @@ $shadow-button-up: 0 0 20px rgba(99, 102, 241, 0.35);
 
 // Gradient
 $gradient-primary: linear-gradient(90deg, $violet, $indigo-dark);
-
-$gradient-info: linear-gradient(90deg, #38bdf8, #2563eb); // Пока для теста
 $gradient-dark: linear-gradient(90deg, #111c38, #162542);
 $gradient-success: linear-gradient(90deg, #4ade80, #22c55e);
 $gradient-dark-card: linear-gradient(135deg, #111827 0%, #172554 100%);
+
+$gradient-info: linear-gradient(90deg, #38bdf8, #2563eb); // Пока для теста
 
 // Text colors
 $color-text-main: $white;
@@ -51,6 +51,8 @@ $color-button-up-bg: rgba($indigo, 0.25);
 
 // Border colors
 $color-border: $blue-dark;
+$color-border-1: $green;
+$color-border-2: $violet;
 $color-border-active: $indigo;
 $color-border-active-2: $violet;
 $color-button-up-border: $indigo;
