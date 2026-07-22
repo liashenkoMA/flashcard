@@ -7,6 +7,15 @@ import authReducer from "@/_store/authSlice";
 import { RootState } from "@/_store/store";
 import { getUser } from "@/_utils/api/client/userApi";
 
+const mockUser = {
+  name: "Иван",
+  email: "test@test.ru",
+  subscription: {
+    active: false,
+    expiresAt: null,
+  },
+};
+
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
@@ -55,7 +64,7 @@ describe("Navigation component", () => {
 
   it("Рендерит кнопки входа и регистрации если пользователь не авторизован", () => {
     renderWithStore({
-      auth: { userName: "" },
+      auth: { user: null },
     });
 
     expect(screen.getByText("Войти")).toBeInTheDocument();
@@ -64,7 +73,7 @@ describe("Navigation component", () => {
 
   it("Войти - меняет modal.mode = login", () => {
     const { store } = renderWithStore({
-      auth: { userName: "" },
+      auth: { user: null },
     });
 
     fireEvent.click(screen.getByText("Войти"));
@@ -74,7 +83,7 @@ describe("Navigation component", () => {
 
   it("Регистрация - меняет modal.mode = register", () => {
     const { store } = renderWithStore({
-      auth: { userName: "" },
+      auth: { user: null },
     });
 
     fireEvent.click(screen.getByText("Регистрация"));
@@ -84,32 +93,30 @@ describe("Navigation component", () => {
 
   it("Если пользователь есть — отображает ProfileDropdown", () => {
     renderWithStore({
-      auth: { userName: "Иван" },
+      auth: { user: mockUser },
     });
 
     expect(screen.getByTestId("profile-dropdown")).toBeInTheDocument();
   });
 
-  it("Если имени нет — получает пользователя и сохраняет имя", async () => {
-    (getUser as jest.Mock).mockResolvedValue({
-      name: "Иван",
-    });
+  it("Если пользователя нет — получает пользователя и сохраняет его", async () => {
+    (getUser as jest.Mock).mockResolvedValue(mockUser);
 
     const { store } = renderWithStore({
-      auth: { userName: "" },
+      auth: { user: null },
     });
 
     await waitFor(() => {
       expect(getUser).toHaveBeenCalled();
     });
     await waitFor(() => {
-      expect(store.getState().auth.userName).toBe("Иван");
+      expect(store.getState().auth.user).toEqual(mockUser);
     });
   });
 
   it("Snapshot", () => {
     const { container } = renderWithStore({
-      auth: { userName: "" },
+      auth: { user: null },
     });
 
     expect(container).toMatchSnapshot();

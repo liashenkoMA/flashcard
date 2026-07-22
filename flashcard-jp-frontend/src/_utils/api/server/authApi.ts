@@ -37,7 +37,7 @@ export async function login(formData: ILoginFormData) {
       expires: expiresAt,
     });
 
-    return { name: data.name };
+    return data.user;
   } catch (err) {
     if (err instanceof Error) {
       throw err;

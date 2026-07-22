@@ -57,7 +57,7 @@ export interface ILoginFormInput {
 
 export interface ILoginResponse {
   access_token: string;
-  name: string;
+  user: IAuthUser;
 }
 
 export interface IAuthModalState {
@@ -69,9 +69,15 @@ export interface IAuthModalContext {
   setModalState: (value: IAuthModalState) => void;
 }
 
-export interface IAuthContext {
-  userName: string;
-  setUserName: (value: string) => void;
+export interface ISubscription {
+  active: boolean;
+  expiresAt: string | null;
+}
+
+export interface IAuthUser {
+  name: string;
+  email: string;
+  subscription: ISubscription;
 }
 
 export interface IKana {

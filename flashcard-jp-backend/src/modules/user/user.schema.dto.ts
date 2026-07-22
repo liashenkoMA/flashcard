@@ -20,6 +20,17 @@ export class LoginUserDto {
   password: string;
 }
 
+export class UserResponseDto {
+  name: string;
+  email: string;
+  subscription: SubscriptionResponseDto;
+}
+
+export class LoginResponseDto {
+  access_token: string;
+  user: UserResponseDto;
+}
+
 export class CreateUserDto {
   name: string;
   email: string;
@@ -33,7 +44,7 @@ export class UpdateUserDto {
   newPassword?: string;
 }
 
-export class UserResponseDto {
+export class UpdateUserResponseDto {
   name: string;
   email: string;
 }

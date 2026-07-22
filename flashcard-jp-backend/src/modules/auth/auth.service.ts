@@ -4,6 +4,7 @@ import { User } from '../user/user.schema';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { LoginResponseDto } from '../user/user.schema.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,17 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(email: string, password: string) {
+  private hasActiveSubscription(user: User): boolean {
+    if (!user.subscription) {
+      return false;
+    }
+
+    const now = new Date();
+
+    return user.subscription.expiresAt > now;
+  }
+
+  async signIn(email: string, password: string): Promise<LoginResponseDto> {
     const user = await this.userModel.findOne({ email: email }).exec();
 
     if (!user) {
@@ -35,7 +46,14 @@ export class AuthService {
 
     return {
       access_token: jwt,
-      name: user.name,
+      user: {
+        name: user.name,
+        email: user.email,
+        subscription: {
+          active: this.hasActiveSubscription(user),
+          expiresAt: user.subscription?.expiresAt ?? null,
+        },
+      },
     };
   }
 }

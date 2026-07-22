@@ -1,4 +1,5 @@
 import {
+  IAuthUser,
   IProfileFormData,
   IProfileResponse,
   IRegisterFormData,
@@ -43,7 +44,7 @@ export async function createUser(
   }
 }
 
-export async function getUser(): Promise<IProfileResponse> {
+export async function getUser(): Promise<IAuthUser> {
   try {
     const res = await fetch(`${address.baseUrl}/user`, {
       method: "GET",
@@ -53,7 +54,7 @@ export async function getUser(): Promise<IProfileResponse> {
       },
     });
 
-    return checkResponse<IProfileResponse>(res);
+    return checkResponse<IAuthUser>(res);
   } catch (err) {
     if (err instanceof Error) {
       throw err;

@@ -100,16 +100,27 @@ describe("Login Form component", () => {
   });
 
   it("Успешный логин → обновление store + редирект", async () => {
-    (login as jest.Mock).mockResolvedValueOnce({ name: "Иван" });
+    const user = {
+      name: "Иван",
+      email: "ivan@mail.ru",
+      subscription: {
+        active: true,
+        expiresAt: "2026-12-31T00:00:00.000Z",
+      },
+    };
+
+    (login as jest.Mock).mockResolvedValueOnce(user);
 
     const { store } = renderWithStore();
 
     fireEvent.change(screen.getByPlaceholderText("ivan@mail.ru"), {
       target: { value: "ivan@mail.ru" },
     });
+
     fireEvent.change(screen.getByPlaceholderText("Введите пароль"), {
       target: { value: "123456" },
     });
+
     fireEvent.change(screen.getByPlaceholderText("Повторите пароль"), {
       target: { value: "123456" },
     });
@@ -122,9 +133,8 @@ describe("Login Form component", () => {
 
     const state = store.getState();
 
-    expect(state.auth.userName).toBe("Иван");
+    expect(state.auth.user).toEqual(user);
     expect(state.modal.mode).toBeNull();
-
     expect(pushMock).toHaveBeenCalledWith("/dashboard");
   });
 

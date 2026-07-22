@@ -1,26 +1,26 @@
-import { IAuthContext } from "@/_interface/Interface";
+import { IAuthUser } from "@/_interface/Interface";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IAuthState {
-  userName: IAuthContext["userName"];
+  user: IAuthUser | null;
 }
 
 const initialState: IAuthState = {
-  userName: "",
+  user: null,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUserName(state, action: PayloadAction<IAuthContext["userName"]>) {
-      state.userName = action.payload;
+    setUser(state, action: PayloadAction<IAuthUser>) {
+      state.user = action.payload;
     },
     logout(state) {
-      state.userName = "";
+      state.user = null;
     },
   },
 });
 
-export const { setUserName, logout } = authSlice.actions;
+export const { setUser, logout } = authSlice.actions;
 export default authSlice.reducer;

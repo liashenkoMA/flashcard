@@ -19,6 +19,9 @@ describe('AuthService', () => {
     password: 'hash',
     name: 'Иван',
     emailVerified: true,
+    subscription: {
+      expiresAt: new Date(Date.now() + 86400000),
+    },
   };
 
   beforeEach(async () => {
@@ -37,6 +40,7 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+
     jest.resetAllMocks();
   });
 
@@ -84,11 +88,18 @@ describe('AuthService', () => {
 
     mockJwtService.signAsync.mockResolvedValue('jwt_token');
 
-    const result = await service.signIn('test@mail.ru', '1234');
+    const result = await service.signIn('test@mail.com', '1234');
 
     expect(result).toEqual({
       access_token: 'jwt_token',
-      name: 'Иван',
+      user: {
+        name: 'Иван',
+        email: 'test@mail.com',
+        subscription: {
+          active: true,
+          expiresAt: mockUser.subscription.expiresAt,
+        },
+      },
     });
     expect(mockJwtService.signAsync).toHaveBeenCalledWith(
       { sub: mockUser._id.toString() },

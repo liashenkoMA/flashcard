@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 export default function CTA() {
   const dispatch = useDispatch();
-  const userName = useSelector((state: RootState) => state.auth.userName);
+  const userName = useSelector((state: RootState) => state.auth.user?.name);
   const router = useRouter();
 
   function handleClick(type: { mode: "login" | "register" | null }) {

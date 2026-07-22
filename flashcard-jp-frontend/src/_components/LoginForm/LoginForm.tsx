@@ -9,9 +9,8 @@ import Form from "../UI/Form/Form";
 import { z } from "zod";
 import { login } from "@/_utils/api/server/authApi";
 import { useRouter } from "next/navigation";
-
 import { useDispatch } from "react-redux";
-import { setUserName } from "@/_store/authSlice";
+import { setUser } from "@/_store/authSlice";
 import { closeModal } from "@/_store/modalSlice";
 
 const formSchema = z.object({
@@ -65,7 +64,7 @@ export default function LoginForm() {
 
     login(formData)
       .then((res) => {
-        dispatch(setUserName(res.name));
+        dispatch(setUser(res));
         dispatch(closeModal());
         router.push("/dashboard");
       })

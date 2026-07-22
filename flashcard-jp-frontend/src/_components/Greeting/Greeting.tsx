@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/_store/store";
 
 export default function Greeting() {
-  const userName = useSelector((state: RootState) => state.auth.userName);
+  const userName = useSelector((state: RootState) => state.auth.user?.name);
 
   return (
     <section className={styles.greeting}>

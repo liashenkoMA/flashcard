@@ -49,19 +49,6 @@ exports[`ProfileDropdown component Snapshot 1`] = `
           >
             <button
               class="profiledropdown__menu_navigation_title"
-              type="button"
-            >
-              Учить
-              <div
-                class="profiledropdown__arrow "
-              />
-            </button>
-          </div>
-          <div
-            class="profiledropdown__menu_navigation_section"
-          >
-            <button
-              class="profiledropdown__menu_navigation_title"
             >
               Добавить
               <div
@@ -75,7 +62,55 @@ exports[`ProfileDropdown component Snapshot 1`] = `
             <button
               class="profiledropdown__menu_navigation_title"
             >
+              Японский
+              <div
+                class="profiledropdown__arrow "
+              />
+            </button>
+          </div>
+          <div
+            class="profiledropdown__menu_navigation_section"
+          >
+            <button
+              class="profiledropdown__menu_navigation_title"
+            >
+              Китайский
+              <div
+                class="profiledropdown__arrow "
+              />
+            </button>
+          </div>
+          <div
+            class="profiledropdown__menu_navigation_section"
+          >
+            <button
+              class="profiledropdown__menu_navigation_title"
+            >
+              Корейский
+              <div
+                class="profiledropdown__arrow "
+              />
+            </button>
+          </div>
+          <div
+            class="profiledropdown__menu_navigation_section"
+          >
+            <button
+              class="profiledropdown__menu_navigation_title"
+            >
               Библиотека
+              <div
+                class="profiledropdown__arrow "
+              />
+            </button>
+          </div>
+          <div
+            class="profiledropdown__menu_navigation_section"
+          >
+            <button
+              class="profiledropdown__menu_navigation_title"
+            >
+              Профиль
               <div
                 class="profiledropdown__arrow "
               />

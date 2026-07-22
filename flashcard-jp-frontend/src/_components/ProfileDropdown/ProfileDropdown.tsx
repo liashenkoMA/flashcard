@@ -100,113 +100,6 @@ export default function ProfileDropdown({ user }: { user: string }) {
           <div className={styles.profiledropdown__menu_navigation}>
             <div className={styles.profiledropdown__menu_navigation_section}>
               <button
-                type="button"
-                className={styles.profiledropdown__menu_navigation_title}
-                onClick={() => toggleSection("learn")}
-              >
-                Учить
-                <div
-                  className={`${styles.profiledropdown__arrow} ${
-                    activeSection === "learn"
-                      ? styles.profiledropdown__arrow_open
-                      : ""
-                  }`}
-                />
-              </button>
-
-              {activeSection === "learn" && (
-                <ul className={styles.profiledropdown__menu_links}>
-                  <li
-                    onClick={closeMenu}
-                    className={styles.profiledropdown__menu_link}
-                  >
-                    <LinkButton
-                      href={ROUTES.kana.katakana.learn}
-                      text="Изучить катакану"
-                    />
-                  </li>
-
-                  <li
-                    onClick={closeMenu}
-                    className={styles.profiledropdown__menu_link}
-                  >
-                    <LinkButton
-                      href={ROUTES.kana.katakana.repeat}
-                      text="Повторить катакану"
-                    />
-                  </li>
-
-                  <li
-                    onClick={closeMenu}
-                    className={styles.profiledropdown__menu_link}
-                  >
-                    <LinkButton
-                      href={ROUTES.kana.hiragana.learn}
-                      text="Изучить хирагану"
-                    />
-                  </li>
-
-                  <li
-                    onClick={closeMenu}
-                    className={styles.profiledropdown__menu_link}
-                  >
-                    <LinkButton
-                      href={ROUTES.kana.hiragana.repeat}
-                      text="Повторить хирагану"
-                    />
-                  </li>
-
-                  <li
-                    onClick={closeMenu}
-                    className={styles.profiledropdown__menu_link}
-                  >
-                    <LinkButton href={ROUTES.kanji.study} text="Учим кандзи" />
-                  </li>
-
-                  <li
-                    onClick={closeMenu}
-                    className={styles.profiledropdown__menu_link}
-                  >
-                    <LinkButton
-                      href={ROUTES.words.study}
-                      text="Учим японские слова"
-                    />
-                  </li>
-
-                  <li
-                    className={styles.profiledropdown__list}
-                    onClick={closeMenu}
-                  >
-                    <LinkButton
-                      href={ROUTES.hangeul.learn}
-                      text="Изучить хангуел"
-                    />
-                  </li>
-                  <li
-                    className={styles.profiledropdown__list}
-                    onClick={closeMenu}
-                  >
-                    <LinkButton
-                      href={ROUTES.hangeul.repeat}
-                      text="Повторить хангуел"
-                    />
-                  </li>
-
-                  <li
-                    className={styles.profiledropdown__list}
-                    onClick={closeMenu}
-                  >
-                    <LinkButton
-                      href={ROUTES.kr_words.study}
-                      text="Учим корейские слова"
-                    />
-                  </li>
-                </ul>
-              )}
-            </div>
-
-            <div className={styles.profiledropdown__menu_navigation_section}>
-              <button
                 className={styles.profiledropdown__menu_navigation_title}
                 onClick={() => toggleSection("add")}
               >
@@ -247,8 +140,195 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     className={styles.profiledropdown__menu_link}
                   >
                     <LinkButton
+                      href={ROUTES.hanzi.add}
+                      text="Добавить ханьцзы"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.cn_words.add}
+                      text="Добавить китайское слово"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
                       href={ROUTES.kr_words.add}
                       text="Добавить корейское слово"
+                    />
+                  </li>
+                </ul>
+              )}
+            </div>
+
+            <div className={styles.profiledropdown__menu_navigation_section}>
+              <button
+                className={styles.profiledropdown__menu_navigation_title}
+                onClick={() => toggleSection("japanese")}
+              >
+                Японский
+                <div
+                  className={`${styles.profiledropdown__arrow} ${
+                    activeSection === "japanese"
+                      ? styles.profiledropdown__arrow_open
+                      : ""
+                  }`}
+                />
+              </button>
+
+              {activeSection === "japanese" && (
+                <ul className={styles.profiledropdown__menu_links}>
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.kana.hiragana.learn}
+                      text="Изучить хирагану"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.kana.hiragana.repeat}
+                      text="Повторить хирагану"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.kana.katakana.learn}
+                      text="Изучить катакану"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.kana.katakana.repeat}
+                      text="Повторить катакану"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href={ROUTES.kanji.study} text="Учить кандзи" />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.words.study}
+                      text="Учить японские слова"
+                    />
+                  </li>
+                </ul>
+              )}
+            </div>
+
+            <div className={styles.profiledropdown__menu_navigation_section}>
+              <button
+                className={styles.profiledropdown__menu_navigation_title}
+                onClick={() => toggleSection("chinese")}
+              >
+                Китайский
+                <div
+                  className={`${styles.profiledropdown__arrow} ${
+                    activeSection === "chinese"
+                      ? styles.profiledropdown__arrow_open
+                      : ""
+                  }`}
+                />
+              </button>
+
+              {activeSection === "chinese" && (
+                <ul className={styles.profiledropdown__menu_links}>
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.hanzi.study}
+                      text="Учить ханьцзы"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.cn_words.study}
+                      text="Учить китайские слова"
+                    />
+                  </li>
+                </ul>
+              )}
+            </div>
+
+            <div className={styles.profiledropdown__menu_navigation_section}>
+              <button
+                className={styles.profiledropdown__menu_navigation_title}
+                onClick={() => toggleSection("korean")}
+              >
+                Корейский
+                <div
+                  className={`${styles.profiledropdown__arrow} ${
+                    activeSection === "korean"
+                      ? styles.profiledropdown__arrow_open
+                      : ""
+                  }`}
+                />
+              </button>
+
+              {activeSection === "korean" && (
+                <ul className={styles.profiledropdown__menu_links}>
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.hangeul.learn}
+                      text="Изучить хангуел"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.hangeul.repeat}
+                      text="Повторить хангуел"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.kr_words.study}
+                      text="Учить корейские слова"
                     />
                   </li>
                 </ul>
@@ -304,9 +384,80 @@ export default function ProfileDropdown({ user }: { user: string }) {
                     className={styles.profiledropdown__menu_link}
                   >
                     <LinkButton
+                      href={ROUTES.cn_tables.hanzi}
+                      text="Все ханьцзы"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.cn_tables.words}
+                      text="Все китайские слова"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
+                      href={ROUTES.kr_tables.hangeul}
+                      text="Таблица хангуел"
+                    />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton
                       href={ROUTES.kr_tables.words}
                       text="Все корейские слова"
                     />
+                  </li>
+                </ul>
+              )}
+            </div>
+
+            <div className={styles.profiledropdown__menu_navigation_section}>
+              <button
+                className={styles.profiledropdown__menu_navigation_title}
+                onClick={() => toggleSection("profile")}
+              >
+                Профиль
+                <div
+                  className={`${styles.profiledropdown__arrow} ${
+                    activeSection === "profile"
+                      ? styles.profiledropdown__arrow_open
+                      : ""
+                  }`}
+                />
+              </button>
+
+              {activeSection === "profile" && (
+                <ul className={styles.profiledropdown__menu_links}>
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href={ROUTES.profile} text="Мой профиль" />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href={ROUTES.contacts} text="Контакты" />
+                  </li>
+
+                  <li
+                    onClick={closeMenu}
+                    className={styles.profiledropdown__menu_link}
+                  >
+                    <LinkButton href={ROUTES.price} text="Тарифы" />
                   </li>
                 </ul>
               )}

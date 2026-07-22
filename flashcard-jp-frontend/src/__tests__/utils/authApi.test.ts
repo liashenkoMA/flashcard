@@ -39,13 +39,26 @@ describe("Auth Api", () => {
       const setMock = jest.fn();
       (headers.cookies as jest.Mock).mockReturnValue({ set: setMock });
 
+      const user = {
+        name: "Иван",
+        email: "test@test.ru",
+        subscription: {
+          active: true,
+          expiresAt: "2026-12-31T00:00:00.000Z",
+        },
+      };
+
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ access_token: "Token" }),
+        json: async () => ({
+          access_token: "Token",
+          user,
+        }),
       } as Response);
 
-      await login(mockFormData);
+      const result = await login(mockFormData);
 
+      expect(result).toEqual(user);
       expect(setMock).toHaveBeenCalledWith(
         "session_flashcard",
         "Token",
@@ -117,24 +130,24 @@ describe("Auth Api", () => {
     });
 
     it("Успешное удаление пользователя", async () => {
-  const deleteMock = jest.fn();
-  const getMock = jest.fn().mockReturnValue({ value: "test_token" });
+      const deleteMock = jest.fn();
+      const getMock = jest.fn().mockReturnValue({ value: "test_token" });
 
-  (headers.cookies as jest.Mock).mockResolvedValue({
-    get: getMock,
-    delete: deleteMock,
-  });
+      (headers.cookies as jest.Mock).mockResolvedValue({
+        get: getMock,
+        delete: deleteMock,
+      });
 
-  mockFetch.mockResolvedValueOnce({
-    ok: true,
-    json: async () => ({}),
-  } as Response);
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({}),
+      } as Response);
 
-  await expect(deleteUser()).resolves.not.toThrow();
+      await expect(deleteUser()).resolves.not.toThrow();
 
-  expect(mockFetch).toHaveBeenCalledTimes(1);
-  expect(deleteMock).toHaveBeenCalledWith("session_flashcard");
-});
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(deleteMock).toHaveBeenCalledWith("session_flashcard");
+    });
 
     it("Сервер вернул !res.ok", async () => {
       mockFetch.mockResolvedValueOnce({

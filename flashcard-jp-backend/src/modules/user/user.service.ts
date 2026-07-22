@@ -12,7 +12,7 @@ import {
   CreateUserDto,
   GetUserResponseDto,
   UpdateUserDto,
-  UserResponseDto,
+  UpdateUserResponseDto,
 } from './user.schema.dto';
 import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
@@ -102,7 +102,7 @@ export class UserService {
   async updateUser(
     userData: UpdateUserDto,
     request: Request,
-  ): Promise<UserResponseDto> {
+  ): Promise<UpdateUserResponseDto> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();

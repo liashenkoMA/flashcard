@@ -80,15 +80,39 @@ describe("ProfileDropdown component", () => {
     expect(screen.getByText("Выйти")).toBeInTheDocument();
   });
 
-  it("Открывает раздел Учить и показывает ссылки", () => {
+  it("Открывает раздел Японский и показывает ссылки", () => {
     renderWithStore();
 
     fireEvent.click(screen.getByText("Иван"));
 
-    fireEvent.click(screen.getByText("Учить"));
+    fireEvent.click(screen.getByText("Японский"));
 
+    expect(screen.getByText("Изучить хирагану")).toBeInTheDocument();
     expect(screen.getByText("Изучить катакану")).toBeInTheDocument();
-    expect(screen.getByText("Учим японские слова")).toBeInTheDocument();
+    expect(screen.getByText("Учить японские слова")).toBeInTheDocument();
+  });
+
+  it("Открывает раздел Китайский и показывает ссылки", () => {
+    renderWithStore();
+
+    fireEvent.click(screen.getByText("Иван"));
+
+    fireEvent.click(screen.getByText("Китайский"));
+
+    expect(screen.getByText("Учить ханьцзы")).toBeInTheDocument();
+    expect(screen.getByText("Учить китайские слова")).toBeInTheDocument();
+  });
+
+  it("Открывает раздел Корейский и показывает ссылки", () => {
+    renderWithStore();
+
+    fireEvent.click(screen.getByText("Иван"));
+
+    fireEvent.click(screen.getByText("Корейский"));
+
+    expect(screen.getByText("Изучить хангуел")).toBeInTheDocument();
+    expect(screen.getByText("Повторить хангуел")).toBeInTheDocument();
+    expect(screen.getByText("Учить корейские слова")).toBeInTheDocument();
   });
 
   it("Открывает раздел Добавить", () => {
@@ -100,6 +124,9 @@ describe("ProfileDropdown component", () => {
 
     expect(screen.getByText("Добавить кандзи")).toBeInTheDocument();
     expect(screen.getByText("Добавить японское слово")).toBeInTheDocument();
+    expect(screen.getByText("Добавить ханьцзы")).toBeInTheDocument();
+    expect(screen.getByText("Добавить китайское слово")).toBeInTheDocument();
+    expect(screen.getByText("Добавить корейское слово")).toBeInTheDocument();
   });
 
   it("Открывает раздел Библиотека", () => {
@@ -111,6 +138,20 @@ describe("ProfileDropdown component", () => {
 
     expect(screen.getByText("Таблица азбук")).toBeInTheDocument();
     expect(screen.getByText("Все японские слова")).toBeInTheDocument();
+    expect(screen.getByText("Все ханьцзы")).toBeInTheDocument();
+    expect(screen.getByText("Все китайские слова")).toBeInTheDocument();
+  });
+
+  it("Открывает раздел Профиль", () => {
+    renderWithStore();
+
+    fireEvent.click(screen.getByText("Иван"));
+
+    fireEvent.click(screen.getByText("Профиль"));
+
+    expect(screen.getByText("Мой профиль")).toBeInTheDocument();
+    expect(screen.getByText("Контакты")).toBeInTheDocument();
+    expect(screen.getByText("Тарифы")).toBeInTheDocument();
   });
 
   it("Закрывает меню по Escape", () => {

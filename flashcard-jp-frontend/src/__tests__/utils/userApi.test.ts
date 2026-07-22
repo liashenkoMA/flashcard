@@ -51,7 +51,7 @@ describe("User Api", () => {
             email: mockFormData.email,
             password: mockFormData.password,
           }),
-        })
+        }),
       );
     });
 
@@ -64,7 +64,7 @@ describe("User Api", () => {
       } as Response);
 
       await expect(createUser(mockFormData)).rejects.toThrow(
-        "Internal Server Error"
+        "Internal Server Error",
       );
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
@@ -86,6 +86,10 @@ describe("User Api", () => {
       const mockResponse = {
         name: "Иван",
         email: "test@test.ru",
+        subscription: {
+          active: true,
+          expiresAt: "2026-12-31T00:00:00.000Z",
+        },
       };
 
       mockFetch.mockResolvedValueOnce({
@@ -103,7 +107,7 @@ describe("User Api", () => {
           method: "GET",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
-        })
+        }),
       );
     });
 
@@ -170,7 +174,7 @@ describe("User Api", () => {
             newPassword: mockFormData.newPassword,
             currentPassword: mockFormData.currentPassword,
           }),
-        })
+        }),
       );
     });
 
@@ -183,7 +187,7 @@ describe("User Api", () => {
       } as Response);
 
       await expect(updateUser(mockFormData)).rejects.toThrow(
-        "Internal Server Error"
+        "Internal Server Error",
       );
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
