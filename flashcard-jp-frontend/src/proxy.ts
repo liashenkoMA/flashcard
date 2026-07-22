@@ -4,22 +4,51 @@ import { cookies } from "next/headers";
 const protectedRoutes = [
   "/dashboard",
   "/profile",
-  "/kana",
-  "/kana/hiragana?type=repeat",
+  "/contacts",
+  "/price",
+
+  // Kana
   "/kana/hiragana",
-  "/kana/katakana?type=repeat",
+  "/kana/hiragana?type=repeat",
   "/kana/katakana",
-  "/kanji",
-  "/kanji/add",
+  "/kana/katakana?type=repeat",
+
+  // Kanji
   "/kanji/repeat",
-  "/tables",
-  "/words",
-  "/words/add",
+  "/kanji/add",
+
+  // Japanese words
   "/words/repeat",
-  "/tables",
-  "/tables/table-words",
-  "/tables/table-kanji",
+  "/words/add",
+
+  // Japanese tables
   "/tables/table-kana",
+  "/tables/table-kanji",
+  "/tables/table-words",
+
+  // Hangeul
+  "/hangeul",
+  "/hangeul?type=repeat",
+
+  // Korean words
+  "/kr-words/repeat",
+  "/kr-words/add",
+
+  // Korean tables
+  "/kr-tables/table-hangeul",
+  "/kr-tables/table-words",
+
+  // Hanzi
+  "/hanzi/repeat",
+  "/hanzi/add",
+
+  // Chinese words
+  "/cn-words/repeat",
+  "/cn-words/add",
+
+  // Chinese tables
+  "/cn-tables/table-hanzi",
+  "/cn-tables/table-words",
 ];
 
 export default async function proxy(request: NextRequest) {

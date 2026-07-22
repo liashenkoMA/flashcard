@@ -3,6 +3,7 @@ export const ROUTES = {
   dashboard: "/dashboard",
   profile: "/profile",
   contacts: "/contacts",
+  price: "/price",
 
   auth: {
     login: "/login",

@@ -4,7 +4,11 @@ import { JwtService } from '@nestjs/jwt';
 import { getModelToken } from '@nestjs/mongoose';
 import { Kanji } from './kanji.schema';
 import { User } from '../../../user/user.schema';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
 
@@ -26,6 +30,7 @@ describe('KanjiService', () => {
       find: jest.fn(),
       deleteOne: jest.fn(),
       findOne: jest.fn(),
+      countDocuments: jest.fn(),
     };
 
     mockUserModel = {
@@ -85,6 +90,44 @@ describe('KanjiService', () => {
     });
   });
 
+  describe('hasActiveSubscription', () => {
+    it('Возвращает false если подписки нет', () => {
+      const result = (service as any).hasActiveSubscription({
+        subscription: null,
+      });
+
+      expect(result).toBe(false);
+    });
+
+    it('Возвращает true если подписка активна', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('Возвращает false если подписка истекла', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() - 1);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe('addKanji', () => {
     it('Ошибка если пользователь не найден', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
@@ -100,7 +143,7 @@ describe('KanjiService', () => {
           {
             kanji: '日',
             level: 'N5',
-            translate: 'sun',
+            translate: 'солнце',
             jpRead: 'にち',
             chinaRead: 'ri',
           } as KanjiDto,
@@ -115,8 +158,13 @@ describe('KanjiService', () => {
       });
 
       mockUserModel.findById.mockReturnValue({
-        exec: jest.fn().mockResolvedValue({ _id: 'user_id' }),
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: null,
+        }),
       });
+
+      mockKanjiModel.countDocuments.mockResolvedValue(10);
 
       mockKanjiModel.create.mockResolvedValue({});
 
@@ -124,18 +172,21 @@ describe('KanjiService', () => {
         {
           kanji: '日',
           level: 'N5',
-          translate: 'sun',
+          translate: 'солнце',
           jpRead: 'にち',
           chinaRead: 'ri',
         } as KanjiDto,
         { cookies: {} } as Request,
       );
 
+      expect(mockKanjiModel.countDocuments).toHaveBeenCalledWith({
+        userId: 'user_id',
+      });
       expect(mockKanjiModel.create).toHaveBeenCalledWith({
         userId: 'user_id',
         level: 'N5',
         kanji: '日',
-        translate: 'sun',
+        translate: 'солнце',
         jpRead: 'にち',
         chinaRead: 'ri',
         weight: 1,
@@ -144,6 +195,68 @@ describe('KanjiService', () => {
       expect(result).toEqual({
         data: '日 - добавлено',
       });
+    });
+
+    it('Ошибка если достигнут лимит бесплатной версии', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: null,
+        }),
+      });
+
+      mockKanjiModel.countDocuments.mockResolvedValue(82);
+
+      await expect(
+        service.addKanji(
+          {
+            kanji: '日',
+            level: 'N5',
+            translate: 'солнце',
+            jpRead: 'にち',
+            chinaRead: 'ri',
+          } as KanjiDto,
+          { cookies: {} } as Request,
+        ),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockKanjiModel.create).not.toHaveBeenCalled();
+    });
+
+    it('Пользователь с подпиской может добавлять кандзи без проверки лимита', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: {
+            expiresAt,
+          },
+        }),
+      });
+
+      mockKanjiModel.create.mockResolvedValue({});
+
+      await service.addKanji(
+        {
+          kanji: '日',
+          level: 'N5',
+          translate: 'солнце',
+          jpRead: 'にち',
+          chinaRead: 'ri',
+        } as KanjiDto,
+        { cookies: {} } as Request,
+      );
+
+      expect(mockKanjiModel.countDocuments).not.toHaveBeenCalled();
     });
   });
 

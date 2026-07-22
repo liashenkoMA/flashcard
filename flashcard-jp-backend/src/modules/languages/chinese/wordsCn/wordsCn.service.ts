@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -11,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { UpdateWordCnWeightDto, WordCnDto } from './wordsCn.schema.dto';
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
+import { FREE_USER_LIMITS } from '../../../../shared/constants/limit.constant';
 
 @Injectable()
 export class WordCnService {
@@ -36,6 +38,16 @@ export class WordCnService {
     }
   }
 
+  private hasActiveSubscription(user: User): boolean {
+    if (!user.subscription) {
+      return false;
+    }
+
+    const now = new Date();
+
+    return user.subscription.expiresAt > now;
+  }
+
   async addWord(request: Request, word: WordCnDto): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
@@ -43,6 +55,18 @@ export class WordCnService {
 
     if (!user) {
       throw new NotFoundException('Такого пользователя не существует');
+    }
+
+    const hasSubscription = this.hasActiveSubscription(user);
+
+    if (!hasSubscription) {
+      const wordCount = await this.wordModel.countDocuments({
+        userId: payload.sub,
+      });
+
+      if (wordCount >= FREE_USER_LIMITS.words) {
+        throw new ForbiddenException('Достигнут лимит бесплатной версии');
+      }
     }
 
     await this.wordModel.create({

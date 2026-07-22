@@ -37,6 +37,30 @@ export class LearningProgress {
 export const LearningProgressSchema =
   SchemaFactory.createForClass(LearningProgress);
 
+@Schema({ _id: false })
+export class Subscription {
+  @Prop({ required: true })
+  startedAt: Date;
+
+  @Prop({ required: true })
+  expiresAt: Date;
+
+  @Prop({
+    required: true,
+    enum: ['month', 'half_year', 'year'],
+  })
+  duration: string;
+
+  @Prop({
+    required: true,
+    enum: ['payment', 'promo', 'admin'],
+    default: 'payment',
+  })
+  source: string;
+}
+
+export const SubscriptionSchema = SchemaFactory.createForClass(Subscription);
+
 @Schema({ timestamps: true })
 export class User {
   @Prop({
@@ -54,6 +78,15 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop({ default: false })
+  emailVerified: boolean;
+
+  @Prop({
+    type: SubscriptionSchema,
+    default: null,
+  })
+  subscription: Subscription | null;
 
   @Prop({ type: [LearningProgressSchema], default: [] })
   learningProgress: LearningProgress[];

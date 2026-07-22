@@ -26,6 +26,10 @@ export class AuthService {
       throw new UnauthorizedException('Почта или пароль не верные');
     }
 
+    if (!user.emailVerified) {
+      throw new UnauthorizedException('Почта не подтверждена');
+    }
+
     const payload = { sub: user._id.toString() };
     const jwt = await this.jwtService.signAsync(payload, { expiresIn: '7d' });
 

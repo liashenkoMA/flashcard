@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -11,6 +12,7 @@ import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
+import { FREE_USER_LIMITS } from '../../../../shared/constants/limit.constant';
 
 @Injectable()
 export class KanjiService {
@@ -36,6 +38,16 @@ export class KanjiService {
     }
   }
 
+  private hasActiveSubscription(user: User): boolean {
+    if (!user.subscription) {
+      return false;
+    }
+
+    const now = new Date();
+
+    return user.subscription.expiresAt > now;
+  }
+
   async addKanji(kanji: KanjiDto, request: Request): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
@@ -43,6 +55,18 @@ export class KanjiService {
 
     if (!user) {
       throw new NotFoundException('Такого пользователя не существует');
+    }
+
+    const hasSubscription = this.hasActiveSubscription(user);
+
+    if (!hasSubscription) {
+      const kanjiCount = await this.kanjiModel.countDocuments({
+        userId: payload.sub,
+      });
+
+      if (kanjiCount >= FREE_USER_LIMITS.kanji) {
+        throw new ForbiddenException('Достигнут лимит бесплатной версии');
+      }
     }
 
     await this.kanjiModel.create({

@@ -18,6 +18,7 @@ describe('AuthService', () => {
     email: 'test@mail.com',
     password: 'hash',
     name: 'Иван',
+    emailVerified: true,
   };
 
   beforeEach(async () => {
@@ -57,6 +58,19 @@ describe('AuthService', () => {
     jest.spyOn(bcrypt, 'compare').mockResolvedValue(false);
 
     await expect(service.signIn('test@mail.com', 'qwer')).rejects.toThrow(
+      UnauthorizedException,
+    );
+  });
+
+  it('Ошибка, если почта не подтверждена', async () => {
+    mockUserModel.findOne.mockReturnValue({
+      exec: jest.fn().mockResolvedValue({
+        ...mockUser,
+        emailVerified: false,
+      }),
+    });
+
+    await expect(service.signIn('test@mail.com', '1234')).rejects.toThrow(
       UnauthorizedException,
     );
   });

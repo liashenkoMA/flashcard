@@ -2,7 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { getModelToken } from '@nestjs/mongoose';
 import { User } from '../../../user/user.schema';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { WordCnService } from './wordsCn.service';
 import { WordCn } from './wordsCn.schema';
@@ -27,6 +31,7 @@ describe('WordsCnService', () => {
       deleteOne: jest.fn(),
       distinct: jest.fn(),
       findOne: jest.fn(),
+      countDocuments: jest.fn(),
     };
 
     mockUserModel = {
@@ -86,6 +91,44 @@ describe('WordsCnService', () => {
     });
   });
 
+  describe('hasActiveSubscription', () => {
+    it('Возвращает false если подписки нет', () => {
+      const result = (service as any).hasActiveSubscription({
+        subscription: null,
+      });
+
+      expect(result).toBe(false);
+    });
+
+    it('Возвращает true если подписка активна', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('Возвращает false если подписка истекла', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() - 1);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe('addWord', () => {
     it('Ошибка если пользователь не найден', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
@@ -100,7 +143,8 @@ describe('WordsCnService', () => {
         service.addWord(
           { cookies: {} } as Request,
           {
-            word: 'hello',
+            word: '你好',
+            pinyin: 'nǐ hǎo',
             translate: 'привет',
             category: 'greeting',
           } as WordCnDto,
@@ -114,8 +158,13 @@ describe('WordsCnService', () => {
       });
 
       mockUserModel.findById.mockReturnValue({
-        exec: jest.fn().mockResolvedValue({ _id: 'user_id' }),
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: null,
+        }),
       });
+
+      mockWordModel.countDocuments.mockResolvedValue(10);
 
       mockWordModel.create.mockResolvedValue({});
 
@@ -129,6 +178,9 @@ describe('WordsCnService', () => {
         } as WordCnDto,
       );
 
+      expect(mockWordModel.countDocuments).toHaveBeenCalledWith({
+        userId: 'user_id',
+      });
       expect(mockWordModel.create).toHaveBeenCalledWith({
         userId: 'user_id',
         word: '你好',
@@ -138,10 +190,69 @@ describe('WordsCnService', () => {
         weight: 1,
         srs: null,
       });
-
       expect(result).toEqual({
         data: '你好 - добавлено',
       });
+    });
+
+    it('Ошибка если достигнут лимит бесплатной версии', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: null,
+        }),
+      });
+
+      mockWordModel.countDocuments.mockResolvedValue(100);
+
+      await expect(
+        service.addWord(
+          { cookies: {} } as Request,
+          {
+            word: '你好',
+            pinyin: 'nǐ hǎo',
+            translate: 'привет',
+            category: 'greeting',
+          } as WordCnDto,
+        ),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockWordModel.create).not.toHaveBeenCalled();
+    });
+
+    it('Пользователь с подпиской может добавлять слова без проверки лимита', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: {
+            expiresAt,
+          },
+        }),
+      });
+
+      mockWordModel.create.mockResolvedValue({});
+
+      await service.addWord(
+        { cookies: {} } as Request,
+        {
+          word: '你好',
+          pinyin: 'nǐ hǎo',
+          translate: 'привет',
+          category: 'greeting',
+        } as WordCnDto,
+      );
+
+      expect(mockWordModel.countDocuments).not.toHaveBeenCalled();
     });
   });
 
@@ -183,7 +294,6 @@ describe('WordsCnService', () => {
       expect(mockWordModel.find).toHaveBeenCalledWith({
         userId: 'user_id',
       });
-
       expect(result).toEqual(wordsList);
     });
   });
@@ -221,7 +331,6 @@ describe('WordsCnService', () => {
         _id: 'word_id',
         userId: 'user_id',
       });
-
       expect(result).toEqual({
         message: 'Слово удалено',
       });

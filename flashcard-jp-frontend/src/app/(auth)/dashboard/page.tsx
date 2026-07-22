@@ -173,6 +173,7 @@ export default function Page() {
 
       <LinkButton href={ROUTES.profile} text="Профиль" />
       <LinkButton href={ROUTES.contacts} text="Контакты" />
+      <LinkButton href={ROUTES.price} text="Подписка" />
     </section>
   );
 }

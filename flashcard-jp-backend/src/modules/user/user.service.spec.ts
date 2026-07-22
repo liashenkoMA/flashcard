@@ -11,11 +11,7 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
-import {
-  CreateUserDto,
-  UpdateUserDto,
-  UserResponseDto,
-} from './user.schema.dto';
+import { CreateUserDto, UpdateUserDto } from './user.schema.dto';
 
 describe('UserService', () => {
   let service: UserService;
@@ -87,6 +83,44 @@ describe('UserService', () => {
     });
   });
 
+  describe('hasActiveSubscription', () => {
+    it('Возвращает false если подписки нет', () => {
+      const result = (service as any).hasActiveSubscription({
+        subscription: null,
+      });
+
+      expect(result).toBe(false);
+    });
+
+    it('Возвращает true если подписка активна', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('Возвращает false если подписка истекла', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() - 1);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe('createUser', () => {
     it('Ошибка пользователь уже существует', async () => {
       mockUserModel.findOne.mockReturnValue({
@@ -148,7 +182,7 @@ describe('UserService', () => {
       );
     });
 
-    it('Пользователь найден', async () => {
+    it('Пользователь найден без подписки', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
         sub: 'user_id',
       });
@@ -157,7 +191,8 @@ describe('UserService', () => {
         exec: jest.fn().mockResolvedValue({
           name: 'Иван',
           email: 'test@mail.ru',
-        } as UserResponseDto),
+          subscription: null,
+        }),
       });
 
       const result = await service.getUser({ cookies: {} } as Request);
@@ -165,7 +200,73 @@ describe('UserService', () => {
       expect(result).toEqual({
         name: 'Иван',
         email: 'test@mail.ru',
-      } as UserResponseDto);
+        subscription: {
+          active: false,
+          expiresAt: null,
+        },
+      });
+    });
+
+    it('Пользователь найден с активной подпиской', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          name: 'Иван',
+          email: 'test@mail.ru',
+          subscription: {
+            expiresAt,
+          },
+        }),
+      });
+
+      const result = await service.getUser({ cookies: {} } as Request);
+
+      expect(result).toEqual({
+        name: 'Иван',
+        email: 'test@mail.ru',
+        subscription: {
+          active: true,
+          expiresAt,
+        },
+      });
+    });
+
+    it('Пользователь найден с истекшей подпиской', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() - 1);
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          name: 'Иван',
+          email: 'test@mail.ru',
+          subscription: {
+            expiresAt,
+          },
+        }),
+      });
+
+      const result = await service.getUser({ cookies: {} } as Request);
+
+      expect(result).toEqual({
+        name: 'Иван',
+        email: 'test@mail.ru',
+        subscription: {
+          active: false,
+          expiresAt,
+        },
+      });
     });
   });
 

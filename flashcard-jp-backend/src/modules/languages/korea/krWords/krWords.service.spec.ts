@@ -4,7 +4,11 @@ import { JwtService } from '@nestjs/jwt';
 import { getModelToken } from '@nestjs/mongoose';
 import { WordKr } from './krWords.schema';
 import { User } from '../../../user/user.schema';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { UpdateWordKrWeightDto, WordKrDto } from './krWords.schema.dto';
 
@@ -27,6 +31,7 @@ describe('WordsKrService', () => {
       deleteOne: jest.fn(),
       distinct: jest.fn(),
       findOne: jest.fn(),
+      countDocuments: jest.fn(),
     };
 
     mockUserModel = {
@@ -86,6 +91,44 @@ describe('WordsKrService', () => {
     });
   });
 
+  describe('hasActiveSubscription', () => {
+    it('Возвращает false если подписки нет', () => {
+      const result = (service as any).hasActiveSubscription({
+        subscription: null,
+      });
+
+      expect(result).toBe(false);
+    });
+
+    it('Возвращает true если подписка активна', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('Возвращает false если подписка истекла', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() - 1);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe('addWord', () => {
     it('Ошибка если пользователь не найден', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
@@ -100,7 +143,7 @@ describe('WordsKrService', () => {
         service.addWord(
           { cookies: {} } as Request,
           {
-            word: 'hello',
+            word: '안녕하세요',
             translate: 'привет',
             category: 'greeting',
           } as WordKrDto,
@@ -114,32 +157,97 @@ describe('WordsKrService', () => {
       });
 
       mockUserModel.findById.mockReturnValue({
-        exec: jest.fn().mockResolvedValue({ _id: 'user_id' }),
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: null,
+        }),
       });
+
+      mockWordModel.countDocuments.mockResolvedValue(10);
 
       mockWordModel.create.mockResolvedValue({});
 
       const result = await service.addWord(
         { cookies: {} } as Request,
         {
-          word: 'hello',
+          word: '안녕하세요',
           translate: 'привет',
           category: 'greeting',
         } as WordKrDto,
       );
 
+      expect(mockWordModel.countDocuments).toHaveBeenCalledWith({
+        userId: 'user_id',
+      });
       expect(mockWordModel.create).toHaveBeenCalledWith({
         userId: 'user_id',
-        word: 'hello',
+        word: '안녕하세요',
         translate: 'привет',
         category: 'greeting',
         weight: 1,
         srs: null,
       });
-
       expect(result).toEqual({
-        data: 'hello - добавлено',
+        data: '안녕하세요 - добавлено',
       });
+    });
+
+    it('Ошибка если достигнут лимит бесплатной версии', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: null,
+        }),
+      });
+
+      mockWordModel.countDocuments.mockResolvedValue(100);
+
+      await expect(
+        service.addWord(
+          { cookies: {} } as Request,
+          {
+            word: '안녕하세요',
+            translate: 'привет',
+            category: 'greeting',
+          } as WordKrDto,
+        ),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockWordModel.create).not.toHaveBeenCalled();
+    });
+
+    it('Пользователь с подпиской может добавлять слова без проверки лимита', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: {
+            expiresAt,
+          },
+        }),
+      });
+
+      mockWordModel.create.mockResolvedValue({});
+
+      await service.addWord(
+        { cookies: {} } as Request,
+        {
+          word: '안녕하세요',
+          translate: 'привет',
+          category: 'greeting',
+        } as WordKrDto,
+      );
+
+      expect(mockWordModel.countDocuments).not.toHaveBeenCalled();
     });
   });
 

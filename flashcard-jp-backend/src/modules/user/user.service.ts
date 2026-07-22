@@ -10,6 +10,7 @@ import { Model } from 'mongoose';
 import { User } from './user.schema';
 import {
   CreateUserDto,
+  GetUserResponseDto,
   UpdateUserDto,
   UserResponseDto,
 } from './user.schema.dto';
@@ -44,6 +45,16 @@ export class UserService {
     }
   }
 
+  private hasActiveSubscription(user: User): boolean {
+    if (!user.subscription) {
+      return false;
+    }
+
+    const now = new Date();
+
+    return user.subscription.expiresAt > now;
+  }
+
   async createUser(user: CreateUserDto): Promise<{ data: string }> {
     const oldUser = await this.userModel.findOne({ email: user.email }).exec();
 
@@ -69,7 +80,7 @@ export class UserService {
     };
   }
 
-  async getUser(request: Request): Promise<{ name: string; email: string }> {
+  async getUser(request: Request): Promise<GetUserResponseDto> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
@@ -81,6 +92,10 @@ export class UserService {
     return {
       name: user.name,
       email: user.email,
+      subscription: {
+        active: this.hasActiveSubscription(user),
+        expiresAt: user.subscription?.expiresAt ?? null,
+      },
     };
   }
 

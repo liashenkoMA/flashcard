@@ -15,12 +15,6 @@ export class LearningProgressDto {
   hangul?: LearningProgressItemDto[];
 }
 
-export class UserDto {
-  name: string;
-  email: string;
-  learningProgress: LearningProgressDto[];
-}
-
 export class LoginUserDto {
   email: string;
   password: string;
@@ -42,4 +36,15 @@ export class UpdateUserDto {
 export class UserResponseDto {
   name: string;
   email: string;
+}
+
+export class SubscriptionResponseDto {
+  active: boolean;
+  expiresAt: Date | null;
+}
+
+export class GetUserResponseDto {
+  name: string;
+  email: string;
+  subscription: SubscriptionResponseDto;
 }

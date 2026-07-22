@@ -4,7 +4,11 @@ import { JwtService } from '@nestjs/jwt';
 import { getModelToken } from '@nestjs/mongoose';
 import { Hanzi } from './hanzi.schema';
 import { User } from '../../../user/user.schema';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { HanziDto, UpdateHanziWeightDto } from './hanzi.schema.dto';
 
@@ -26,6 +30,7 @@ describe('HanziService', () => {
       find: jest.fn(),
       deleteOne: jest.fn(),
       findOne: jest.fn(),
+      countDocuments: jest.fn(),
     };
 
     mockUserModel = {
@@ -85,6 +90,44 @@ describe('HanziService', () => {
     });
   });
 
+  describe('hasActiveSubscription', () => {
+    it('Возвращает false если подписки нет', () => {
+      const result = (service as any).hasActiveSubscription({
+        subscription: null,
+      });
+
+      expect(result).toBe(false);
+    });
+
+    it('Возвращает true если подписка активна', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('Возвращает false если подписка истекла', () => {
+      const expiresAt = new Date();
+
+      expiresAt.setDate(expiresAt.getDate() - 1);
+
+      const result = (service as any).hasActiveSubscription({
+        subscription: {
+          expiresAt,
+        },
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe('addHanzi', () => {
     it('Ошибка если пользователь не найден', async () => {
       jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
@@ -114,8 +157,13 @@ describe('HanziService', () => {
       });
 
       mockUserModel.findById.mockReturnValue({
-        exec: jest.fn().mockResolvedValue({ _id: 'user_id' }),
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: null,
+        }),
       });
+
+      mockHanziModel.countDocuments.mockResolvedValue(10);
 
       mockHanziModel.create.mockResolvedValue({});
 
@@ -129,6 +177,9 @@ describe('HanziService', () => {
         { cookies: {} } as Request,
       );
 
+      expect(mockHanziModel.countDocuments).toHaveBeenCalledWith({
+        userId: 'user_id',
+      });
       expect(mockHanziModel.create).toHaveBeenCalledWith({
         userId: 'user_id',
         category: 'HSK1',
@@ -141,6 +192,65 @@ describe('HanziService', () => {
       expect(result).toEqual({
         data: '日 - добавлено',
       });
+    });
+
+    it('Ошибка если достигнут лимит бесплатной версии', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: null,
+        }),
+      });
+
+      mockHanziModel.countDocuments.mockResolvedValue(82);
+
+      await expect(
+        service.addHanzi(
+          {
+            category: 'HSK1',
+            hanzi: '日',
+            translate: 'солнце',
+            pinyin: 'rì',
+          } as HanziDto,
+          { cookies: {} } as Request,
+        ),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockHanziModel.create).not.toHaveBeenCalled();
+    });
+
+    it('Пользователь с подпиской может добавлять ханзи без проверки лимита', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+          subscription: {
+            expiresAt,
+          },
+        }),
+      });
+
+      mockHanziModel.create.mockResolvedValue({});
+
+      await service.addHanzi(
+        {
+          category: 'HSK1',
+          hanzi: '日',
+          translate: 'солнце',
+          pinyin: 'rì',
+        } as HanziDto,
+        { cookies: {} } as Request,
+      );
+      expect(mockHanziModel.countDocuments).not.toHaveBeenCalled();
     });
   });
 
