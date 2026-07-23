@@ -37,6 +37,15 @@ jest.mock("@/_components/UI/LinkButton/LinkButton", () => {
   };
 });
 
+const mockUser = {
+  name: "Иван",
+  email: "ivan@mail.ru",
+  subscription: {
+    active: false,
+    expiresAt: null,
+  },
+};
+
 function renderWithStore() {
   const store = configureStore({
     reducer: {
@@ -48,7 +57,7 @@ function renderWithStore() {
     store,
     ...render(
       <Provider store={store}>
-        <ProfileDropdown user="Иван" />
+        <ProfileDropdown user={mockUser} />
       </Provider>,
     ),
   };
@@ -69,6 +78,7 @@ describe("ProfileDropdown component", () => {
     renderWithStore();
 
     expect(screen.getByText("Иван")).toBeInTheDocument();
+    expect(screen.getByText("ivan@mail.ru")).toBeInTheDocument();
   });
 
   it("Открывает меню по клику на профиль", () => {

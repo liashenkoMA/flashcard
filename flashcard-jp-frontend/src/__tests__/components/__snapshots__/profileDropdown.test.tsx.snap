@@ -11,7 +11,16 @@ exports[`ProfileDropdown component Snapshot 1`] = `
       <div
         class="profiledropdown__user"
       >
-        Иван
+        <p
+          class="profiledropdown__user_name"
+        >
+          Иван
+        </p>
+        <p
+          class="profiledropdown__user_email"
+        >
+          ivan@mail.ru
+        </p>
       </div>
       <img
         alt="Аватарка"
