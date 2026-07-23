@@ -19,6 +19,12 @@
     max-width: 720px;
     padding: 80px 0px;
   }
+  @include m.respond-to(desktop) {
+    max-width: 960px;
+  }
+  @include m.respond-to(desktop-large) {
+    max-width: 1280px;
+  }
 }
 
 .notfound {
@@ -27,20 +33,19 @@
   gap: 20px;
   @include m.respond-to(tablet-up) {
     flex-direction: row;
-    justify-content: space-between;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
   }
 
   &__image {
-    height: 300px;
-    width: 300px;
-    background-image: url("../_images/404.png");
-    background-repeat: no-repeat;
-    background-position: left center;
-    background-size: 300px auto;
-    @include m.respond-to(tablet-up) {
-      background-size: 500px auto;
-      height: 300px;
-      width: 400px;
+    @include m.respond-to(tablet) {
+      height: 100%;
+      width: 100%;
+    }
+    @include m.respond-to(desktop-up) {
+      width: 700px;
+      height: 700px;
     }
   }
 
@@ -49,22 +54,27 @@
     flex-direction: column;
     gap: 20px;
     align-items: center;
+    justify-content: center;
     max-width: 300px;
+    @include m.respond-to(tablet-up) {
+      gap: 30px;
+    }
   }
 
   &__text {
     color: v.$color-text-secondary;
-    font-size: v.$font-size-x-small;
+    font-size: v.$font-size-small;
     font-weight: v.$font-weight-regular;
     line-height: v.$line-height-small;
     @include m.respond-to(tablet-up) {
-      font-size: v.$font-size-small;
+      font-size: v.$font-size-medium;
+      line-height: v.$line-height-medium;
     }
   }
 
   &__errorcode {
-    font-size: v.$font-size-xx-large;
-    line-height: v.$line-height-xx-large;
+    font-size: v.$font-size-huge;
+    line-height: v.$line-height-huge;
     font-weight: v.$font-weight-medium;
     background: v.$gradient-primary;
     background-clip: text;
@@ -74,12 +84,12 @@
 
   &__header {
     color: v.$color-text-main;
-    font-size: v.$font-size-small;
+    font-size: v.$font-size-large;
     font-weight: v.$font-weight-regular;
-    line-height: v.$line-height-small;
+    line-height: v.$line-height-large;
     @include m.respond-to(tablet-up) {
-      font-size: v.$font-size-medium;
-      line-height: v.$line-height-medium;
+      font-size: v.$font-size-x-large;
+      line-height: v.$line-height-large;
     }
   }
 }
