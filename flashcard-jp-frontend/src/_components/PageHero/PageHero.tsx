@@ -12,33 +12,27 @@ export default function PageHero() {
           </span>
         </h1>
         <p className={`${styles.pagehero__text}`}>
-          Создавайте свои наборы, повторяйте, запоминайте и отслеживайте свой
-          прогресс каждый день.
+          Запоминайте слова, кандзи, ханзи и хангыль с помощью удобных карточек.
+          Добавляйте материал из своих учебников и курсов, повторяйте и следите за прогрессом.
         </p>
       </div>
-      
+
       <div className={styles.pagehero__advantages}>
-        <p
-          className={`${styles.pagehero__text} ${styles.pagehero__advantage}`}
-        >
+        <p className={`${styles.pagehero__text} ${styles.pagehero__advantage}`}>
           <span
             className={`${styles.pagehero__icon} ${styles.pagehero__icon_start}`}
           />
           Бесплатный старт
         </p>
 
-        <p
-          className={`${styles.pagehero__text} ${styles.pagehero__advantage}`}
-        >
+        <p className={`${styles.pagehero__text} ${styles.pagehero__advantage}`}>
           <span
             className={`${styles.pagehero__icon} ${styles.pagehero__icon_device}`}
           />
           Работает на всех устройствах
         </p>
 
-        <p
-          className={`${styles.pagehero__text} ${styles.pagehero__advantage}`}
-        >
+        <p className={`${styles.pagehero__text} ${styles.pagehero__advantage}`}>
           <span
             className={`${styles.pagehero__icon} ${styles.pagehero__icon_ad}`}
           />

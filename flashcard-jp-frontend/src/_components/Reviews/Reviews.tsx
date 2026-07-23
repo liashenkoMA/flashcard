@@ -72,12 +72,13 @@ export default function Reviews() {
       <div className={styles.reviews__header}>
         <span className={styles.reviews__span}>Отзывы</span>
         <h2 id="reviews" className={styles.reviews__title}>
-          Что рассказывают пользователи
+          Первые впечатления от Memora
         </h2>
         <p
           className={`${styles.reviews__text} ${styles.reviews__text_subtitle}`}
         >
-          Сотни людей уже пользуются нашим сервисом!
+          Мы развиваем сервис вместе с первыми пользователями и собираем
+          обратную связь, чтобы сделать повторение языкового материала удобнее.
         </p>
       </div>
 

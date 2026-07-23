@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 5px;
   }
 
   &__span {
@@ -25,8 +26,6 @@
     line-height: v.$line-height-small;
     @include m.respond-to(tablet-up) {
       font-size: v.$font-size-small;
-      font-weight: v.$font-weight-regular;
-      line-height: v.$line-height-small;
     }
   }
 
@@ -38,7 +37,6 @@
     line-height: v.$line-height-medium;
     @include m.respond-to(tablet-up) {
       font-size: v.$font-size-large;
-      font-weight: v.$font-weight-regular;
       line-height: v.$line-height-large;
     }
   }
@@ -49,7 +47,6 @@
     line-height: v.$line-height-small;
     @include m.respond-to(tablet-up) {
       font-size: v.$font-size-medium;
-      font-weight: v.$font-weight-regular;
       line-height: v.$line-height-medium;
     }
 

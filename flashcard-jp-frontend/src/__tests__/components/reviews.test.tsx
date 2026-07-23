@@ -17,10 +17,12 @@ describe("Reviews component", () => {
 
     expect(screen.getByText("Отзывы")).toBeInTheDocument();
     expect(
-      screen.getByText("Что рассказывают пользователи"),
+      screen.getByText("Первые впечатления от Memora"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Сотни людей уже пользуются нашим сервисом!"),
+      screen.getByText(
+        "Мы развиваем сервис вместе с первыми пользователями и собираем обратную связь, чтобы сделать повторение языкового материала удобнее.",
+      ),
     ).toBeInTheDocument();
   });
 

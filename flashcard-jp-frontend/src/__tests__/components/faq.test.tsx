@@ -6,10 +6,12 @@ describe("Faq component", () => {
     render(<Faq />);
 
     expect(screen.getByText("FAQ")).toBeInTheDocument();
-    expect(screen.getByText("Часто задаваемые вопросы")).toBeInTheDocument();
+    expect(
+      screen.getByText("Всё, что важно знать о Memora"),
+    ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Коротко о главном — всё, что важно знать перед стартом",
+        "Ответы на вопросы об изучении, карточках и возможностях сервиса.",
       ),
     ).toBeInTheDocument();
   });
