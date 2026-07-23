@@ -12,15 +12,15 @@ import ProfileDropdown from "../ProfileDropdown/ProfileDropdown";
 
 export default function Navigation() {
   const dispatch = useDispatch();
-  const userName = useSelector((state: RootState) => state.auth.user?.name);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
-    if (!userName) {
+    if (!user) {
       getUser()
         .then((res) => dispatch(setUser(res)))
         .catch((err) => console.log(err));
     }
-  }, [userName, dispatch]);
+  }, [user, dispatch]);
 
   function handleClick(type: { mode: "login" | "register" | null }) {
     dispatch(setMode(type));
@@ -29,8 +29,8 @@ export default function Navigation() {
   return (
     <nav className={`${styles.navigation}`}>
       <div className={`${styles.navigation__content}`}>
-        {userName ? (
-          <ProfileDropdown user={userName} />
+        {user ? (
+          <ProfileDropdown user={user} />
         ) : (
           <>
             <Button

@@ -11,8 +11,9 @@ import { logout as logoutAction } from "@/_store/authSlice";
 import { useDispatch } from "react-redux";
 import LinkButton from "../UI/LinkButton/LinkButton";
 import { ROUTES } from "@/_constants/routes.constant";
+import { IAuthUser } from "@/_interface/Interface";
 
-export default function ProfileDropdown({ user }: { user: string }) {
+export default function ProfileDropdown({ user }: { user: IAuthUser }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const router = useRouter();
@@ -58,7 +59,10 @@ export default function ProfileDropdown({ user }: { user: string }) {
         className={styles.profiledropdown__profile}
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <div className={styles.profiledropdown__user}>{user}</div>
+        <div className={styles.profiledropdown__user}>
+          <p className={styles.profiledropdown__user_name}>{user.name}</p>
+          <p className={styles.profiledropdown__user_email}>{user.email}</p>
+        </div>
 
         <Image
           src={avatar}
