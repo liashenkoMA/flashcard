@@ -2,7 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HanziController } from './hanzi.controller';
 import { HanziService } from './hanzi.service';
 import { Request } from 'express';
-import { HanziDto, UpdateHanziWeightDto } from './hanzi.schema.dto';
+import {
+  CreateHanziDto,
+  HanziDto,
+  UpdateHanziWeightDto,
+} from './hanzi.schema.dto';
 
 describe('HanziController', () => {
   let controller: HanziController;
@@ -38,14 +42,11 @@ describe('HanziController', () => {
         cookies: { session_flashcard: 'token' },
       } as Request;
 
-      const dto: HanziDto = {
-        _id: '1',
+      const dto: CreateHanziDto = {
         category: 'HSK1',
         hanzi: '日',
         translate: 'солнце',
         pinyin: 'rì',
-        weight: 1,
-        srs: {},
       };
 
       const response = {

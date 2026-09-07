@@ -27,6 +27,7 @@ export default async function Page({ searchParams }: IPageParams) {
   return (
     <section className={styles.hangeul}>
       <HangeulPageComponent
+        key={awaitedSearchParams.type ?? "learn"}
         hangeul={preparedHangeul}
         searchParams={awaitedSearchParams}
       />

@@ -1,13 +1,17 @@
 "use server";
 
-import { ILoginFormData, ILoginResponse } from "@/_interface/Interface";
+import {
+  ILoginFormData,
+  ILoginResponse,
+  ILoginResult,
+} from "@/_interface/Interface";
 import { cookies } from "next/headers";
 
 const address = {
   baseUrl: process.env.API_BASE_URL,
 };
 
-export async function login(formData: ILoginFormData) {
+export async function login(formData: ILoginFormData): Promise<ILoginResult> {
   try {
     const res = await fetch(`${address.baseUrl}/auth/signin`, {
       method: "POST",
@@ -23,7 +27,14 @@ export async function login(formData: ILoginFormData) {
 
     if (!res.ok) {
       const err = await res.json();
-      throw new Error(`${err.message}`);
+
+      if (res.status >= 500) {
+        throw new Error(err.message);
+      }
+
+      return {
+        message: err.message,
+      };
     }
 
     const data: ILoginResponse = await res.json();
@@ -34,10 +45,12 @@ export async function login(formData: ILoginFormData) {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
+      domain: ".flashcardsjp.ru",
+      path: "/",
       expires: expiresAt,
     });
 
-    return data.user;
+    return { user: data.user };
   } catch (err) {
     if (err instanceof Error) {
       throw err;
@@ -48,7 +61,14 @@ export async function login(formData: ILoginFormData) {
 }
 
 export async function logout() {
-  (await cookies()).delete("session_flashcard");
+  (await cookies()).set("session_flashcard", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    domain: ".flashcardsjp.ru",
+    path: "/",
+    maxAge: 0,
+  });
 }
 
 export async function deleteUser() {
@@ -69,7 +89,14 @@ export async function deleteUser() {
       throw new Error(`${err.message}`);
     }
 
-    (await cookies()).delete("session_flashcard");
+    (await cookies()).set("session_flashcard", "", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      domain: ".flashcardsjp.ru",
+      path: "/",
+      maxAge: 0,
+    });
   } catch (err) {
     if (err instanceof Error) {
       throw err;

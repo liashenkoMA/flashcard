@@ -10,7 +10,7 @@ import { Kanji } from './kanji.schema';
 import { User } from '../../../user/user.schema';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
+import { CreateKanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
 import { FREE_USER_LIMITS } from '../../../../shared/constants/limit.constant';
 
@@ -48,7 +48,10 @@ export class KanjiService {
     return user.subscription.expiresAt > now;
   }
 
-  async addKanji(kanji: KanjiDto, request: Request): Promise<{ data: string }> {
+  async addKanji(
+    kanji: CreateKanjiDto,
+    request: Request,
+  ): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();

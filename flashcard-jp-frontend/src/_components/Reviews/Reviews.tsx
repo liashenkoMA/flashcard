@@ -70,10 +70,10 @@ export default function Reviews() {
   return (
     <section className={styles.reviews}>
       <div className={styles.reviews__header}>
-        <span className={styles.reviews__span}>Отзывы</span>
-        <h2 id="reviews" className={styles.reviews__title}>
-          Первые впечатления от Memora
-        </h2>
+        <span id="reviews" className={styles.reviews__span}>
+          Отзывы
+        </span>
+        <h2 className={styles.reviews__title}>Первые впечатления от Memora</h2>
         <p
           className={`${styles.reviews__text} ${styles.reviews__text_subtitle}`}
         >

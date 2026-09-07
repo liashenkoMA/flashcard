@@ -6,13 +6,13 @@ export class WordKr {
   @Prop({ type: Types.ObjectId, required: true, ref: 'User' })
   userId: Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   word: string;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   translate: string;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   category: string;
 
   @Prop({ default: 1 })

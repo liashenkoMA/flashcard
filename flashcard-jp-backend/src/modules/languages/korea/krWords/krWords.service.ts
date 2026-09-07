@@ -10,7 +10,7 @@ import { Model } from 'mongoose';
 import { User } from '../../../user/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UpdateWordKrWeightDto, WordKrDto } from './krWords.schema.dto';
+import { CreateWordKrDto, UpdateWordKrWeightDto } from './krWords.schema.dto';
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
 import { FREE_USER_LIMITS } from '../../../../shared/constants/limit.constant';
 
@@ -48,7 +48,10 @@ export class WordsKrService {
     return user.subscription.expiresAt > now;
   }
 
-  async addWord(request: Request, word: WordKrDto): Promise<{ data: string }> {
+  async addWord(
+    request: Request,
+    word: CreateWordKrDto,
+  ): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();

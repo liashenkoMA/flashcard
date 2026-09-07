@@ -5,7 +5,7 @@ export default function ReviewsCard({ card }: { card: IReview }) {
   return (
     <div className={styles.reviews__card}>
       <div className={styles.reviews__card_top}>
-        <div className={styles.reviews__card_icon}></div>
+        <div className={styles.reviews__card_icon} aria-hidden="true"></div>
         <p
           className={`${styles.reviews__card_text} ${styles.reviews__card_message}`}
         >

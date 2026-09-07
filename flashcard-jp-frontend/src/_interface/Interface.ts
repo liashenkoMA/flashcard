@@ -60,6 +60,11 @@ export interface ILoginResponse {
   user: IAuthUser;
 }
 
+export interface ILoginResult {
+  user?: IAuthUser;
+  message?: string;
+}
+
 export interface IAuthModalState {
   mode: "login" | "register" | null;
 }
@@ -78,6 +83,11 @@ export interface IAuthUser {
   name: string;
   email: string;
   subscription: ISubscription;
+}
+
+export interface IAuthUserResult {
+  user?: IAuthUser;
+  message?: string;
 }
 
 export interface IKana {
@@ -260,4 +270,17 @@ export interface IUpdateHanziWeightResponse {
 export interface ITelegramFormData {
   name: string;
   text: string;
+}
+
+export interface IUserUsage {
+  hanzi: number;
+  wordCn: number;
+  kanji: number;
+  wordJp: number;
+  wordKr: number;
+}
+
+export interface IUserUsageResult {
+  usage?: IUserUsage;
+  message?: string;
 }

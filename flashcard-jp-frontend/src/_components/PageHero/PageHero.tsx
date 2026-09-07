@@ -13,7 +13,8 @@ export default function PageHero() {
         </h1>
         <p className={`${styles.pagehero__text}`}>
           Запоминайте слова, кандзи, ханзи и хангыль с помощью удобных карточек.
-          Добавляйте материал из своих учебников и курсов, повторяйте и следите за прогрессом.
+          Добавляйте материал из своих учебников и курсов, повторяйте и следите
+          за прогрессом.
         </p>
       </div>
 
@@ -21,6 +22,7 @@ export default function PageHero() {
         <p className={`${styles.pagehero__text} ${styles.pagehero__advantage}`}>
           <span
             className={`${styles.pagehero__icon} ${styles.pagehero__icon_start}`}
+            aria-hidden="true"
           />
           Бесплатный старт
         </p>
@@ -28,6 +30,7 @@ export default function PageHero() {
         <p className={`${styles.pagehero__text} ${styles.pagehero__advantage}`}>
           <span
             className={`${styles.pagehero__icon} ${styles.pagehero__icon_device}`}
+            aria-hidden="true"
           />
           Работает на всех устройствах
         </p>
@@ -35,6 +38,7 @@ export default function PageHero() {
         <p className={`${styles.pagehero__text} ${styles.pagehero__advantage}`}>
           <span
             className={`${styles.pagehero__icon} ${styles.pagehero__icon_ad}`}
+            aria-hidden="true"
           />
           Без рекламы
         </p>

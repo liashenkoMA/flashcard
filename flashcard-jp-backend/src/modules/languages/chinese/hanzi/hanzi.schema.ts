@@ -6,16 +6,16 @@ export class Hanzi {
   @Prop({ type: Types.ObjectId, required: true, ref: 'User' })
   userId: Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   category: string;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   hanzi: string;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   translate: string;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   pinyin: string;
 
   @Prop({ default: 1 })

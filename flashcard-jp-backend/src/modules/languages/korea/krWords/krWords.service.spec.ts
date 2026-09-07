@@ -10,7 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { UpdateWordKrWeightDto, WordKrDto } from './krWords.schema.dto';
+import { CreateWordKrDto, UpdateWordKrWeightDto } from './krWords.schema.dto';
 
 describe('WordsKrService', () => {
   let service: WordsKrService;
@@ -146,7 +146,7 @@ describe('WordsKrService', () => {
             word: '안녕하세요',
             translate: 'привет',
             category: 'greeting',
-          } as WordKrDto,
+          } as CreateWordKrDto,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -173,7 +173,7 @@ describe('WordsKrService', () => {
           word: '안녕하세요',
           translate: 'привет',
           category: 'greeting',
-        } as WordKrDto,
+        } as CreateWordKrDto,
       );
 
       expect(mockWordModel.countDocuments).toHaveBeenCalledWith({
@@ -213,7 +213,7 @@ describe('WordsKrService', () => {
             word: '안녕하세요',
             translate: 'привет',
             category: 'greeting',
-          } as WordKrDto,
+          } as CreateWordKrDto,
         ),
       ).rejects.toThrow(ForbiddenException);
       expect(mockWordModel.create).not.toHaveBeenCalled();
@@ -244,7 +244,7 @@ describe('WordsKrService', () => {
           word: '안녕하세요',
           translate: 'привет',
           category: 'greeting',
-        } as WordKrDto,
+        } as CreateWordKrDto,
       );
 
       expect(mockWordModel.countDocuments).not.toHaveBeenCalled();

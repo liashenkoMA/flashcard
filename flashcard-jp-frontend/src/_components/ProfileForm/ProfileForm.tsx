@@ -1,14 +1,17 @@
 "use client";
 
 import styles from "./profileform.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Form from "../UI/Form/Form";
 import { PROFILE_FORM_INPUTS } from "@/_constants/profileForm.constant";
 import Input from "../UI/Input/Input";
 import { z } from "zod";
 import Button from "../UI/Button/Button";
-import { getUser, updateUser } from "@/_utils/api/client/userApi";
+import { updateUser } from "@/_utils/api/client/userApi";
 import DeleteProfileModule from "../DeleteProfileModal/DeleteProfileModal";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/_store/store";
+import { setUser } from "@/_store/authSlice";
 
 const formSchema = z.object({
   name: z
@@ -38,26 +41,18 @@ const initialFormState: ProfileFormType = {
 };
 
 export default function ProfileForm() {
-  const [formData, setFormData] = useState<ProfileFormType>(initialFormState);
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const [formData, setFormData] = useState<ProfileFormType>(() => ({
+    ...initialFormState,
+    name: user?.name ?? "",
+    email: user?.email ?? "",
+  }));
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] =
     useState<z.ZodFlattenedError<z.infer<typeof formSchema>>>();
   const [serverErrorMessage, setServerErrorMessage] = useState("");
-  const [hydrated, setHydrated] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    getUser()
-      .then((res) => {
-        setFormData((prev) => ({
-          ...prev,
-          name: res.name,
-          email: res.email,
-        }));
-      })
-      .catch((err) => setServerErrorMessage(err.message))
-      .finally(() => setHydrated(true));
-  }, []);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const name = e.target.name;
@@ -83,25 +78,31 @@ export default function ProfileForm() {
     setIsLoading(true);
 
     updateUser(formData)
-      .then((res) =>
+      .then((res) => {
         setFormData({
           name: res.name,
           email: res.email,
           newPassword: "",
           currentPassword: "",
           duplicate: "",
-        }),
-      )
+        });
+
+        if (user) {
+          dispatch(
+            setUser({
+              ...user,
+              name: res.name,
+              email: res.email,
+            }),
+          );
+        }
+      })
       .catch((err) => setServerErrorMessage(err.message))
       .finally(() => setIsLoading(false));
   }
 
   function openDeleteProfileModal() {
     setIsOpen(!isOpen);
-  }
-
-  if (!hydrated) {
-    return <div className={styles.profileform__text}>Загрузка данных...</div>;
   }
 
   return (

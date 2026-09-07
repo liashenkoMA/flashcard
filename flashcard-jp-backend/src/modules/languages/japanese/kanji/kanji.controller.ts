@@ -11,14 +11,14 @@ import {
 import { KanjiService } from './kanji.service';
 import { ROUTES } from '../../../../shared/constants/routes.constant';
 import { Request } from 'express';
-import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
+import { CreateKanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
 
 @Controller(ROUTES.KANJI)
 export class KanjiController {
   constructor(private readonly kanjiService: KanjiService) {}
 
   @Post(ROUTES.KANJI_ADD)
-  addKanji(@Req() request: Request, @Body() kanji: KanjiDto) {
+  addKanji(@Req() request: Request, @Body() kanji: CreateKanjiDto) {
     return this.kanjiService.addKanji(kanji, request);
   }
 

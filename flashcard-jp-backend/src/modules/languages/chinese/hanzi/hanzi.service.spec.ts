@@ -10,7 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { HanziDto, UpdateHanziWeightDto } from './hanzi.schema.dto';
+import { CreateHanziDto, UpdateHanziWeightDto } from './hanzi.schema.dto';
 
 describe('HanziService', () => {
   let service: HanziService;
@@ -145,7 +145,7 @@ describe('HanziService', () => {
             hanzi: '日',
             translate: 'солнце',
             pinyin: 'rì',
-          } as HanziDto,
+          } as CreateHanziDto,
           { cookies: {} } as Request,
         ),
       ).rejects.toThrow(NotFoundException);
@@ -173,7 +173,7 @@ describe('HanziService', () => {
           hanzi: '日',
           translate: 'солнце',
           pinyin: 'rì',
-        } as HanziDto,
+        } as CreateHanziDto,
         { cookies: {} } as Request,
       );
 
@@ -215,7 +215,7 @@ describe('HanziService', () => {
             hanzi: '日',
             translate: 'солнце',
             pinyin: 'rì',
-          } as HanziDto,
+          } as CreateHanziDto,
           { cookies: {} } as Request,
         ),
       ).rejects.toThrow(ForbiddenException);
@@ -247,7 +247,7 @@ describe('HanziService', () => {
           hanzi: '日',
           translate: 'солнце',
           pinyin: 'rì',
-        } as HanziDto,
+        } as CreateHanziDto,
         { cookies: {} } as Request,
       );
       expect(mockHanziModel.countDocuments).not.toHaveBeenCalled();

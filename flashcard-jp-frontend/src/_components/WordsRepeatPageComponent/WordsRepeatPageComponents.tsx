@@ -2,7 +2,7 @@
 
 import styles from "./wordsRepeatPageComponent.module.scss";
 import { IWord } from "@/_interface/Interface";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { FlashCard } from "../FlashCard/FlashCard";
 import Button from "../UI/Button/Button";
@@ -16,14 +16,12 @@ export default function WordsRepeatPageComponent({
 }: {
   words: IWord[];
 }) {
-  const [cards, setCards] = useState<IWord[]>([]);
+  const [cards, setCards] = useState<IWord[]>(words);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
   const [answered, setAnswered] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    setCards(separateDuplicatesShuffleCards<IWord>(words));
-  }, [words]);
+  const [selectCategory, setSelectCategory] = useState("all");
+  const categories = [...new Set(words.map((word) => word.category))];
 
   function nextCard() {
     setDirection(1);
@@ -58,7 +56,29 @@ export default function WordsRepeatPageComponent({
       });
   }
 
-  if (!cards.length)
+  function shuffleCards() {
+    setCards((prev) => separateDuplicatesShuffleCards<IWord>(prev));
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+  }
+
+  function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const category = e.target.value;
+
+    const filteredCards =
+      category === "all"
+        ? words
+        : words.filter((card) => card.category === category);
+
+    setSelectCategory(category);
+    setCards(filteredCards);
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+  }
+
+  if (!words.length)
     return (
       <div>
         <p className={styles.wordsrepeatpagecomponent__loading}>
@@ -71,45 +91,70 @@ export default function WordsRepeatPageComponent({
     <div className={styles.wordsrepeatpagecomponent}>
       <div className={styles.wordsrepeatpagecomponent__inner}>
         <div className={styles.wordsrepeatpagecomponent__cards}>
-          <SessionProgress
-            length={cards.length}
-            answeredCount={answered.size}
-          />
-          <motion.div
-            key={indexCard}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.3}
-            onDragEnd={(e, info) => {
-              if (info.offset.x < -100) {
-                nextCard();
-              } else if (info.offset.x > 100) {
-                previousCard();
-              }
-            }}
-            initial={{ x: direction > 0 ? 300 : -300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.7 }}
-          >
-            <FlashCard
-              front={
-                <p className={`${styles.flashcard__text}`}>
-                  {cards[indexCard].word}
-                </p>
-              }
-              back={
-                <div className={styles.flashcard__text_lists}>
-                  <p className={`${styles.flashcard__text}`}>
-                    {cards[indexCard].translate}
-                  </p>
-                </div>
-              }
-            />
-          </motion.div>
-          <WritingPractice
-            key={`${cards[indexCard]._id}-${indexCard}`}
-            translate={cards[indexCard].translate}
-          />
+          <label className={styles.wordsrepeatpagecomponent__form_field}>
+            <select
+              className={styles.wordsrepeatpagecomponent__lists}
+              onChange={handleCategoryChange}
+              value={selectCategory}
+            >
+              <option value={"all"}>Все</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {cards.length === 0 ? (
+            <div>
+              <p className={styles.kandjirepeatpagecomponent__loading}>
+                Таких кандзи пока не добавлено
+              </p>
+            </div>
+          ) : (
+            <>
+              <SessionProgress
+                length={cards.length}
+                answeredCount={answered.size}
+              />
+              <motion.div
+                key={indexCard}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.3}
+                onDragEnd={(e, info) => {
+                  if (info.offset.x < -100) {
+                    nextCard();
+                  } else if (info.offset.x > 100) {
+                    previousCard();
+                  }
+                }}
+                initial={{ x: direction > 0 ? 300 : -300, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.7 }}
+              >
+                <FlashCard
+                  front={
+                    <p className={`${styles.flashcard__text}`}>
+                      {cards[indexCard].word}
+                    </p>
+                  }
+                  back={
+                    <div className={styles.flashcard__text_lists}>
+                      <p className={`${styles.flashcard__text}`}>
+                        {cards[indexCard].translate}
+                      </p>
+                    </div>
+                  }
+                />
+              </motion.div>
+              <WritingPractice
+                key={`${cards[indexCard]._id}-${indexCard}`}
+                translate={cards[indexCard].translate}
+              />
+            </>
+          )}
         </div>
         <div className={styles.wordsrepeatpagecomponent__cards_navigation}>
           <Button
@@ -127,6 +172,9 @@ export default function WordsRepeatPageComponent({
             Помню
           </Button>
         </div>
+        <Button type="button" onClick={shuffleCards}>
+          Перемешать
+        </Button>
       </div>
     </div>
   );

@@ -1,7 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { KanjiController } from './kanji.controller';
 import { KanjiService } from './kanji.service';
-import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
+import {
+  CreateKanjiDto,
+  KanjiDto,
+  KanjiLevel,
+  UpdateKanjiWeightDto,
+} from './kanji.schema.dto';
 import { Request } from 'express';
 
 describe('KanjiController', () => {
@@ -37,14 +42,12 @@ describe('KanjiController', () => {
         cookies: { session_flashcard: 'token' },
       } as Request;
 
-      const dto: KanjiDto = {
-        _id: '1',
-        level: 'N5',
+      const dto: CreateKanjiDto = {
+        level: KanjiLevel.N5,
         kanji: '日',
         translate: 'солнце',
         jpRead: 'にち',
         chinaRead: 'ri',
-        weight: 1,
       };
 
       const response = {
@@ -70,7 +73,7 @@ describe('KanjiController', () => {
         {
           _id: '1',
           kanji: '日',
-          level: 'N5',
+          level: KanjiLevel.N5,
           translate: 'солнце',
           jpRead: 'にち',
           chinaRead: 'ri',

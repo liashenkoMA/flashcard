@@ -10,7 +10,7 @@ import { User } from '../../../user/user.schema';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
+import { CreateWordJpDto, UpdateWordJpWeightDto } from './words.schema.dto';
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
 import { FREE_USER_LIMITS } from '../../../../shared/constants/limit.constant';
 
@@ -48,7 +48,10 @@ export class WordsService {
     return user.subscription.expiresAt > now;
   }
 
-  async addWord(word: WordJpDto, request: Request): Promise<{ data: string }> {
+  async addWord(
+    word: CreateWordJpDto,
+    request: Request,
+  ): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
@@ -83,7 +86,7 @@ export class WordsService {
     };
   }
 
-  async getWord(request: Request): Promise<WordJp[]> {
+  async getWord(request: Request) {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();

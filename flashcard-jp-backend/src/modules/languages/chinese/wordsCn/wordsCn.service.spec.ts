@@ -10,7 +10,7 @@ import {
 import { Request } from 'express';
 import { WordCnService } from './wordsCn.service';
 import { WordCn } from './wordsCn.schema';
-import { UpdateWordCnWeightDto, WordCnDto } from './wordsCn.schema.dto';
+import { CreateWordCnDto, UpdateWordCnWeightDto } from './wordsCn.schema.dto';
 
 describe('WordsCnService', () => {
   let service: WordCnService;
@@ -147,7 +147,7 @@ describe('WordsCnService', () => {
             pinyin: 'nǐ hǎo',
             translate: 'привет',
             category: 'greeting',
-          } as WordCnDto,
+          } as CreateWordCnDto,
         ),
       ).rejects.toThrow(NotFoundException);
     });
@@ -175,7 +175,7 @@ describe('WordsCnService', () => {
           pinyin: 'nǐ hǎo',
           translate: 'привет',
           category: 'greeting',
-        } as WordCnDto,
+        } as CreateWordCnDto,
       );
 
       expect(mockWordModel.countDocuments).toHaveBeenCalledWith({
@@ -217,7 +217,7 @@ describe('WordsCnService', () => {
             pinyin: 'nǐ hǎo',
             translate: 'привет',
             category: 'greeting',
-          } as WordCnDto,
+          } as CreateWordCnDto,
         ),
       ).rejects.toThrow(ForbiddenException);
       expect(mockWordModel.create).not.toHaveBeenCalled();
@@ -249,7 +249,7 @@ describe('WordsCnService', () => {
           pinyin: 'nǐ hǎo',
           translate: 'привет',
           category: 'greeting',
-        } as WordCnDto,
+        } as CreateWordCnDto,
       );
 
       expect(mockWordModel.countDocuments).not.toHaveBeenCalled();

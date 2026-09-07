@@ -15,12 +15,14 @@ jest.mock("next/headers", () => ({
 describe("Auth Api", () => {
   const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe("login", () => {
     let mockFormData: ILoginFormData;
 
     beforeEach(() => {
-      jest.clearAllMocks();
-
       mockFormData = {
         email: "test@test.ru",
         password: "test",
@@ -58,7 +60,7 @@ describe("Auth Api", () => {
 
       const result = await login(mockFormData);
 
-      expect(result).toEqual(user);
+      expect(result).toEqual({ user });
       expect(setMock).toHaveBeenCalledWith(
         "session_flashcard",
         "Token",
@@ -66,6 +68,8 @@ describe("Auth Api", () => {
           httpOnly: true,
           secure: true,
           sameSite: "lax",
+          domain: ".flashcardsjp.ru",
+          path: "/",
         }),
       );
       expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -85,7 +89,25 @@ describe("Auth Api", () => {
       );
     });
 
-    it("Сервер вернул !res.ok", async () => {
+    it("Сервер вернул !res.ok и status < 500", async () => {
+      const setMock = jest.fn();
+
+      (headers.cookies as jest.Mock).mockReturnValue({ set: setMock });
+
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        json: async () => ({ message: "Почта или пароль неверные" }),
+      } as Response);
+
+      const result = await login(mockFormData);
+
+      expect(result).toEqual({ message: "Почта или пароль неверные" });
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(setMock).not.toHaveBeenCalled();
+    });
+
+    it("Сервер вернул !res.ok и status >= 500", async () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
@@ -102,23 +124,31 @@ describe("Auth Api", () => {
 
   describe("logout", () => {
     it("Успешное удаление cookies", async () => {
-      const deleteMock = jest.fn();
-
-      (headers.cookies as jest.Mock).mockReturnValue({ delete: deleteMock });
+      const setMock = jest.fn();
+      (headers.cookies as jest.Mock).mockReturnValue({ set: setMock });
 
       await logout();
 
-      expect(deleteMock).toHaveBeenCalledWith("session_flashcard");
+      expect(setMock).toHaveBeenCalledWith(
+        "session_flashcard",
+        "",
+        expect.objectContaining({
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          domain: ".flashcardsjp.ru",
+          path: "/",
+          maxAge: 0,
+        }),
+      );
     });
   });
 
   describe("deleteUser", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
-
       (headers.cookies as jest.Mock).mockResolvedValue({
         get: jest.fn().mockReturnValue({ value: "test_token" }),
-        delete: jest.fn(),
+        set: jest.fn(),
       });
     });
 
@@ -130,12 +160,12 @@ describe("Auth Api", () => {
     });
 
     it("Успешное удаление пользователя", async () => {
-      const deleteMock = jest.fn();
+      const setMock = jest.fn();
       const getMock = jest.fn().mockReturnValue({ value: "test_token" });
 
       (headers.cookies as jest.Mock).mockResolvedValue({
         get: getMock,
-        delete: deleteMock,
+        set: setMock,
       });
 
       mockFetch.mockResolvedValueOnce({
@@ -146,7 +176,18 @@ describe("Auth Api", () => {
       await expect(deleteUser()).resolves.not.toThrow();
 
       expect(mockFetch).toHaveBeenCalledTimes(1);
-      expect(deleteMock).toHaveBeenCalledWith("session_flashcard");
+      expect(setMock).toHaveBeenCalledWith(
+        "session_flashcard",
+        "",
+        expect.objectContaining({
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          domain: ".flashcardsjp.ru",
+          path: "/",
+          maxAge: 0,
+        }),
+      );
     });
 
     it("Сервер вернул !res.ok", async () => {

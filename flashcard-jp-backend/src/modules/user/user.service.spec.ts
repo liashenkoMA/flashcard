@@ -12,16 +12,24 @@ import {
 import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
 import { CreateUserDto, UpdateUserDto } from './user.schema.dto';
+import { Kanji } from '../languages/japanese/kanji/kanji.schema';
+import { WordJp } from '../languages/japanese/words/words.schema';
+import { Hanzi } from '../languages/chinese/hanzi/hanzi.schema';
+import { WordCn } from '../languages/chinese/wordsCn/wordsCn.schema';
+import { WordKr } from '../languages/korea/krWords/krWords.schema';
 
 describe('UserService', () => {
   let service: UserService;
   let mockJwtService;
   let mockUserModel;
+  let mockKanjiModel;
+  let mockWordJpModel;
+  let mockHanziModel;
+  let mockWordCnModel;
+  let mockWordKrModel;
 
   beforeEach(async () => {
     jest.resetAllMocks();
-
-    mockUserModel = jest.fn();
 
     mockUserModel = jest.fn();
 
@@ -29,6 +37,21 @@ describe('UserService', () => {
     mockUserModel.findById = jest.fn();
     mockUserModel.findOneAndUpdate = jest.fn();
     mockUserModel.findByIdAndDelete = jest.fn();
+
+    mockKanjiModel = jest.fn();
+    mockKanjiModel.countDocuments = jest.fn();
+
+    mockWordJpModel = jest.fn();
+    mockWordJpModel.countDocuments = jest.fn();
+
+    mockHanziModel = jest.fn();
+    mockHanziModel.countDocuments = jest.fn();
+
+    mockWordCnModel = jest.fn();
+    mockWordCnModel.countDocuments = jest.fn();
+
+    mockWordKrModel = jest.fn();
+    mockWordKrModel.countDocuments = jest.fn();
 
     mockJwtService = {
       verifyAsync: jest.fn(),
@@ -44,6 +67,26 @@ describe('UserService', () => {
         {
           provide: JwtService,
           useValue: mockJwtService,
+        },
+        {
+          provide: getModelToken(Kanji.name),
+          useValue: mockKanjiModel,
+        },
+        {
+          provide: getModelToken(WordJp.name),
+          useValue: mockWordJpModel,
+        },
+        {
+          provide: getModelToken(Hanzi.name),
+          useValue: mockHanziModel,
+        },
+        {
+          provide: getModelToken(WordCn.name),
+          useValue: mockWordCnModel,
+        },
+        {
+          provide: getModelToken(WordKr.name),
+          useValue: mockWordKrModel,
         },
       ],
     }).compile();
@@ -161,7 +204,6 @@ describe('UserService', () => {
       expect(result).toEqual({
         data: 'Спасибо за регистрацию, пользователь успешно создан!',
       });
-
       expect(bcrypt.hash).toHaveBeenCalledWith('123', 'salt');
       expect(saveMock).toHaveBeenCalled();
     });
@@ -266,6 +308,81 @@ describe('UserService', () => {
           active: false,
           expiresAt,
         },
+      });
+    });
+  });
+
+  describe('getUserUsage', () => {
+    it('Ошибка пользователь не существует', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(
+        service.getUserUsage({ cookies: {} } as Request),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('Возвращает количество загруженных данных пользователя', async () => {
+      jest.spyOn(service as any, 'validateAndGetPayload').mockResolvedValue({
+        sub: 'user_id',
+      });
+
+      mockUserModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue({
+          _id: 'user_id',
+        }),
+      });
+
+      mockHanziModel.countDocuments.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(10),
+      });
+
+      mockWordCnModel.countDocuments.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(20),
+      });
+
+      mockKanjiModel.countDocuments.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(30),
+      });
+
+      mockWordJpModel.countDocuments.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(40),
+      });
+
+      mockWordKrModel.countDocuments.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(50),
+      });
+
+      const result = await service.getUserUsage({
+        cookies: {},
+      } as Request);
+
+      expect(result).toEqual({
+        hanzi: 10,
+        wordCn: 20,
+        kanji: 30,
+        wordJp: 40,
+        wordKr: 50,
+      });
+      expect(mockHanziModel.countDocuments).toHaveBeenCalledWith({
+        userId: 'user_id',
+      });
+      expect(mockWordCnModel.countDocuments).toHaveBeenCalledWith({
+        userId: 'user_id',
+      });
+      expect(mockKanjiModel.countDocuments).toHaveBeenCalledWith({
+        userId: 'user_id',
+      });
+      expect(mockWordJpModel.countDocuments).toHaveBeenCalledWith({
+        userId: 'user_id',
+      });
+      expect(mockWordKrModel.countDocuments).toHaveBeenCalledWith({
+        userId: 'user_id',
       });
     });
   });

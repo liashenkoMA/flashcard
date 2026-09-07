@@ -1,5 +1,4 @@
 import {
-  IAuthUser,
   IProfileFormData,
   IProfileResponse,
   IRegisterFormData,
@@ -35,26 +34,6 @@ export async function createUser(
     });
 
     return checkResponse<{ data: string }>(res);
-  } catch (err) {
-    if (err instanceof Error) {
-      throw err;
-    }
-
-    throw new Error("Network error");
-  }
-}
-
-export async function getUser(): Promise<IAuthUser> {
-  try {
-    const res = await fetch(`${address.baseUrl}/user`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return checkResponse<IAuthUser>(res);
   } catch (err) {
     if (err instanceof Error) {
       throw err;

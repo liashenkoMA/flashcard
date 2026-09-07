@@ -11,17 +11,28 @@ import { User } from './user.schema';
 import {
   CreateUserDto,
   GetUserResponseDto,
+  GetUserUsageDto,
   UpdateUserDto,
   UpdateUserResponseDto,
 } from './user.schema.dto';
 import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { Kanji } from '../languages/japanese/kanji/kanji.schema';
+import { WordJp } from '../languages/japanese/words/words.schema';
+import { Hanzi } from '../languages/chinese/hanzi/hanzi.schema';
+import { WordCn } from '../languages/chinese/wordsCn/wordsCn.schema';
+import { WordKr } from '../languages/korea/krWords/krWords.schema';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Kanji.name) private kanjiModel: Model<Kanji>,
+    @InjectModel(WordJp.name) private wordJpModel: Model<WordJp>,
+    @InjectModel(Hanzi.name) private hanziModel: Model<Hanzi>,
+    @InjectModel(WordCn.name) private wordCnModel: Model<WordCn>,
+    @InjectModel(WordKr.name) private wordKrModel: Model<WordKr>,
     private jwtService: JwtService,
   ) {}
 
@@ -96,6 +107,32 @@ export class UserService {
         active: this.hasActiveSubscription(user),
         expiresAt: user.subscription?.expiresAt ?? null,
       },
+    };
+  }
+
+  async getUserUsage(request: Request): Promise<GetUserUsageDto> {
+    const payload = await this.validateAndGetPayload(request);
+
+    const user = await this.userModel.findById(payload.sub).exec();
+
+    if (!user) {
+      throw new NotFoundException('Такого пользователя не существует');
+    }
+
+    const [hanzi, wordCn, kanji, wordJp, wordKr] = await Promise.all([
+      this.hanziModel.countDocuments({ userId: payload.sub }).exec(),
+      this.wordCnModel.countDocuments({ userId: payload.sub }).exec(),
+      this.kanjiModel.countDocuments({ userId: payload.sub }).exec(),
+      this.wordJpModel.countDocuments({ userId: payload.sub }).exec(),
+      this.wordKrModel.countDocuments({ userId: payload.sub }).exec(),
+    ]);
+
+    return {
+      hanzi,
+      wordCn,
+      kanji,
+      wordJp,
+      wordKr,
     };
   }
 

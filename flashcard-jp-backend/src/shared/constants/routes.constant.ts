@@ -5,6 +5,7 @@ const SIGN_IN = 'signin';
 //=== USER ===
 const USER = 'user';
 const USER_UPDATE = 'update';
+const USER_USAGE = 'usage';
 
 //=== HIRAGANA ===
 const HIRAGANA = 'hiragana';
@@ -55,6 +56,7 @@ export const ROUTES = {
   SIGN_IN,
   USER,
   USER_UPDATE,
+  USER_USAGE,
   HIRAGANA,
   HIRAGANA_UPDATE,
   HIRAGANA_WEIGHT_UPDATE,

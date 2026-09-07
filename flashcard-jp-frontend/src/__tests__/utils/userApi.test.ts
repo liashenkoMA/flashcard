@@ -1,7 +1,15 @@
 import { IProfileFormData, IRegisterFormData } from "@/_interface/Interface";
-import { createUser, getUser, updateUser } from "@/_utils/api/client/userApi";
+import { createUser, updateUser } from "@/_utils/api/client/userApi";
+import { getUser, getUserUsage } from "@/_utils/api/server/userApi";
+import * as headers from "next/headers";
 
 global.fetch = jest.fn();
+
+jest.mock("next/headers", () => ({
+  cookies: jest.fn(() => ({
+    toString: jest.fn(),
+  })),
+}));
 
 describe("User Api", () => {
   const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
@@ -73,6 +81,10 @@ describe("User Api", () => {
   describe("getUser", () => {
     beforeEach(() => {
       jest.clearAllMocks();
+
+      (headers.cookies as jest.Mock).mockResolvedValue({
+        toString: jest.fn().mockReturnValue("session_flashcard=token"),
+      });
     });
 
     it("Ошибка сети при получении данных пользователя", async () => {
@@ -83,7 +95,7 @@ describe("User Api", () => {
     });
 
     it("Успешное получение данных пользователя", async () => {
-      const mockResponse = {
+      const user = {
         name: "Иван",
         email: "test@test.ru",
         subscription: {
@@ -94,32 +106,131 @@ describe("User Api", () => {
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockResponse,
+        json: async () => user,
       } as Response);
 
-      const data = await getUser();
+      const result = await getUser();
 
-      expect(data).toEqual(mockResponse);
+      expect(result).toEqual({ user });
       expect(mockFetch).toHaveBeenCalledTimes(1);
       expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/user$/),
         expect.objectContaining({
           method: "GET",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: "session_flashcard=token",
+          },
         }),
       );
     });
 
-    it("Сервер вернул !res.ok", async () => {
+    it("Сервер вернул !res.ok и status < 500", async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        json: async () => ({
+          message: "Пользователь не авторизован",
+        }),
+      } as Response);
+
+      const result = await getUser();
+
+      expect(result).toEqual({
+        message: "Пользователь не авторизован",
+      });
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Сервер вернул !res.ok и status >= 500", async () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
         statusText: "Internal Server Error",
-        json: async () => ({ message: "Internal Server Error" }),
+        json: async () => ({
+          message: "Internal Server Error",
+        }),
       } as Response);
 
       await expect(getUser()).rejects.toThrow("Internal Server Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("getUserUsage", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+
+      (headers.cookies as jest.Mock).mockResolvedValue({
+        toString: jest.fn().mockReturnValue("session_flashcard=token"),
+      });
+    });
+
+    it("Ошибка сети при получении количества загруженных данных", async () => {
+      mockFetch.mockRejectedValueOnce(new Error("Network Error"));
+
+      await expect(getUserUsage()).rejects.toThrow("Network Error");
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Успешное получение количества загруженных данных", async () => {
+      const usage = {
+        hanzi: 10,
+        wordCn: 20,
+        kanji: 30,
+        wordJp: 40,
+        wordKr: 50,
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => usage,
+      } as Response);
+
+      const result = await getUserUsage();
+
+      expect(result).toEqual({ usage });
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringMatching(/\/user\/usage$/),
+        expect.objectContaining({
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: "session_flashcard=token",
+          },
+        }),
+      );
+    });
+
+    it("Сервер вернул !res.ok и status < 500", async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        json: async () => ({
+          message: "Пользователь не авторизован",
+        }),
+      } as Response);
+
+      const result = await getUserUsage();
+
+      expect(result).toEqual({
+        message: "Пользователь не авторизован",
+      });
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("Сервер вернул !res.ok и status >= 500", async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        statusText: "Internal Server Error",
+        json: async () => ({
+          message: "Internal Server Error",
+        }),
+      } as Response);
+
+      await expect(getUserUsage()).rejects.toThrow("Internal Server Error");
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
   });

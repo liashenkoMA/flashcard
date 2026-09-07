@@ -2,7 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Request } from 'express';
 import { WordCnController } from './wordsCn.controller';
 import { WordCnService } from './wordsCn.service';
-import { UpdateWordCnWeightDto, WordCnDto } from './wordsCn.schema.dto';
+import {
+  CreateWordCnDto,
+  UpdateWordCnWeightDto,
+  WordCnDto,
+} from './wordsCn.schema.dto';
 
 describe('WordCnController', () => {
   let controller: WordCnController;
@@ -38,14 +42,11 @@ describe('WordCnController', () => {
         cookies: { session_flashcard: 'token' },
       } as Request;
 
-      const dto: WordCnDto = {
-        _id: '1',
+      const dto: CreateWordCnDto = {
         word: '你好',
         pinyin: 'nǐ hǎo',
         translate: 'привет',
         category: 'greeting',
-        weight: 1,
-        srs: {},
       };
 
       const response = {
@@ -67,7 +68,7 @@ describe('WordCnController', () => {
         cookies: { session_flashcard: 'token' },
       } as Request;
 
-      const response = [
+      const response: WordCnDto[] = [
         {
           _id: '1',
           word: '你好',

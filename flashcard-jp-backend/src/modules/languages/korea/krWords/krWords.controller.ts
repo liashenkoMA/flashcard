@@ -10,7 +10,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { UpdateWordKrWeightDto, WordKrDto } from './krWords.schema.dto';
+import { CreateWordKrDto, UpdateWordKrWeightDto } from './krWords.schema.dto';
 import { WordsKrService } from './krWords.service';
 
 @Controller(ROUTES.WORDS_KO)
@@ -18,7 +18,7 @@ export class WordsKrController {
   constructor(private readonly wordsKrService: WordsKrService) {}
 
   @Post(ROUTES.WORDS_KO_ADD)
-  addWord(@Req() request: Request, @Body() word: WordKrDto) {
+  addWord(@Req() request: Request, @Body() word: CreateWordKrDto) {
     return this.wordsKrService.addWord(request, word);
   }
 

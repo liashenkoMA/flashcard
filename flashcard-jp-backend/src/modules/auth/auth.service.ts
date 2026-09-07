@@ -42,7 +42,7 @@ export class AuthService {
     }
 
     const payload = { sub: user._id.toString() };
-    const jwt = await this.jwtService.signAsync(payload, { expiresIn: '7d' });
+    const jwt = await this.jwtService.signAsync(payload);
 
     return {
       access_token: jwt,

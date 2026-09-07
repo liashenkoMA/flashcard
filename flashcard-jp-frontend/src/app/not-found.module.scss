@@ -39,13 +39,20 @@
   }
 
   &__image {
-    @include m.respond-to(tablet) {
-      height: 100%;
-      width: 100%;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+
+    @include m.respond-to(tablet-up) {
+      max-width: 400px;
     }
+
     @include m.respond-to(desktop-up) {
-      width: 700px;
-      height: 700px;
+      max-width: 520px;
+    }
+
+    @include m.respond-to(desktop-large) {
+      max-width: 560px;
     }
   }
 

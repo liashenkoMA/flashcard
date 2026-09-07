@@ -5,44 +5,34 @@ describe("ButtonUp", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    Object.defineProperty(window, "scrollTo", {
-      writable: true,
-      value: jest.fn(),
-    });
+    window.scrollTo = jest.fn();
   });
 
-  it("Рендерит кнопку", () => {
+  it("Изначально скрыта", () => {
     render(<ButtonUp />);
 
-    expect(screen.getByRole("button")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toHaveClass(
+      "buttonup__button_type_hide",
+    );
   });
 
-  it("По умолчанию кнопка скрыта", () => {
-    const { container } = render(<ButtonUp />);
-
-    const button = container.querySelector("button");
-
-    expect(button?.className).toContain("buttonup__button_type_hide");
-  });
-
-  it("Показывает кнопку при скролле больше 600px", () => {
-    const { container } = render(<ButtonUp />);
+  it("Показывается после скролла", () => {
+    render(<ButtonUp />);
 
     Object.defineProperty(window, "scrollY", {
-      writable: true,
       configurable: true,
       value: 700,
     });
 
     fireEvent.scroll(window);
 
-    const button = container.querySelector("button");
-
-    expect(button?.className).not.toContain("buttonup__button_type_hide");
+    expect(screen.getByRole("button")).not.toHaveClass(
+      "buttonup__button_type_hide",
+    );
   });
 
   it("Скрывает кнопку при скролле меньше 600px", () => {
-    const { container } = render(<ButtonUp />);
+    render(<ButtonUp />);
 
     Object.defineProperty(window, "scrollY", {
       writable: true,
@@ -60,12 +50,12 @@ describe("ButtonUp", () => {
 
     fireEvent.scroll(window);
 
-    const button = container.querySelector("button");
-
-    expect(button?.className).toContain("buttonup__button_type_hide");
+    expect(screen.getByRole("button")).toHaveClass(
+      "buttonup__button_type_hide",
+    );
   });
 
-  it("Вызывает scrollTo при клике", () => {
+  it("При клике прокручивает страницу наверх", () => {
     render(<ButtonUp />);
 
     fireEvent.click(screen.getByRole("button"));

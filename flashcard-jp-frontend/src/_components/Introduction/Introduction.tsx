@@ -4,8 +4,10 @@ export default function Introduction() {
   return (
     <section className={styles.introduction}>
       <div className={styles.introduction__header}>
-        <span className={styles.introduction__span}>Наш подход</span>
-        <h2 id="introduction" className={styles.introduction__title}>
+        <span id="introduction" className={styles.introduction__span}>
+          Наш подход
+        </span>
+        <h2 className={styles.introduction__title}>
           Помогаем не забыть то, что вы уже изучили
         </h2>
         <p

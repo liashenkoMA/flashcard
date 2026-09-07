@@ -13,16 +13,16 @@ export class Kanji {
   })
   level: 'N5' | 'N4' | 'N3' | 'N2' | 'N1';
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   kanji: string;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   translate: string;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   jpRead: string;
 
-  @Prop({ required: true })
+  @Prop({ trim: true, required: true })
   chinaRead: string;
 
   @Prop({ default: 1 })

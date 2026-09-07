@@ -10,7 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../../user/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UpdateWordCnWeightDto, WordCnDto } from './wordsCn.schema.dto';
+import { CreateWordCnDto, UpdateWordCnWeightDto } from './wordsCn.schema.dto';
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
 import { FREE_USER_LIMITS } from '../../../../shared/constants/limit.constant';
 
@@ -48,7 +48,10 @@ export class WordCnService {
     return user.subscription.expiresAt > now;
   }
 
-  async addWord(request: Request, word: WordCnDto): Promise<{ data: string }> {
+  async addWord(
+    request: Request,
+    word: CreateWordCnDto,
+  ): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();
@@ -83,6 +86,7 @@ export class WordCnService {
       data: `${word.word} - добавлено`,
     };
   }
+
   async getWord(request: Request) {
     const payload = await this.validateAndGetPayload(request);
 
@@ -129,7 +133,10 @@ export class WordCnService {
     });
   }
 
-  async updateWordWeight(request: Request, word: UpdateWordCnWeightDto) {
+  async updateWordWeight(
+    request: Request,
+    word: UpdateWordCnWeightDto,
+  ): Promise<{ message: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();

@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { WordsController } from './words.controller';
 import { WordsService } from './words.service';
-import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
+import {
+  CreateWordJpDto,
+  UpdateWordJpWeightDto,
+  WordJpDto,
+} from './words.schema.dto';
 import { Request } from 'express';
 
 describe('WordsController', () => {
@@ -38,13 +42,10 @@ describe('WordsController', () => {
         cookies: { session_flashcard: 'token' },
       } as Request;
 
-      const dto: WordJpDto = {
-        _id: '1',
+      const dto: CreateWordJpDto = {
         word: 'hello',
         translate: 'привет',
         category: 'greeting',
-        weight: 1,
-        srs: {},
       };
 
       const response = {
@@ -66,7 +67,7 @@ describe('WordsController', () => {
         cookies: { session_flashcard: 'token' },
       } as Request;
 
-      const response = [
+      const response: WordJpDto[] = [
         {
           _id: '1',
           word: 'hello',

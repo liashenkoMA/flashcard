@@ -2,7 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { Request } from 'express';
-import { CreateUserDto, UpdateUserDto } from './user.schema.dto';
+import {
+  CreateUserDto,
+  GetUserUsageDto,
+  UpdateUserDto,
+} from './user.schema.dto';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -14,6 +18,7 @@ describe('UserController', () => {
       getUser: jest.fn(),
       updateUser: jest.fn(),
       deleteUser: jest.fn(),
+      getUserUsage: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -64,6 +69,27 @@ describe('UserController', () => {
 
     expect(mockUserService.getUser).toHaveBeenCalledWith(request);
     expect(result).toEqual(user);
+  });
+
+  it('getUserUsage', async () => {
+    const request = {
+      cookies: { session_flashcard: 'token' },
+    } as Request;
+
+    const usage: GetUserUsageDto = {
+      hanzi: 10,
+      wordCn: 20,
+      kanji: 30,
+      wordJp: 40,
+      wordKr: 50,
+    };
+
+    mockUserService.getUserUsage.mockReturnValue(usage);
+
+    const result = await controller.getUserUsage(request);
+
+    expect(result).toEqual(usage);
+    expect(mockUserService.getUserUsage).toHaveBeenCalledWith(request);
   });
 
   it('updateUser', async () => {

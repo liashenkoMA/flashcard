@@ -2,7 +2,7 @@
 
 import { IWord } from "@/_interface/Interface";
 import styles from "./krWordsRepeatPageComponent.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
 import { updateKrWordWeight } from "@/_utils/api/client/krWordsApi";
 import SessionProgress from "../SessionProgress/SessionProgress";
@@ -16,14 +16,12 @@ export default function KrWordsRepeatPageComponent({
 }: {
   words: IWord[];
 }) {
-  const [cards, setCards] = useState<IWord[]>([]);
+  const [cards, setCards] = useState<IWord[]>(words);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
   const [answered, setAnswered] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    setCards(separateDuplicatesShuffleCards<IWord>(words));
-  }, [words]);
+  const [selectCategory, setSelectCategory] = useState("all");
+  const categories = [...new Set(words.map((word) => word.category))];
 
   function nextCard() {
     setDirection(1);
@@ -48,7 +46,7 @@ export default function KrWordsRepeatPageComponent({
 
     if (!currentCard) return;
 
-    updateKrWordWeight(currentCard, { status: status })
+    updateKrWordWeight(currentCard, { status })
       .then(() => {
         markProgress(`${currentCard._id}-${indexCard}`);
         nextCard();
@@ -58,7 +56,29 @@ export default function KrWordsRepeatPageComponent({
       });
   }
 
-  if (!cards.length)
+  function shuffleCards() {
+    setCards((prev) => separateDuplicatesShuffleCards<IWord>(prev));
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+  }
+
+  function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const category = e.target.value;
+
+    const filteredCards =
+      category === "all"
+        ? words
+        : words.filter((card) => card.category === category);
+
+    setSelectCategory(category);
+    setCards(filteredCards);
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+  }
+
+  if (!words.length)
     return (
       <div>
         <p className={styles.krwordsrepeatpagecomponent__loading}>
@@ -71,45 +91,77 @@ export default function KrWordsRepeatPageComponent({
     <div className={styles.krwordsrepeatpagecomponent}>
       <div className={styles.krwordsrepeatpagecomponent__inner}>
         <div className={styles.krwordsrepeatpagecomponent__cards}>
-          <SessionProgress
-            length={cards.length}
-            answeredCount={answered.size}
-          />
-          <motion.div
-            key={indexCard}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.3}
-            onDragEnd={(e, info) => {
-              if (info.offset.x < -100) {
-                nextCard();
-              } else if (info.offset.x > 100) {
-                previousCard();
-              }
-            }}
-            initial={{ x: direction > 0 ? 300 : -300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.7 }}
-          >
-            <FlashCard
-              front={
-                <p className={`${styles.flashcard__text}`}>
-                  {cards[indexCard].word}
-                </p>
-              }
-              back={
-                <div className={styles.flashcard__text_lists}>
-                  <p className={`${styles.flashcard__text}`}>
-                    {cards[indexCard].translate}
-                  </p>
-                </div>
-              }
-            />
-          </motion.div>
-          <WritingPractice
-            key={`${cards[indexCard]._id}-${indexCard}`}
-            translate={cards[indexCard].translate}
-          />
+          <label className={styles.krwordsrepeatpagecomponent__form_field}>
+            <select
+              className={styles.krwordsrepeatpagecomponent__lists}
+              onChange={handleCategoryChange}
+              value={selectCategory}
+            >
+              <option value="all">Все</option>
+
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </label>
+          {!cards.length ? (
+            <div>
+              <p className={styles.krwordsrepeatpagecomponent__loading}>
+                В этой категории пока нет слов
+              </p>
+            </div>
+          ) : (
+            <>
+              <SessionProgress
+                length={cards.length}
+                answeredCount={answered.size}
+              />
+              <motion.div
+                key={indexCard}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.3}
+                onDragEnd={(e, info) => {
+                  if (info.offset.x < -100) {
+                    nextCard();
+                  } else if (info.offset.x > 100) {
+                    previousCard();
+                  }
+                }}
+                initial={{
+                  x: direction > 0 ? 300 : -300,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                }}
+                transition={{ duration: 0.7 }}
+              >
+                <FlashCard
+                  front={
+                    <p className={styles.flashcard__text}>
+                      {cards[indexCard].word}
+                    </p>
+                  }
+                  back={
+                    <div className={styles.flashcard__text_lists}>
+                      <p className={styles.flashcard__text}>
+                        {cards[indexCard].translate}
+                      </p>
+                    </div>
+                  }
+                />
+              </motion.div>
+
+              <WritingPractice
+                key={`${cards[indexCard]._id}-${indexCard}`}
+                translate={cards[indexCard].translate}
+              />
+            </>
+          )}
         </div>
         <div className={styles.krwordsrepeatpagecomponent__cards_navigation}>
           <Button
@@ -127,6 +179,9 @@ export default function KrWordsRepeatPageComponent({
             Помню
           </Button>
         </div>
+        <Button type="button" onClick={shuffleCards}>
+          Перемешать
+        </Button>
       </div>
     </div>
   );

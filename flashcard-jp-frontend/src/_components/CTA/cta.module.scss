@@ -2,12 +2,12 @@
 @use "../../mixins" as m;
 
 .cta {
-  height: 580px;
+  height: 600px;
   position: relative;
   background-image: url("../../_images/1.png");
   background-repeat: no-repeat;
   background-position: left bottom;
-  background-size: 600px auto;
+  background-size: 400px auto;
 
   &::before,
   &::after {
@@ -46,12 +46,6 @@
     gap: 30px;
   }
 
-  &__info {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
   &__title {
     color: v.$color-text-main;
     font-size: v.$font-size-large;
@@ -68,21 +62,30 @@
     text-align: center;
   }
 
+  &__nav {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
   @include m.respond-to(tablet-up) {
     display: flex;
     justify-content: flex-end;
-    height: 400px;
+    height: 450px;
     padding-top: 0px;
     background-size: min(800px, 80vw) auto;
     background-position: left bottom;
 
     &::before {
-      width: 500px;
+      width: 600px;
     }
 
     &__content {
       max-width: 260px;
       gap: 60px;
+      justify-content: space-between;
+      align-items: flex-end;
     }
 
     &__title {
@@ -97,15 +100,18 @@
   }
 
   @include m.respond-to(desktop-up) {
-    height: 500px;
+    height: 600px;
+
+    &::before {
+      width: 650px;
+    }
 
     &::after {
-      height: 550px;
+      height: 650px;
     }
 
     &__content {
       max-width: 360px;
-
     }
 
     &__title {
@@ -116,12 +122,6 @@
     &__text {
       font-size: v.$font-size-medium;
       line-height: v.$line-height-medium;
-    }
-  }
-  @include m.respond-to(desktop-large) {
-    &__content {
-      max-width: 460px;
-
     }
   }
 }

@@ -6,10 +6,10 @@ export default function Faq() {
   return (
     <section className={styles.faq}>
       <div className={styles.faq__header}>
-        <span className={styles.faq__span}>FAQ</span>
-        <h2 id="faq" className={styles.faq__title}>
-          Всё, что важно знать о Memora
-        </h2>
+        <span id="faq" className={styles.faq__span}>
+          FAQ
+        </span>
+        <h2 className={styles.faq__title}>Всё, что важно знать о Memora</h2>
         <p className={`${styles.faq__text} ${styles.faq__text_subtitle}`}>
           Ответы на вопросы об изучении, карточках и возможностях сервиса.
         </p>

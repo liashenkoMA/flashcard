@@ -15,28 +15,30 @@ export default function CTA() {
   function handleClick(type: { mode: "login" | "register" | null }) {
     dispatch(setMode(type));
   }
+
   return (
     <section className={styles.cta}>
       <div className={styles.cta__content}>
-        <div className={styles.cta__info}>
-          <h2 className={styles.cta__title}>Готовы начать?</h2>
-          <p className={styles.cta__text}>
-            Создавайте свою базу знаний, повторяйте материал и изучайте
-            японский, китайский и корейский языки удобнее и быстрее.
-          </p>
+        <h2 className={styles.cta__title}>Создайте свою первую колоду</h2>
+        <p className={styles.cta__text}>
+          Создавайте свою базу знаний, повторяйте материал и изучайте японский,
+          китайский и корейский языки удобнее и быстрее.
+        </p>
+        <div className={styles.cta__nav}>
+          {userName ? (
+            <Button type="button" onClick={() => router.push("/dashboard")}>
+              В личный кабинет
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              onClick={() => handleClick({ mode: "register" })}
+            >
+              Начать бесплатно →
+            </Button>
+          )}
+          <p className={styles.cta__text}>Бесплатно · Без рекламы</p>
         </div>
-        {userName ? (
-          <Button type="button" onClick={() => router.push("/dashboard")}>
-            В личный кабинет
-          </Button>
-        ) : (
-          <Button
-            type="button"
-            onClick={() => handleClick({ mode: "register" })}
-          >
-            Начать бесплатно
-          </Button>
-        )}
       </div>
     </section>
   );

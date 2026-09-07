@@ -4,7 +4,7 @@ import styles from "./hanziRepeatPageComponent.module.scss";
 import { IHanzi } from "@/_interface/Interface";
 import { updateHanziWeight } from "@/_utils/api/client/hanziApi";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SessionProgress from "../SessionProgress/SessionProgress";
 import { motion } from "framer-motion";
 import { FlashCard } from "../FlashCard/FlashCard";
@@ -16,14 +16,12 @@ export default function HanziRepeatPageComponent({
 }: {
   hanzi: IHanzi[];
 }) {
-  const [cards, setCards] = useState<IHanzi[]>([]);
+  const [cards, setCards] = useState<IHanzi[]>(hanzi);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
   const [answered, setAnswered] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    setCards(separateDuplicatesShuffleCards<IHanzi>(hanzi));
-  }, [hanzi]);
+  const [selectCategory, setSelectCategory] = useState("all");
+  const categories = [...new Set(hanzi.map((card) => card.category))];
 
   function nextCard() {
     setDirection(1);
@@ -39,6 +37,7 @@ export default function HanziRepeatPageComponent({
     setAnswered((prev) => {
       const newSet = new Set(prev);
       newSet.add(cardId);
+
       return newSet;
     });
   }
@@ -48,7 +47,7 @@ export default function HanziRepeatPageComponent({
 
     if (!currentCard) return;
 
-    updateHanziWeight(currentCard, { status: status })
+    updateHanziWeight(currentCard, { status })
       .then(() => {
         markProgress(`${currentCard._id}-${indexCard}`);
         nextCard();
@@ -58,7 +57,30 @@ export default function HanziRepeatPageComponent({
       });
   }
 
-  if (!cards.length)
+  function shuffleCards() {
+    setCards((prev) => separateDuplicatesShuffleCards<IHanzi>(prev));
+
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+  }
+
+  function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const category = e.target.value;
+
+    const filteredCards =
+      category === "all"
+        ? hanzi
+        : hanzi.filter((card) => card.category === category);
+
+    setSelectCategory(category);
+    setCards(filteredCards);
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+  }
+
+  if (!hanzi.length)
     return (
       <div>
         <p className={styles.hanzirepeatpagecomponent__loading}>
@@ -71,52 +93,84 @@ export default function HanziRepeatPageComponent({
     <div className={styles.hanzirepeatpagecomponent}>
       <div className={styles.hanzirepeatpagecomponent__inner}>
         <div className={styles.hanzirepeatpagecomponent__cards}>
-          <SessionProgress
-            length={cards.length}
-            answeredCount={answered.size}
-          />
-          <motion.div
-            key={indexCard}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.3}
-            onDragEnd={(e, info) => {
-              if (info.offset.x < -100) {
-                nextCard();
-              } else if (info.offset.x > 100) {
-                previousCard();
-              }
-            }}
-            initial={{ x: direction > 0 ? 300 : -300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.7 }}
-          >
-            <FlashCard
-              front={
-                <p
-                  className={`${styles.flashcard__text} ${styles.flashcard__text_type_front}`}
-                >
-                  {cards[indexCard].hanzi}
-                </p>
-              }
-              back={
-                <div className={styles.flashcard__text_lists}>
-                  <p
-                    className={`${styles.flashcard__text} ${styles.flashcard__text_type_chread}`}
-                  >
-                    {cards[indexCard].pinyin}
-                  </p>
-                  <p className={styles.flashcard__text}>
-                    {cards[indexCard].translate}
-                  </p>
-                </div>
-              }
-            />
-          </motion.div>
-          <WritingPractice
-            key={`${cards[indexCard]._id}-${indexCard}`}
-            translate={cards[indexCard].translate}
-          />
+          <label className={styles.hanzirepeatpagecomponent__form_field}>
+            <select
+              className={styles.hanzirepeatpagecomponent__lists}
+              onChange={handleCategoryChange}
+              value={selectCategory}
+            >
+              <option value="all">Все</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </label>
+          {cards.length === 0 ? (
+            <div>
+              <p className={styles.hanzirepeatpagecomponent__loading}>
+                Таких ханзи пока не добавлено
+              </p>
+            </div>
+          ) : (
+            <>
+              <SessionProgress
+                length={cards.length}
+                answeredCount={answered.size}
+              />
+              <motion.div
+                key={indexCard}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.3}
+                onDragEnd={(e, info) => {
+                  if (info.offset.x < -100) {
+                    nextCard();
+                  } else if (info.offset.x > 100) {
+                    previousCard();
+                  }
+                }}
+                initial={{
+                  x: direction > 0 ? 300 : -300,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                }}
+                transition={{ duration: 0.7 }}
+              >
+                <FlashCard
+                  front={
+                    <p
+                      className={`${styles.flashcard__text} ${styles.flashcard__text_type_front}`}
+                    >
+                      {cards[indexCard].hanzi}
+                    </p>
+                  }
+                  back={
+                    <div className={styles.flashcard__text_lists}>
+                      <p
+                        className={`${styles.flashcard__text} ${styles.flashcard__text_type_chread}`}
+                      >
+                        {cards[indexCard].pinyin}
+                      </p>
+
+                      <p className={styles.flashcard__text}>
+                        {cards[indexCard].translate}
+                      </p>
+                    </div>
+                  }
+                />
+              </motion.div>
+
+              <WritingPractice
+                key={`${cards[indexCard]._id}-${indexCard}`}
+                translate={cards[indexCard].translate}
+              />
+            </>
+          )}
         </div>
         <div className={styles.hanzirepeatpagecomponent__cards_navigation}>
           <Button
@@ -134,6 +188,9 @@ export default function HanziRepeatPageComponent({
             Помню
           </Button>
         </div>
+        <Button type="button" onClick={shuffleCards}>
+          Перемешать
+        </Button>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { UpdateWordJpWeightDto, WordJpDto } from './words.schema.dto';
+import { CreateWordJpDto, UpdateWordJpWeightDto } from './words.schema.dto';
 
 describe('WordsService', () => {
   let service: WordsService;
@@ -145,7 +145,7 @@ describe('WordsService', () => {
             word: 'こんにちは',
             translate: 'привет',
             category: 'greeting',
-          } as WordJpDto,
+          } as CreateWordJpDto,
           { cookies: {} } as Request,
         ),
       ).rejects.toThrow(NotFoundException);
@@ -172,7 +172,7 @@ describe('WordsService', () => {
           word: 'こんにちは',
           translate: 'привет',
           category: 'greeting',
-        } as WordJpDto,
+        } as CreateWordJpDto,
         { cookies: {} } as Request,
       );
 
@@ -214,7 +214,7 @@ describe('WordsService', () => {
             word: 'こんにちは',
             translate: 'привет',
             category: 'greeting',
-          } as WordJpDto,
+          } as CreateWordJpDto,
           { cookies: {} } as Request,
         ),
       ).rejects.toThrow(ForbiddenException);
@@ -246,7 +246,7 @@ describe('WordsService', () => {
           word: 'こんにちは',
           translate: 'привет',
           category: 'greeting',
-        } as WordJpDto,
+        } as CreateWordJpDto,
         { cookies: {} } as Request,
       );
 

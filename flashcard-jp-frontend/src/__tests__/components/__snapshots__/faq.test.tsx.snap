@@ -10,12 +10,12 @@ exports[`Faq component Snapshot 1`] = `
     >
       <span
         class="faq__span"
+        id="faq"
       >
         FAQ
       </span>
       <h2
         class="faq__title"
-        id="faq"
       >
         Всё, что важно знать о Memora
       </h2>
@@ -36,6 +36,7 @@ exports[`Faq component Snapshot 1`] = `
         >
           Что такое Memora?
           <div
+            aria-hidden="true"
             class="accordion__icon_type_open"
           />
         </button>
@@ -57,6 +58,7 @@ exports[`Faq component Snapshot 1`] = `
         >
           Какие языки доступны в Memora?
           <div
+            aria-hidden="true"
             class="accordion__icon_type_open"
           />
         </button>
@@ -78,6 +80,7 @@ exports[`Faq component Snapshot 1`] = `
         >
           Нужно ли уже знать язык перед началом?
           <div
+            aria-hidden="true"
             class="accordion__icon_type_open"
           />
         </button>
@@ -99,6 +102,7 @@ exports[`Faq component Snapshot 1`] = `
         >
           Можно создавать свои наборы карточек?
           <div
+            aria-hidden="true"
             class="accordion__icon_type_open"
           />
         </button>
@@ -120,6 +124,7 @@ exports[`Faq component Snapshot 1`] = `
         >
           Заменяет ли Memora учебники и языковые курсы?
           <div
+            aria-hidden="true"
             class="accordion__icon_type_open"
           />
         </button>
@@ -141,6 +146,7 @@ exports[`Faq component Snapshot 1`] = `
         >
           Нужно ли устанавливать приложение?
           <div
+            aria-hidden="true"
             class="accordion__icon_type_open"
           />
         </button>
@@ -162,6 +168,7 @@ exports[`Faq component Snapshot 1`] = `
         >
           Есть ли в Memora реклама?
           <div
+            aria-hidden="true"
             class="accordion__icon_type_open"
           />
         </button>
@@ -183,6 +190,7 @@ exports[`Faq component Snapshot 1`] = `
         >
           Есть ли платная подписка?
           <div
+            aria-hidden="true"
             class="accordion__icon_type_open"
           />
         </button>

@@ -1,5 +1,4 @@
 import styles from "./contacts.module.scss";
-import ContactForm from "@/_components/ContactForm/ContactForm";
 
 export default function Page() {
   return (
@@ -12,7 +11,6 @@ export default function Page() {
           ответим Вам!
         </p>
       </div>
-      <ContactForm />
     </section>
   );
 }

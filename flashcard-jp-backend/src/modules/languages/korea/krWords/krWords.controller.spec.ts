@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { WordsKrController } from './krWords.controller';
 import { WordsKrService } from './krWords.service';
-import { UpdateWordKrWeightDto, WordKrDto } from './krWords.schema.dto';
+import {
+  CreateWordKrDto,
+  UpdateWordKrWeightDto,
+  WordKrDto,
+} from './krWords.schema.dto';
 import { Request } from 'express';
 
 describe('WordsKrController', () => {
@@ -38,13 +42,10 @@ describe('WordsKrController', () => {
         cookies: { session_flashcard: 'token' },
       } as Request;
 
-      const dto: WordKrDto = {
-        _id: '1',
+      const dto: CreateWordKrDto = {
         word: '안녕',
         translate: 'привет',
         category: 'greeting',
-        weight: 1,
-        srs: {},
       };
 
       const response = {
@@ -66,7 +67,7 @@ describe('WordsKrController', () => {
         cookies: { session_flashcard: 'token' },
       } as Request;
 
-      const response = [
+      const response: WordKrDto[] = [
         {
           _id: '1',
           word: '안녕',

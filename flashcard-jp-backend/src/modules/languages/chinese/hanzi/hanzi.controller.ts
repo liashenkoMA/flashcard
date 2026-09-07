@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { HanziService } from './hanzi.service';
 import { ROUTES } from '../../../../shared/constants/routes.constant';
-import { HanziDto, UpdateHanziWeightDto } from './hanzi.schema.dto';
+import { CreateHanziDto, UpdateHanziWeightDto } from './hanzi.schema.dto';
 import { Request } from 'express';
 
 @Controller(ROUTES.HANZI)
@@ -18,7 +18,7 @@ export class HanziController {
   constructor(private readonly hanziService: HanziService) {}
 
   @Post(ROUTES.HANZI_ADD)
-  addHanzi(@Req() request: Request, @Body() hanzi: HanziDto) {
+  addHanzi(@Req() request: Request, @Body() hanzi: CreateHanziDto) {
     return this.hanziService.addHanzi(hanzi, request);
   }
 

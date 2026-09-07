@@ -12,7 +12,7 @@ describe("Modal component", () => {
     render(
       <Modal isOpen={false} onClose={onCloseMock} title="Заголовок">
         <div>Контент</div>
-      </Modal>
+      </Modal>,
     );
 
     expect(screen.queryByText("Контент")).not.toBeInTheDocument();
@@ -22,7 +22,7 @@ describe("Modal component", () => {
     render(
       <Modal isOpen={true} onClose={onCloseMock} title="Заголовок">
         <div>Контент</div>
-      </Modal>
+      </Modal>,
     );
 
     expect(screen.getByText("Заголовок")).toBeInTheDocument();
@@ -33,7 +33,7 @@ describe("Modal component", () => {
     render(
       <Modal isOpen={true} onClose={onCloseMock} title="Заголовок">
         <div>Контент</div>
-      </Modal>
+      </Modal>,
     );
 
     fireEvent.keyDown(window, { key: "Escape", code: "Escape" });
@@ -45,7 +45,7 @@ describe("Modal component", () => {
     render(
       <Modal isOpen={true} onClose={onCloseMock} title="Заголовок">
         <div>Контент</div>
-      </Modal>
+      </Modal>,
     );
 
     fireEvent.keyDown(window, { key: "Enter", code: "Enter" });
@@ -57,10 +57,12 @@ describe("Modal component", () => {
     render(
       <Modal isOpen={true} onClose={onCloseMock} title="Заголовок">
         <div>Контент</div>
-      </Modal>
+      </Modal>,
     );
 
-    fireEvent.click(screen.getByRole("button"));
+    const button = screen.getByRole("button", { name: /закрыть/i });
+
+    fireEvent.click(button);
 
     expect(onCloseMock).toHaveBeenCalledTimes(1);
   });
@@ -69,12 +71,30 @@ describe("Modal component", () => {
     render(
       <Modal isOpen={true} onClose={onCloseMock} title="Заголовок">
         <div>Контент</div>
-      </Modal>
+      </Modal>,
     );
 
     const overlay = screen.getByTestId("overlay");
-    fireEvent.click(overlay);
+
+    fireEvent.pointerDown(overlay);
+    fireEvent.pointerUp(overlay);
 
     expect(onCloseMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("Нажатие в форме и отпускание на overlay не вызывае onClose", () => {
+    render(
+      <Modal isOpen={true} onClose={onCloseMock} title="Заголовок">
+        <div>Контент</div>
+      </Modal>,
+    );
+
+    const overlay = screen.getByTestId("overlay");
+    const content = screen.getByText("Контент");
+
+    fireEvent.pointerDown(content);
+    fireEvent.pointerUp(overlay);
+
+    expect(onCloseMock).not.toHaveBeenCalled();
   });
 });

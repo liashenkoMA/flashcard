@@ -101,9 +101,8 @@ describe('AuthService', () => {
         },
       },
     });
-    expect(mockJwtService.signAsync).toHaveBeenCalledWith(
-      { sub: mockUser._id.toString() },
-      { expiresIn: '7d' },
-    );
+    expect(mockJwtService.signAsync).toHaveBeenCalledWith({
+      sub: mockUser._id.toString(),
+    });
   });
 });

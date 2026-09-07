@@ -9,6 +9,7 @@ exports[`ReviewsCard component Snapshot 1`] = `
       class="reviews__card_top"
     >
       <div
+        aria-hidden="true"
         class="reviews__card_icon"
       />
       <p

@@ -3,9 +3,144 @@
 exports[`Profile Form component Snapshot 1`] = `
 <div>
   <div
-    class="profileform__text"
+    class="profile__form"
   >
-    Загрузка данных...
+    <form
+      class="form"
+      novalidate=""
+    >
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Изменить имя:
+        </span>
+        <input
+          class="input"
+          maxlength="30"
+          minlength="2"
+          name="name"
+          placeholder="Иван"
+          type="text"
+          value="Иван"
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Изменить email:
+        </span>
+        <input
+          class="input"
+          name="email"
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-z]{2,3}$"
+          placeholder="ivan@mail.ru"
+          type="email"
+          value="test@mail.ru"
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Изменить пароль:
+        </span>
+        <input
+          class="input"
+          maxlength="20"
+          minlength="2"
+          name="newPassword"
+          placeholder="Введите новый пароль"
+          type="password"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Повторите пароль:
+        </span>
+        <input
+          class="input"
+          maxlength="20"
+          minlength="2"
+          name="duplicate"
+          placeholder="Повторите новый пароль"
+          type="password"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <label
+        class="form__field"
+      >
+        <span
+          class="input__placeholder"
+        >
+          Текущий пароль:
+        </span>
+        <input
+          class="input"
+          maxlength="20"
+          minlength="2"
+          name="currentPassword"
+          placeholder="Подтвердите изменения"
+          type="password"
+          value=""
+        />
+        <span
+          class="input__error"
+        />
+      </label>
+      <span
+        class="profileform__errors"
+      />
+      <button
+        class="button  default"
+        type="submit"
+      >
+        Изменить профиль
+      </button>
+      <span
+        class="profileform__errors"
+      />
+    </form>
+    <div
+      class="profileform__btn_type_delete"
+    >
+      <p
+        class="profileform__text"
+      >
+        Хотите удалить ваш профиль?
+      </p>
+      <button
+        class="button  danger"
+        type="button"
+      >
+        Удалить профиль
+      </button>
+    </div>
   </div>
 </div>
 `;

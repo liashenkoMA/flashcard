@@ -26,6 +26,11 @@ export class UserController {
     return this.userService.getUser(request);
   }
 
+  @Get(ROUTES.USER_USAGE)
+  getUserUsage(@Req() request: Request) {
+    return this.userService.getUserUsage(request);
+  }
+
   @Patch(ROUTES.USER_UPDATE)
   updateUser(@Body() userData: UpdateUserDto, @Req() request: Request) {
     return this.userService.updateUser(userData, request);

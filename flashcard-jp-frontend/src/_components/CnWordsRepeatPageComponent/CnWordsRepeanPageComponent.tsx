@@ -2,7 +2,7 @@
 
 import { ICnWord } from "@/_interface/Interface";
 import styles from "./cnWordsRepeanPageComponent.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import separateDuplicatesShuffleCards from "@/_utils/separateDuplicates";
 import { updateCnWordWeight } from "@/_utils/api/client/cnWordsApi";
 import SessionProgress from "../SessionProgress/SessionProgress";
@@ -16,14 +16,12 @@ export default function CnWordsRepeatPageComponent({
 }: {
   words: ICnWord[];
 }) {
-  const [cards, setCards] = useState<ICnWord[]>([]);
+  const [cards, setCards] = useState<ICnWord[]>(words);
   const [indexCard, setIndexCard] = useState(0);
   const [direction, setDirection] = useState(0);
   const [answered, setAnswered] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    setCards(separateDuplicatesShuffleCards<ICnWord>(words));
-  }, [words]);
+  const [selectCategory, setSelectCategory] = useState("all");
+  const categories = [...new Set(words.map((word) => word.category))];
 
   function nextCard() {
     setDirection(1);
@@ -48,7 +46,7 @@ export default function CnWordsRepeatPageComponent({
 
     if (!currentCard) return;
 
-    updateCnWordWeight(currentCard, { status: status })
+    updateCnWordWeight(currentCard, { status })
       .then(() => {
         markProgress(`${currentCard._id}-${indexCard}`);
         nextCard();
@@ -58,7 +56,29 @@ export default function CnWordsRepeatPageComponent({
       });
   }
 
-  if (!cards.length)
+  function shuffleCards() {
+    setCards((prev) => separateDuplicatesShuffleCards<ICnWord>(prev));
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+  }
+
+  function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const category = e.target.value;
+
+    const filteredCards =
+      category === "all"
+        ? words
+        : words.filter((card) => card.category === category);
+
+    setSelectCategory(category);
+    setCards(filteredCards);
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+  }
+
+  if (!words.length)
     return (
       <div>
         <p className={styles.cnwordsrepeatpagecomponent__loading}>
@@ -71,48 +91,79 @@ export default function CnWordsRepeatPageComponent({
     <div className={styles.cnwordsrepeatpagecomponent}>
       <div className={styles.cnwordsrepeatpagecomponent__inner}>
         <div className={styles.cnwordsrepeatpagecomponent__cards}>
-          <SessionProgress
-            length={cards.length}
-            answeredCount={answered.size}
-          />
-          <motion.div
-            key={indexCard}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.3}
-            onDragEnd={(e, info) => {
-              if (info.offset.x < -100) {
-                nextCard();
-              } else if (info.offset.x > 100) {
-                previousCard();
-              }
-            }}
-            initial={{ x: direction > 0 ? 300 : -300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.7 }}
-          >
-            <FlashCard
-              front={
-                <p className={`${styles.flashcard__text}`}>
-                  {cards[indexCard].word}
-                </p>
-              }
-              back={
-                <div className={styles.flashcard__text_lists}>
-                  <p className={`${styles.flashcard__text}`}>
-                    {cards[indexCard].pinyin}
-                  </p>
-                  <p className={`${styles.flashcard__text}`}>
-                    {cards[indexCard].translate}
-                  </p>
-                </div>
-              }
-            />
-          </motion.div>
-          <WritingPractice
-            key={`${cards[indexCard]._id}-${indexCard}`}
-            translate={cards[indexCard].translate}
-          />
+          <label className={styles.cnwordsrepeatpagecomponent__form_field}>
+            <select
+              className={styles.cnwordsrepeatpagecomponent__lists}
+              onChange={handleCategoryChange}
+              value={selectCategory}
+            >
+              <option value="all">Все</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </label>
+          {cards.length === 0 ? (
+            <div>
+              <p className={styles.cnwordsrepeatpagecomponent__loading}>
+                В этой категории пока нет слов
+              </p>
+            </div>
+          ) : (
+            <>
+              <SessionProgress
+                length={cards.length}
+                answeredCount={answered.size}
+              />
+              <motion.div
+                key={indexCard}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.3}
+                onDragEnd={(e, info) => {
+                  if (info.offset.x < -100) {
+                    nextCard();
+                  } else if (info.offset.x > 100) {
+                    previousCard();
+                  }
+                }}
+                initial={{
+                  x: direction > 0 ? 300 : -300,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                }}
+                transition={{ duration: 0.7 }}
+              >
+                <FlashCard
+                  front={
+                    <p className={styles.flashcard__text}>
+                      {cards[indexCard].word}
+                    </p>
+                  }
+                  back={
+                    <div className={styles.flashcard__text_lists}>
+                      <p className={styles.flashcard__text}>
+                        {cards[indexCard].pinyin}
+                      </p>
+
+                      <p className={styles.flashcard__text}>
+                        {cards[indexCard].translate}
+                      </p>
+                    </div>
+                  }
+                />
+              </motion.div>
+              <WritingPractice
+                key={`${cards[indexCard]._id}-${indexCard}`}
+                translate={cards[indexCard].translate}
+              />
+            </>
+          )}
         </div>
         <div className={styles.cnwordsrepeatpagecomponent__cards_navigation}>
           <Button
@@ -130,6 +181,9 @@ export default function CnWordsRepeatPageComponent({
             Помню
           </Button>
         </div>
+        <Button type="button" onClick={shuffleCards}>
+          Перемешать
+        </Button>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./kanaPageComponent.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FlashCard } from "../FlashCard/FlashCard";
 import { IKana } from "@/_interface/Interface";
 import Button from "../UI/Button/Button";
@@ -27,14 +27,13 @@ export default function KanaPageComponent({
     type?: string;
   };
 }) {
-  const [cards, setCards] = useState<IKana[]>([]);
+  const [cards, setCards] = useState<IKana[]>(kana);
   const [indexCard, setIndexCard] = useState(0);
+  const [selectCategory, setSelectCategory] = useState("all");
   const [direction, setDirection] = useState(0);
   const [answered, setAnswered] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    setCards(separateDuplicatesShuffleCards<IKana>(kana));
-  }, [kana]);
+  const [sessionLength, setSessionLength] = useState(kana.length);
+  const group = ["a", "k", "s", "t", "n", "h", "m", "y", "r", "w"];
 
   function nextCard() {
     setDirection(1);
@@ -89,10 +88,35 @@ export default function KanaPageComponent({
       });
   }
 
-  if (!cards.length)
+  function shuffleCards() {
+    setCards((prev) => separateDuplicatesShuffleCards<IKana>(prev));
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+  }
+
+  function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const category = e.target.value;
+
+    const filteredCards =
+      category === "all"
+        ? kana
+        : kana.filter((card) => card.group === category);
+
+    setSelectCategory(category);
+    setCards(filteredCards);
+    setIndexCard(0);
+    setDirection(0);
+    setAnswered(new Set());
+    setSessionLength(filteredCards.length);
+  }
+
+  if (!kana.length)
     return (
       <div>
-        <p className={styles.kanaPageComponent__loading}>Идет загрузка или каны еще не выучены.</p>
+        <p className={styles.kanaPageComponent__loading}>
+          Идет загрузка или каны еще не выучены.
+        </p>
       </div>
     );
 
@@ -100,61 +124,90 @@ export default function KanaPageComponent({
     <div className={styles.kanaPageComponent}>
       <div className={styles.kanaPageComponent__inner}>
         <div className={styles.kanaPageComponent__cards}>
-          <SessionProgress
-            length={cards.length}
-            answeredCount={answered.size}
-          />
-          <motion.div
-            key={indexCard}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.3}
-            onDragEnd={(e, info) => {
-              if (info.offset.x < -100) {
-                nextCard();
-              } else if (info.offset.x > 100) {
-                previousCard();
-              }
-            }}
-            initial={{ x: direction > 0 ? 300 : -300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.7 }}
-          >
-            <FlashCard
-              front={
-                <p className={styles.flashcard__text}>
-                  {cards[indexCard].symbol}
-                </p>
-              }
-              back={
-                <p className={styles.flashcard__text}>
-                  {cards[indexCard].romaji}
-                </p>
-              }
-            />
-          </motion.div>
-          <WritingPractice
-            key={`${cards[indexCard]._id}-${indexCard}`}
-            translate={cards[indexCard].romaji}
-          />
+          <label className={styles.kanaPageComponent__form_field}>
+            <select
+              className={styles.kanaPageComponent__lists}
+              onChange={handleCategoryChange}
+              value={selectCategory}
+            >
+              <option value={"all"}>Все</option>
+              {group.map((el) => (
+                <option key={el} value={el}>
+                  {el}
+                </option>
+              ))}
+            </select>
+          </label>
+          {!cards.length ? (
+            <div>
+              <p className={styles.kanaPageComponent__loading}>
+                В этой группе пока нет карточек
+              </p>
+            </div>
+          ) : (
+            <>
+              <SessionProgress
+                length={sessionLength}
+                answeredCount={answered.size}
+              />
+              <motion.div
+                key={indexCard}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.3}
+                onDragEnd={(e, info) => {
+                  if (info.offset.x < -100) {
+                    nextCard();
+                  } else if (info.offset.x > 100) {
+                    previousCard();
+                  }
+                }}
+                initial={{ x: direction > 0 ? 300 : -300, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.7 }}
+              >
+                <FlashCard
+                  front={
+                    <p className={styles.flashcard__text}>
+                      {cards[indexCard].symbol}
+                    </p>
+                  }
+                  back={
+                    <p className={styles.flashcard__text}>
+                      {cards[indexCard].romaji}
+                    </p>
+                  }
+                />
+              </motion.div>
+              <WritingPractice
+                key={`${cards[indexCard]._id}-${indexCard}`}
+                translate={cards[indexCard].romaji}
+              />
+            </>
+          )}
         </div>
         {searchParams.type === "repeat" ? (
-          <div className={styles.kanaPageComponent__cards_navigation}>
-            <Button
-              type="button"
-              variant="danger"
-              onClick={() => updateKanaCardWeight("forgot")}
-            >
-              Не помню
+          <>
+            <div className={styles.kanaPageComponent__cards_navigation}>
+              <Button
+                type="button"
+                variant="danger"
+                onClick={() => updateKanaCardWeight("forgot")}
+              >
+                Не помню
+              </Button>
+              <Button
+                type="button"
+                variant="success"
+                onClick={() => updateKanaCardWeight("remember")}
+              >
+                Помню
+              </Button>
+            </div>
+            <Button type="button" onClick={shuffleCards}>
+              Перемешать
             </Button>
-            <Button
-              type="button"
-              variant="success"
-              onClick={() => updateKanaCardWeight("remember")}
-            >
-              Помню
-            </Button>
-          </div>
+          </>
         ) : (
           <>
             <div className={styles.kanaPageComponent__cards_navigation}>
@@ -167,6 +220,9 @@ export default function KanaPageComponent({
             </div>
             <Button type="button" variant="success" onClick={handleUpdateKana}>
               Запомнил
+            </Button>
+            <Button type="button" onClick={shuffleCards}>
+              Перемешать
             </Button>
           </>
         )}

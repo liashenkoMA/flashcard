@@ -64,9 +64,16 @@ export default function LoginForm() {
 
     login(formData)
       .then((res) => {
-        dispatch(setUser(res));
-        dispatch(closeModal());
-        router.push("/dashboard");
+        if (res.message) {
+          setServerErrorMessage(res.message);
+          return;
+        }
+
+        if (res.user) {
+          dispatch(setUser(res.user));
+          dispatch(closeModal());
+          router.push("/dashboard");
+        }
       })
       .catch((err) => setServerErrorMessage(err.message))
       .finally(() => setIsLoading(false));

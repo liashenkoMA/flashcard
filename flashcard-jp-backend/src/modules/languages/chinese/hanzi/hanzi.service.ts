@@ -10,7 +10,7 @@ import { User } from '../../../user/user.schema';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { HanziDto, UpdateHanziWeightDto } from './hanzi.schema.dto';
+import { CreateHanziDto, UpdateHanziWeightDto } from './hanzi.schema.dto';
 import { WEIGHT } from '../../../../shared/constants/learning.constant';
 import { FREE_USER_LIMITS } from '../../../../shared/constants/limit.constant';
 
@@ -48,7 +48,10 @@ export class HanziService {
     return user.subscription.expiresAt > now;
   }
 
-  async addHanzi(hanzi: HanziDto, request: Request): Promise<{ data: string }> {
+  async addHanzi(
+    hanzi: CreateHanziDto,
+    request: Request,
+  ): Promise<{ data: string }> {
     const payload = await this.validateAndGetPayload(request);
 
     const user = await this.userModel.findById(payload.sub).exec();

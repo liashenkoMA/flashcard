@@ -32,6 +32,7 @@ export default async function Page({ params, searchParams }: IPageParams) {
   return (
     <section className={styles.kana}>
       <KanaPageComponent
+        key={awaitedSearchParams.type ?? "learn"}
         kana={preparedKana}
         params={awaitedParams.slug}
         searchParams={awaitedSearchParams}

@@ -21,6 +21,7 @@ export default function Accordion({
         {header}
         <div
           className={`${`${isOpen ? styles.accordion__icon_type_close : styles.accordion__icon_type_open}`}`}
+          aria-hidden="true"
         ></div>
       </button>
       <div

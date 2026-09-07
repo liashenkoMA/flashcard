@@ -16,10 +16,10 @@ export default function NotFound() {
           <Image
             src={error}
             width={300}
-            height={300}
+            height={375}
             className={styles.notfound__image}
             alt="Страницы не существует"
-          ></Image>
+          />
           <div className={styles.notfound__content}>
             <p
               className={`${styles.notfound__text} ${styles.notfound__errorcode}`}
@@ -28,8 +28,7 @@ export default function NotFound() {
             </p>
             <h2 className={styles.notfound__header}>Not Found</h2>
             <p className={`${styles.notfound__text}`}>
-              Страница не найдена. Пожалуйста, вернитесь на
-              главную.
+              Страница не найдена. Пожалуйста, вернитесь на главную.
             </p>
             <Button
               type="button"

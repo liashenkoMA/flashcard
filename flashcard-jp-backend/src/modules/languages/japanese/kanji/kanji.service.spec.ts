@@ -10,7 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { KanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
+import { CreateKanjiDto, UpdateKanjiWeightDto } from './kanji.schema.dto';
 
 describe('KanjiService', () => {
   let service: KanjiService;
@@ -146,7 +146,7 @@ describe('KanjiService', () => {
             translate: 'солнце',
             jpRead: 'にち',
             chinaRead: 'ri',
-          } as KanjiDto,
+          } as CreateKanjiDto,
           { cookies: {} } as Request,
         ),
       ).rejects.toThrow(NotFoundException);
@@ -175,7 +175,7 @@ describe('KanjiService', () => {
           translate: 'солнце',
           jpRead: 'にち',
           chinaRead: 'ri',
-        } as KanjiDto,
+        } as CreateKanjiDto,
         { cookies: {} } as Request,
       );
 
@@ -219,7 +219,7 @@ describe('KanjiService', () => {
             translate: 'солнце',
             jpRead: 'にち',
             chinaRead: 'ri',
-          } as KanjiDto,
+          } as CreateKanjiDto,
           { cookies: {} } as Request,
         ),
       ).rejects.toThrow(ForbiddenException);
@@ -252,7 +252,7 @@ describe('KanjiService', () => {
           translate: 'солнце',
           jpRead: 'にち',
           chinaRead: 'ri',
-        } as KanjiDto,
+        } as CreateKanjiDto,
         { cookies: {} } as Request,
       );
 

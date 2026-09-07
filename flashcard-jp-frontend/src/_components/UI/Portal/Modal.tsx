@@ -2,7 +2,7 @@
 
 import styles from "./modal.module.scss";
 import { createPortal } from "react-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -13,6 +13,7 @@ interface ModalProps {
 
 export default function Modal(props: ModalProps) {
   const { isOpen, onClose, children, title } = props;
+  const isPointerDownOnOverlay = useRef(false);
 
   useEffect(() => {
     function handleEsc(e: KeyboardEvent) {
@@ -25,22 +26,39 @@ export default function Modal(props: ModalProps) {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, onClose]);
 
-  function handleOverlayClickCloseModal(e: React.MouseEvent<HTMLDivElement>) {
-    if (e.target === e.currentTarget) {
+  function handleClickDown(e: React.PointerEvent<HTMLDivElement>) {
+    isPointerDownOnOverlay.current = e.target === e.currentTarget;
+  }
+
+  function handleOverlayClickUp(e: React.PointerEvent<HTMLDivElement>) {
+    const isPointerUpOnOverlay = e.target === e.currentTarget;
+
+    if (isPointerDownOnOverlay.current && isPointerUpOnOverlay) {
       onClose();
     }
+
+    isPointerDownOnOverlay.current = false;
   }
 
   if (!isOpen) return null;
 
   return createPortal(
-    <div className={styles.modal} onClick={handleOverlayClickCloseModal} data-testid="overlay">
+    <div
+      className={styles.modal}
+      onPointerDown={handleClickDown}
+      onPointerUp={handleOverlayClickUp}
+      data-testid="overlay"
+    >
       <div className={styles.modal__content}>
         {title && <h2 className={styles.modal__title}>{title}</h2>}
-        <button className={styles.modal__button} onClick={onClose} />
+        <button
+          className={styles.modal__button}
+          onClick={onClose}
+          aria-label="Закрыть"
+        />
         {children}
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }

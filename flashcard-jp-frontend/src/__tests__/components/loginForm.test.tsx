@@ -109,7 +109,7 @@ describe("Login Form component", () => {
       },
     };
 
-    (login as jest.Mock).mockResolvedValueOnce(user);
+    (login as jest.Mock).mockResolvedValueOnce({ user });
 
     const { store } = renderWithStore();
 
@@ -136,6 +136,36 @@ describe("Login Form component", () => {
     expect(state.auth.user).toEqual(user);
     expect(state.modal.mode).toBeNull();
     expect(pushMock).toHaveBeenCalledWith("/dashboard");
+  });
+
+  it("Ошибка авторизации отображается", async () => {
+    const errorMessage = "Пользователь не найден";
+
+    (login as jest.Mock).mockResolvedValueOnce({
+      message: errorMessage,
+    });
+
+    const { store } = renderWithStore();
+
+    fireEvent.change(screen.getByPlaceholderText("ivan@mail.ru"), {
+      target: { value: "ivan@mail.ru" },
+    });
+
+    fireEvent.change(screen.getByPlaceholderText("Введите пароль"), {
+      target: { value: "123456" },
+    });
+
+    fireEvent.change(screen.getByPlaceholderText("Повторите пароль"), {
+      target: { value: "123456" },
+    });
+
+    fireEvent.click(screen.getByText("Войти"));
+
+    const errorText = await screen.findByText(errorMessage);
+
+    expect(errorText).toBeInTheDocument();
+    expect(store.getState().auth.user).toBeNull();
+    expect(pushMock).not.toHaveBeenCalled();
   });
 
   it("Ошибка сервера отображается", async () => {

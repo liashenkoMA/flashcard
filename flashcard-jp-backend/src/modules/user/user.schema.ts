@@ -64,12 +64,15 @@ export const SubscriptionSchema = SchemaFactory.createForClass(Subscription);
 @Schema({ timestamps: true })
 export class User {
   @Prop({
+    trim: true,
+    required: true,
     minlength: [2, 'Минимальная длина поля "name" - 2'],
     maxlength: [30, 'Максимальная длина поля "name" - 30'],
   })
   name: string;
 
   @Prop({
+    trim: true,
     unique: true,
     required: true,
     validate: [isEmail, 'Некорректный email'],
